@@ -1,14 +1,15 @@
 import React from 'react';
 
 //img_src?
-const Product = ({ product: { name, description, price, stock } }) => {
+
+const Product = (ProductExample) => {
     return (
         <div>
-            <h1>Producto: { name }</h1>
-            <p>{ description }</p>
-            <label>Precio: { price }</label>
+            <h1>Producto: { ProductExample.name }</h1>
+            <p>{ ProductExample.description }</p>
+            <label>Precio: { ProductExample.price }</label>
             <br />
-            <label>Cantidad: { stock }</label>
+            <label>Cantidad: { ProductExample.cantidad }</label>
         </div>
     );
 }

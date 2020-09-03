@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-// import ProductCard from "../Product/productCard";
+import ProductCard from "../Product/productCard";
 
 class Catalogo extends Component {
 

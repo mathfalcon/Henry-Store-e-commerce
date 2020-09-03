@@ -10,20 +10,52 @@ server.get('/', (req, res, next) => { // Busca todos los productos y los devuelv
 		.catch(next);
 });
 
+//No puedo testear si funciona ya que aun no han creado la asociacion de Producto-Categorias
+//Se debe tener una tabla intermedia product-categories
+server.post("/:idProducto/category/:idCategoria", (req, res, next) => {
+  Product.findbyPk(req.params.idProducto).then((producto) => {
+    producto.addCategories(Categories.findbyPk(req.params.idCategoria));
+    const result = Product.findOne({
+      where: { id: req.params.idProducto },
+      include: Categories,
+    });
+  });
+});
 
-//No se puede testear ya que no esta creada la ruta para añadir categorias.
-server.delete('/delete-category/:idCategory', (req, res, next) => {
-	Categories.destroy({
-		where: {
-		   id: req.params.idCategory
-		}
-	 }).then(function(rowDeleted){
-	   if(rowDeleted === 1){
-		  console.log('Categoria borrada de manera exitosa');
-		}
-	 }, function(err){
-		 console.log(err); 
-	 });
+server.delete("/:idProducto/category/:idCategoria", (req, res, next) => {
+	Product.findbyPk(req.params.idProducto).then((producto) => {
+	  producto.removeCategories(Categories.findbyPk(req.params.idCategoria));
+	  const result = Product.findOne({
+		where: { id: req.params.idProducto },
+		include: Categories,
+	  });
+	});
+  });
+
+server.get('/categoria/:nombreCat', (req, res, next) => {
+	const nombreCat = req.params.nombreCat;
+
+	Product.findAll({
+		//revisar este include
+		include: [{
+			model: Product,
+			through: 'categoryId',
+			where: { nombreCat }
+		}],
+	})
+	 .then( rows => res.status(200).json(rows) )
+	 .catch(next)
+});
+
+server.delete('/category/:id', (req, res, next) => {
+    const id = req.params.id;
+
+    Categories.destroy(
+		{ where: { id } }
+		)
+         .then( rows => res.status(200).json(rows) )
+         .catch(next)
+});
 
 server.post('/create-category', (req, res, next) => {
 	//Suponiendo que el nombre de la categoria llega como body "name"
@@ -43,3 +75,4 @@ server.post('/create-category', (req, res, next) => {
 });
 
 module.exports = server;
+
