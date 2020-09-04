@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from 'react-redux'; 
 import ProductCard from "../ProductCard/productCard";
 
-export default class Catalogo extends Component {
+class Catalogo extends Component {
 
     handleFiltro( products, id_categoria ){
 
