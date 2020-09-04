@@ -1,20 +1,26 @@
-const server = require('express').Router();
-const { Product, Categories } = require('../db.js');
+const server = require("express").Router();
+const { Product, Categories } = require("../db.js");
 const { Op } = require("sequelize");
 
-// Busca todos los productos y los devuelve en un array
-server.get('/', (req, res, next) => { 
-	Product.findAll()
-		.then(products => {
-			res.send(products);
-		})
-		.catch(next);
-});
 
+server.get("/", (req, res, next) => {
+  // Busca todos los productos y los devuelve en un array
+  Product.findAll()
+    .then((products) => {
+      res.send(products);
+    })
+    .catch(next);
+});
+server.get("/:idProducto", (req, res, next) => {
+  Product.findByPk(req.params.idProducto)
+    .then((producto) => res.send(producto))
+    .catch(next);
+
+});
 //No puedo testear si funciona ya que aun no han creado la asociacion de Producto-Categorias
 //Se debe tener una tabla intermedia product-categories
 server.post("/:idProducto/category/:idCategoria", (req, res, next) => {
-  Product.findbyPk(req.params.idProducto).then((producto) => {
+  Product.findByPk(req.params.idProducto).then((producto) => {
     producto.addCategories(Categories.findbyPk(req.params.idCategoria));
     const result = Product.findOne({
       where: { id: req.params.idProducto },
@@ -25,14 +31,15 @@ server.post("/:idProducto/category/:idCategoria", (req, res, next) => {
 
 // Remueve una categoria de un producto
 server.delete("/:idProducto/category/:idCategoria", (req, res, next) => {
-	Product.findbyPk(req.params.idProducto).then((producto) => {
-	  producto.removeCategories(Categories.findbyPk(req.params.idCategoria));
-	  const result = Product.findOne({
-		where: { id: req.params.idProducto },
-		include: Categories,
-	  });
-	});
+  Product.findByPk(req.params.idProducto).then((producto) => {
+    producto.removeCategories(Categories.findbyPk(req.params.idCategoria));
+    const result = Product.findOne({
+      where: { id: req.params.idProducto },
+      include: Categories,
+    });
   });
+});
+
 
 //Borra un producto
 server.delete("/:idProducto/delete", (req, res, next) => {
@@ -66,13 +73,10 @@ server.get('/categoria/:nombreCat', (req, res, next) => {
 //Borra una categoria
 server.delete('/category/:id', (req, res, next) => {
     const id = req.params.id;
-
-    Categories.destroy(
-		{ where: { id } }
-		)
-
-         .then( rows => res.status(200).json(rows) )
-         .catch(next)
+  
+    Categories.destroy({ where: { id } })
+    .then((rows) => res.status(200).json(rows))
+    .catch(next);
 });
 
 //Crea una categoria
@@ -131,9 +135,6 @@ server.get('/search/:search', (req, res, next) => {
 	}).then((products) => {
 		res.status(200).json(products);
 	}).catch((err) => res.status(404).json(err))
-	
 });
 
-
 module.exports = server;
-
