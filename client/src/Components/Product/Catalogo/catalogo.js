@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { connect } from 'react-redux';
+import { connect } from 'react-redux'; 
 import ProductCard from "../ProductCard/productCard";
 
 class Catalogo extends Component {
@@ -40,7 +40,7 @@ class Catalogo extends Component {
     }
 }
 
-const mapStateToProps = state => {
+ const mapStateToProps = state => {
     return {
       products: state.products,
       //id_categoria: state.id_categoria ??
