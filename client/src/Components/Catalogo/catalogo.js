@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import { connect } from 'react-redux';
+/* import { connect } from 'react-redux'; */
 import ProductCard from "../ProductCard/productCard";
 
-class Catalogo extends Component {
+export default class Catalogo extends Component {
 
     handleFiltro( products, id_categoria ){
 
@@ -40,7 +40,7 @@ class Catalogo extends Component {
     }
 }
 
-const mapStateToProps = state => {
+/* const mapStateToProps = state => {
     return {
       products: state.products,
       //id_categoria: state.id_categoria ??
@@ -54,4 +54,4 @@ const mapStateToProps = state => {
   }
   
   
-  export default connect(mapStateToProps, mapDispatchToProps)(Catalogo);
+  export default connect(mapStateToProps, mapDispatchToProps)(Catalogo); */
