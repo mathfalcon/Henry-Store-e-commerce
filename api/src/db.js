@@ -38,8 +38,8 @@ Product.hasMany(Image)
 Image.belongsTo(Product)
 // Product.hasMany(Reviews);
 
-Product.belongsToMany(Categories, { through: 'categoryId'});
-Categories.belongsToMany(Product, { through: 'productId'});
+Product.belongsToMany(Categories, { through: 'categoryTable'});
+Categories.belongsToMany(Product, { through: 'categoryTable'});
 
 module.exports = {
   ...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');
