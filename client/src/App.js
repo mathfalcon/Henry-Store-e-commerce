@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css";
 /* import Catalogo from './Components/Catalogo/catalogo'; */
-import CategoryForm from "./Components/Catalogo/categoryForm";
+import CategoryForm from "./Components/CategoryForm/categoryForm";
 import ProductForm from "./Components/Product/productForm";
 import Product from "./Components/Product/product";
 import { BrowserRouter, Route } from "react-router-dom";
