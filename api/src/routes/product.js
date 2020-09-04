@@ -2,6 +2,7 @@ const server = require('express').Router();
 
 const { Product , Categories} = require('../db.js');
 
+
 server.get('/', (req, res, next) => { // Busca todos los productos y los devuelve en un array
 	Product.findAll()
 		.then(products => {
@@ -53,6 +54,7 @@ server.delete('/category/:id', (req, res, next) => {
     Categories.destroy(
 		{ where: { id } }
 		)
+
          .then( rows => res.status(200).json(rows) )
          .catch(next)
 });
