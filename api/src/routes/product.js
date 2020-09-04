@@ -2,8 +2,8 @@ const server = require('express').Router();
 const { Product, Categories } = require('../db.js');
 const { Op } = require("sequelize");
 
-
-server.get('/', (req, res, next) => { // Busca todos los productos y los devuelve en un array
+// Busca todos los productos y los devuelve en un array
+server.get('/', (req, res, next) => { 
 	Product.findAll()
 		.then(products => {
 			res.send(products);
@@ -23,6 +23,7 @@ server.post("/:idProducto/category/:idCategoria", (req, res, next) => {
   });
 });
 
+// Remueve una categoria de un producto
 server.delete("/:idProducto/category/:idCategoria", (req, res, next) => {
 	Product.findbyPk(req.params.idProducto).then((producto) => {
 	  producto.removeCategories(Categories.findbyPk(req.params.idCategoria));
@@ -33,6 +34,21 @@ server.delete("/:idProducto/category/:idCategoria", (req, res, next) => {
 	});
   });
 
+//Borra un producto
+server.delete("/:idProducto/delete", (req, res, next) => {
+	let id = req.params.idProducto;
+	Product.destroy({
+		where: {
+			id
+		}
+	}).then((deleted) => {
+		res.status(200).send(`Se borraron un total de ${deleted} producto/s`)
+	}).catch((err) => {
+		res.status(400).send('El id de Producto provisto no existe en la base de datos');
+	})
+  });
+
+//Revisar
 server.get('/categoria/:nombreCat', (req, res, next) => {
 	const nombreCat = req.params.nombreCat;
 	Product.findAll({
@@ -47,6 +63,7 @@ server.get('/categoria/:nombreCat', (req, res, next) => {
 	 .catch(next)
 });
 
+//Borra una categoria
 server.delete('/category/:id', (req, res, next) => {
     const id = req.params.id;
 
@@ -58,6 +75,7 @@ server.delete('/category/:id', (req, res, next) => {
          .catch(next)
 });
 
+//Crea una categoria
 server.post('/create-category', (req, res, next) => {
 	//Suponiendo que el nombre de la categoria llega como body "name"
 	// y la descripcion como 'description'
@@ -74,6 +92,8 @@ server.post('/create-category', (req, res, next) => {
 		
 
 });
+
+//Crea un producto
 server.post('/create-product', (req, res, next) => {
 	// Ruta para crear un producto
 	Product.findOrCreate({
@@ -92,6 +112,7 @@ server.post('/create-product', (req, res, next) => {
 		
 });
 
+//Busca todos los productos que coinciden con un keyword
 server.get('/search/:search', (req, res, next) => {
 	// ruta para buscar un producto segun un keyword, este mismo puede estar
 	// en el nombre o en la descripcion
