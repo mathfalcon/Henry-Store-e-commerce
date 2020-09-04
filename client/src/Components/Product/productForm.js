@@ -1,30 +1,38 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
+import { Multiselect } from "multiselect-react-dropdown"
 
-export default class ProductForm extends Component {
-  state = {};
-  handleChange = ({ target }) => {
+function ProductForm() {
+  /* Categorias de ejemplo */
+  const data = [
+    {Category: "Category1", id: 1},
+    {Category: "Category2", id: 2},
+    {Category: "Category3", id: 3},
+    {Category: "Category4", id: 4}
+  ]
+  const [options] = useState(data);
+  /* Estados */
+  const [state, setState] = useState({});
+  const handleChange = ({ target }) => {
     const { name, value } = target;
-    this.setState({
-      [name]: value,
-    });
+    setState({ ...state, [name]: value });
   };
-  handleSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
   };
-  render() {
-    console.log(this.state);
-    return (
-      <form onSubmit={this.handleSubmit}>
+  console.log(state);
+  return (
+    <div>
+      <form onSubmit={handleSubmit}>
         <label>Nombre: </label>
         <input
           name="name"
-          onChange={this.handleChange}
+          onChange={handleChange}
           placeholder="Ingrese nombre del producto"
         />
         <label>Descripcion: </label>
         <textarea
           name="description"
-          onChange={this.handleChange}
+          onChange={handleChange}
           placeholder="Descripcion del producto"
         />
         <label>Precio: </label>
@@ -34,27 +42,39 @@ export default class ProductForm extends Component {
           name="price"
           min="0.00"
           step="0.01"
-          onChange={this.handleChange}
+          onChange={handleChange}
         />
-        <label>Posee Stock</label>
-        <input type="checkbox" name="stock" onChange={this.handleChange} />
-        {/* Agregar, eliminar categorias con checkboxs */}
-        <label> Categorias: </label>
-        <div>
-          <label>Categoria 1</label>
-          <input type="checkbox" name="Categoria 1"/>
-        </div>
-        <div>
-          <label>Categoria 2</label>
-          <input type="checkbox" name="Categoria 2"/>
-        </div>        
-        <div>
-          <label>Categoria 3</label>
-          <input type="checkbox" name="Categoria 3"/>
-        </div>
-        {/* Botón de enviar formulario */}
-        <input type="submit" />
+        <label>Stock: </label>
+        <input
+          type="number"
+          placeholder="0"
+          name="stock"
+          min="0"
+          step="1"
+          onChange={handleChange}
+        />
       </form>
-    );
-  }
+      <h1>
+        Nombre: 
+        <p>{state.name}</p> 
+      </h1>
+      <h1>
+        Descripcion: 
+        <p>{state.description}</p>
+      </h1>
+      <h1>
+         Price:
+        <p>${state.price}</p> 
+      </h1>
+      <h1>
+        Stock: 
+        <p>{state.stock}</p>
+      </h1>
+      {/* Selector multiple de categorias */}
+      <div>
+        <Multiselect options={options} displayValue="Category"/>
+      </div>
+    </div>
+  );
 }
+export default ProductForm;
