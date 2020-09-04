@@ -28,6 +28,12 @@ server.post("/:idProducto/addCategory/:idCategoria", (req, res, next) => {
     })
     .catch(next);
 });
+//Trae los detalles de un producto segun su Id
+server.get("/:idProducto", (req, res, next) => {
+  Product.findByPk(req.params.idProducto)
+    .then((producto) => res.send(producto))
+    .catch(next);
+});
 
 //Ruta para remover una categoria de un producto
 server.delete("/:idProducto/deleteCategory/:idCategoria", (req, res, next) => {
