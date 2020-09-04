@@ -6,7 +6,6 @@ import ProductForm from "./Components/Product/productForm";
 import Product from "./Components/Product/product";
 import { BrowserRouter, Route } from "react-router-dom";
 
-
 function App() {
   return (
     <BrowserRouter>
