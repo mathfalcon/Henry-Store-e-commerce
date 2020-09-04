@@ -17,7 +17,7 @@ module.exports = (sequelize) => {
       allowNull: false,
     },
     stock: {
-      type: DataTypes.BOOLEAN,
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
   });
