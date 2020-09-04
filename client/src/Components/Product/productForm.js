@@ -39,6 +39,11 @@ export default class ProductForm extends Component {
         <label>Posee Stock</label>
         <input type="checkbox" name="stock" onChange={this.handleChange} />
         <input type="submit" />
+
+        <label> Categorias </label>
+        <input type="checkbox" name="Categoria 1">Remera</input>
+        <input type="checkbox" name="Categoria 2">Campera</input>
+        <input type="checkbox" name="Categoria 3">Musculosa</input>
       </form>
     );
   }
