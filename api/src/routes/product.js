@@ -1,5 +1,6 @@
 const server = require('express').Router();
-const { Product, Categories } = require('../db.js');
+
+const { Product , Categories} = require('../db.js');
 
 server.get('/', (req, res, next) => { // Busca todos los productos y los devuelve en un array
 	Product.findAll()
@@ -70,6 +71,7 @@ server.post('/create-category', (req, res, next) => {
 		res.status(400).send('No se pudo crear la categoría solicitada')
 	})
 		
+
 });
 
 module.exports = server;
