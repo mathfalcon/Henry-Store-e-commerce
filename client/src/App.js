@@ -1,9 +1,11 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import SearchBar from './Component/SearchBar/SearchBar';
 
 function App() {
   return (
+    // <SearchBar/> descomentar para testear SearchBar
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
