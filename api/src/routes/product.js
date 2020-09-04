@@ -70,6 +70,7 @@ server.post('/create-category', (req, res, next) => {
 		res.status(400).send('No se pudo crear la categoría solicitada')
 	})
 		
+
 });
 server.post('/create-product', (req, res, next) => {
 	// Ruta para crear un producto
