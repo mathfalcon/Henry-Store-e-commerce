@@ -1,0 +1,48 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap');
+
+
+
+html{
+    background-color: black;
+    height: 100%;
+    margin: 0;
+}
+html a:link {
+    text-decoration: none;
+    transition: 0.3s;
+    opacity: 100%;
+    color: black;
+}
+html a:visited {
+    text-decoration: none;
+    color: black;
+}
+
+html a:hover {
+    text-decoration: none;
+    opacity: 55%;
+}
+
+
+section{
+    position: relative;
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+}
+
+.sectionLanding{
+    height: 100%;
+    width: 100%;
+}
+.sectionLanding img {
+    height: 84px;
+    width: 443px;
+}
+.sectionLanding span, p {
+    font-size: 100px;
+    font-family: 'Poppins', sans-serif;
+}
+.searchButton {
+    background-color: red;
+}
