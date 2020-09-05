@@ -16,9 +16,7 @@ function App() {
       .then((r) => r.json())
       .then((data) => {
         // data = array que devuelve la db con los productos que hacen match
-        console.log(data);
         setProducts(data);
-        console.log(products);
       })
       .catch((err) => alert("Debes ingresar un texto válido"));
   };

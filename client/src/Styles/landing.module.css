@@ -3,9 +3,7 @@
 
 
 html{
-    background-color: black;
-    height: 100%;
-    margin: 0;
+    scroll-behavior: smoo;
 }
 html a:link {
     text-decoration: none;
@@ -23,26 +21,93 @@ html a:hover {
     opacity: 55%;
 }
 
-
 section{
-    position: relative;
     display: flex;
-    flex-flow: column;
-    height: 100%;
+    align-items: flex-start;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    width: 100%;
+    height: 100vh;
+    padding-top: 55px;
+}
+section:nth-of-type(1) {
+    background-color: black;
 }
 
-.sectionLanding{
-    height: 100%;
-    width: 100%;
+section:nth-of-type(2) {
+    background-color: #dddd37;
 }
-.sectionLanding img {
-    height: 84px;
-    width: 443px;
+.textBox {
+    position:relative;
+    top:0;
+    float: left;
+    width: 600px;
+    max-width: 800px;
+    background-color: black;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    
 }
-.sectionLanding span, p {
-    font-size: 100px;
+.textBox h2 {
+    height: 5px;
+    color: white;
+    font-size: 5em;
+    line-height: 1.5em;
+    text-transform: uppercase;
+}
+.textBox p {
+    color: #FFFF01;
+    font-size:5em;
+    font-weight: 900;
+    align-self: center;
+    order: 2;
+    margin-left: 20px;
+}
+.textBox a {
+    display: inline-block;
+    max-height: 25px;
+    padding: 8px 20px;
+    width: 150px;
+    text-align: center;
+    background:#FFFF01;
+    border-radius: 10px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-decoration: none;
+    text-transform: uppercase;
+    order: 3;
+}
+.textBox img {
+    width: 300px;
+    flex-basis: 20%;
+    padding-top: 13px;
+    height: auto;
+    order: 1;
+    align-self: center;
+}
+.henryShirt {
+    width: 500px;
+    margin-top: 4em;
+    padding-top: 20px;
+    float: right;
+    height:auto;
+    transition: 0.4s;
+    -webkit-filter: drop-shadow(5px 15px 15px #222);
+    filter: drop-shadow(5px 15px 15px #222);
+}
+.divFeaturedItem{
+    background-color: #FFFF01;
+    color: black;
+    text-align: center;
+    border: 5px solid white;
     font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    text-transform: uppercase;
+    
 }
-.searchButton {
-    background-color: red;
+.henryShirt:hover {
+    opacity: 75%;
+    
 }

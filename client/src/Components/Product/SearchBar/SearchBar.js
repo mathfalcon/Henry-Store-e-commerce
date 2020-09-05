@@ -18,6 +18,7 @@ export default function SearchBar(props) {
           props.handleSearch(value);
         }}>
         <input
+          className={styles.inputForm}
           placeholder="Busca un producto..."
           type="text"
           value={value}
