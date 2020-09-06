@@ -90,30 +90,7 @@ section:nth-of-type(2) {
     order: 1;
     align-self: center;
 }
-.henryShirt {
-    width: 500px;
-    margin-top: 4em;
-    padding-top: 20px;
-    float: right;
-    height:auto;
-    transition: 0.4s;
-    -webkit-filter: drop-shadow(5px 15px 15px #222);
-    filter: drop-shadow(5px 15px 15px #222);
-}
-.divFeaturedItem{
-    background-color: #FFFF01;
-    color: black;
-    text-align: center;
-    border: 5px solid white;
-    font-family: 'Poppins', sans-serif;
-    font-weight: 600;
-    text-transform: uppercase;
-    
-}
-.henryShirt:hover {
-    opacity: 75%;
-    
-}
+
 .productSection {
     margin: 0;
     padding: 0;

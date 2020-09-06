@@ -21,12 +21,7 @@ export default function Landing(props) {
           <p>STORE</p>
           <a href="#section-two">VER CATÁLOGO</a>
         </div>
-        <div className={styles.divFeaturedItem}>
-          <img src={henryShirt} className={styles.henryShirt} alt='Remera Henry'/>
-          <span>
-            <p>Remera deportiva HENRY</p>
-          </span>
-        </div>
+        
       </section>
       <section id="section-two" className={styles.productSection}>
         <span><h1>CATÁLOGO</h1></span>
