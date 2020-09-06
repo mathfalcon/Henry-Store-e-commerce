@@ -1,15 +1,15 @@
 import React, { useState } from "react";
-import { Multiselect } from "multiselect-react-dropdown"
+import { Multiselect } from "multiselect-react-dropdown";
 import styles from "../../Styles/productForm.module.css";
 
 function ProductForm() {
   /* Categorias de ejemplo */
   const data = [
-    {Category: "Category1", id: 1},
-    {Category: "Category2", id: 2},
-    {Category: "Category3", id: 3},
-    {Category: "Category4", id: 4}
-  ]
+    { Category: "Category1", id: 1 },
+    { Category: "Category2", id: 2 },
+    { Category: "Category3", id: 3 },
+    { Category: "Category4", id: 4 },
+  ];
   const [options] = useState(data);
   /* Estados */
   const [state, setState] = useState({});
@@ -23,64 +23,58 @@ function ProductForm() {
   console.log(state);
   return (
     <div>
-      
       <form className={styles.form} onSubmit={handleSubmit}>
         <div className={styles.inputs}>
           <div className={styles.name}>
-              <label>Name</label>
-              <br />
-              <input
-                name="name"
-                onChange={handleChange}
-              /><br />
+            <label>Name</label>
+            <br />
+            <input name="name" onChange={handleChange} />
+            <br />
           </div>
           <div className={styles.description}>
-              <label>Description</label>
-              <br />
-              <textarea
-                name="description"
-                onChange={handleChange}
-              /><br />
+            <label>Description</label>
+            <br />
+            <textarea name="description" onChange={handleChange} />
+            <br />
           </div>
           <div className={styles.priceStock}>
-              <label>Price</label>
-              <br />
-              <input
-                type="number"            
-                name="price"
-                min="0.00"
-                step="0.01"
-                onChange={handleChange}            
-              />          
-          
-              <label>Stock</label>
-              <br />
-              <input
-                type="number"            
-                name="stock"
-                min="0"
-                step="1"
-                onChange={handleChange}
-              />
-              </div>
-          </div>
+            <label>Price</label>
+            <br />
+            <input
+              type="number"
+              name="price"
+              min="0.00"
+              step="0.01"
+              onChange={handleChange}
+            />
 
-          <div className={styles.buttons}>
-            <h3>
-                Product Management
-            </h3>
-            <button type="submit">
-                Create
-            </button>
-            <button type="submit">
-                Update
-            </button>
-            <button type="submit">
-                Delete
-            </button>
-            <img className={styles.imgLogo} src="" alt="logoHenry" />
+            <label>Stock</label>
+            <br />
+            <input
+              type="number"
+              name="stock"
+              min="0"
+              step="1"
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <label>Upload Images</label>
+            <input type="file" name="dropimage" accept="image/*" />
+          </div>
         </div>
 
+        <div className={styles.buttons}>
+          <h3>Product Management</h3>
+          <button type="submit">Create</button>
+          <button type="submit">Update</button>
+          <button type="submit">Delete</button>
+          <div className={styles.Multiselect}>
+            <h3>Categories</h3>
+            <Multiselect options={options} displayValue="Category" />
+          </div>
+          <img className={styles.imgLogo} src=".../Styles/Assets/logo henry black.png" alt="logoHenry" />
+        </div>
       </form>
 
       {/* <h1>
@@ -101,11 +95,6 @@ function ProductForm() {
       </h1> */}
 
       {/* Selector multiple de categorias */}
-
-      {/* <div>
-        <Multiselect options={options} displayValue="Category"/>
-      </div> */}
-
     </div>
   );
 }
