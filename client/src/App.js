@@ -21,17 +21,18 @@ function App() {
       .catch((err) => alert("Debes ingresar un texto válido"));
   };
   return (
-    <BrowserRouter>
-      <Route
-        path="/"
-        render={() => <SearchBar handleSearch={handleSearch} />}
-      />
-      <Route
-        exact
-        path="/"
-        render={() => <Landing handleSearch={handleSearch} />}
-      />
-    </BrowserRouter>
+    <ProductForm />
+    // <BrowserRouter>
+    //   <Route
+    //     path="/"
+    //     render={() => <SearchBar handleSearch={handleSearch} />}
+    //   />
+    //   <Route
+    //     exact
+    //     path="/"
+    //     render={() => <Landing handleSearch={handleSearch} />}
+    //   />
+    // </BrowserRouter>
   );
 }
 
