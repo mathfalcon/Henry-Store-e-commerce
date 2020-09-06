@@ -5,6 +5,7 @@ import henryShirt from "../../content/henryShirt.png";
 import Product from '../Product/product.js'
 
 export default function Landing(props) {
+  document.title = 'Henry Store';
   const [allProducts, setProducts] = useState([]);
   useEffect(() => {
     fetch('http://localhost:3000/products/')

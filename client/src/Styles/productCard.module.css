@@ -112,6 +112,10 @@
     transform: translateY(50px);
     transition: 1s;
     visibility: hidden;
+    text-transform: uppercase;
+}
+.contentBx a:hover {
+    background: #FFFF01;
 }
 .card:hover .contentBx a {
     opacity: 1;

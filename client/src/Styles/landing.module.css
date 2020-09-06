@@ -71,7 +71,7 @@ section:nth-of-type(2) {
 .textBox a {
     display: inline-block;
     max-height: 25px;
-    padding: 8px 20px;
+    padding: 18px 20px;
     width: 150px;
     text-align: center;
     background:#FFFF01;
@@ -81,6 +81,7 @@ section:nth-of-type(2) {
     text-decoration: none;
     text-transform: uppercase;
     order: 3;
+    font-family: 'Poppins', sans-serif;
 }
 .textBox img {
     width: 300px;
