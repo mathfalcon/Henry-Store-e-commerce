@@ -1,44 +1,77 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Multiselect } from "multiselect-react-dropdown";
 import styles from "../../Styles/productForm.module.css";
+import logoText from "../../Styles/Assets/logo henry black.png";
+import axios from "axios";
 
 function ProductForm() {
-  /* Categorias de ejemplo */
-  const data = [
-    { Category: "Category1", id: 1 },
-    { Category: "Category2", id: 2 },
-    { Category: "Category3", id: 3 },
-    { Category: "Category4", id: 4 },
-  ];
-  const [options] = useState(data);
   /* Estados */
   const [state, setState] = useState({});
+
+  /* Peticion GET a categories */
+  useEffect(() => {
+    fetch("http://localhost:3100/categories")
+      .then((data) => data.json())
+      .then((data) => {
+        setState({ ...state, categories: data });
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
   const handleChange = ({ target }) => {
     const { name, value } = target;
     setState({ ...state, [name]: value });
   };
-  const handleSubmit = (e) => {
-    e.preventDefault();
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    /* fetch('https://localhost:3100/products/create-product', {
+     method: 'post',
+     headers: {'Content-Type':'application/json'},
+     body: {
+      "name": state.name,
+      "description": state.description,
+      "price": state.price,
+      "stock": state.stock
+     }
+    }); */
+    axios({
+      method: "post",
+      url: "http://localhost:3100/products/create-product",
+      data: {
+        name: state.name,
+        description: state.description,
+        price: state.price,
+        stock: state.stock,
+      },
+    });
+    setState({ ...state, name: "", description: "", price: "", stock: "" });
   };
+
   console.log(state);
+
   return (
     <div>
       <form className={styles.form} onSubmit={handleSubmit}>
         <div className={styles.inputs}>
           <div className={styles.name}>
-            <label>Name</label>
+            <label>Nombre</label>
             <br />
-            <input name="name" onChange={handleChange} />
+            <input name="name" onChange={handleChange} value={state.name} />
             <br />
           </div>
           <div className={styles.description}>
-            <label>Description</label>
+            <label>Descripción</label>
             <br />
-            <textarea name="description" onChange={handleChange} />
+            <textarea
+              name="description"
+              onChange={handleChange}
+              value={state.description}
+            />
             <br />
           </div>
           <div className={styles.priceStock}>
-            <label>Price</label>
+            <label>Precio</label>
             <br />
             <input
               type="number"
@@ -46,8 +79,8 @@ function ProductForm() {
               min="0.00"
               step="0.01"
               onChange={handleChange}
+              value={state.price}
             />
-
             <label>Stock</label>
             <br />
             <input
@@ -56,24 +89,35 @@ function ProductForm() {
               min="0"
               step="1"
               onChange={handleChange}
+              value={state.stock}
             />
           </div>
           <div>
-            <label>Upload Images</label>
+            <label>Subir Imágenes</label>
             <input type="file" name="dropimage" accept="image/*" />
+          </div>
+          <div>
+            <button type="submit" className={styles.SubmitButton}>
+              Enviar
+            </button>
           </div>
         </div>
 
         <div className={styles.buttons}>
-          <h3>Product Management</h3>
-          <button type="submit">Create</button>
-          <button type="submit">Update</button>
-          <button type="submit">Delete</button>
+          <h3>Gestor de Productos</h3>
+          <button type="submit">Crear</button>
+          <button type="submit">Actualizar</button>
+          <button type="submit">Eliminar</button>
+          {/* Selector multiple de categorias */}
           <div className={styles.Multiselect}>
-            <h3>Categories</h3>
-            <Multiselect options={options} displayValue="Category" />
+            <h3>Categorias</h3>
+            <Multiselect
+              name="Seleccionar"
+              options={state.categories}
+              displayValue="name"
+            />
           </div>
-          <img className={styles.imgLogo} src=".../Styles/Assets/logo henry black.png" alt="logoHenry" />
+          <img className={styles.imgLogo} src={logoText} alt="logoHenry" />
         </div>
       </form>
 
@@ -93,8 +137,6 @@ function ProductForm() {
         Stock: 
         <p>{state.stock}</p>
       </h1> */}
-
-      {/* Selector multiple de categorias */}
     </div>
   );
 }

@@ -59,6 +59,15 @@ server.delete("/:idProducto/deleteCategory/:idCategoria", (req, res, next) => {
 //     });
 // });
 
+//Trae todas las categorias
+server.get("/cat", (req, res, next) => {
+  Categories.findAll()
+    .then((cat) => {
+      res.status(200).send(cat);
+    })
+    .catch(next);
+});
+
 //Trae todos los productos de una categoria
 server.get("/category/:nombreCat", (req, res, next) => {
   const name = req.params.nombreCat;
