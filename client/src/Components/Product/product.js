@@ -1,20 +1,26 @@
 import React from 'react';
+import styles from '../../Styles/productCard.module.css'
+import henryShirt from "../../content/henryShirt.png";
 
-//img_src?
 
-const Product = (ProductExample) => {
+export default function Product(props) {
     return (
-        <div>
-            <h1>Producto: { ProductExample.name }</h1>
-            <p>{ ProductExample.description }</p>
-            <label>Precio: { ProductExample.price }</label>
-            <br />
-            <label>Cantidad: { ProductExample.cantidad }</label>
+        <div className={styles.container}>
+            <div className={styles.card}>
+                <div className={styles.imgBx}>
+                    <img src={henryShirt}/>
+                </div>
+                <div className={styles.contentBx}>
+                    <h2>{props.product.name}</h2>
+                    <div className={styles.description}>
+                        <p>{props.product.description}</p>
+                    </div>
+                    <a href='#'>ver más</a>
+                </div>
+            </div>
         </div>
     );
 }
-
-export default Product;
 
 
 // Productos: nombre(titulo), descripcion, precio, cantidad(stock), srcFoto[]
