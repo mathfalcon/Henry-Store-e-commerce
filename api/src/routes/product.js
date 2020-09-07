@@ -6,7 +6,7 @@ server.get("/", (req, res, next) => {
   // Busca todos los productos y los devuelve en un array
   Product.findAll()
     .then((products) => {
-      res.send(products);
+      res.status(200).send(products);
     })
     .catch(next);
 });
