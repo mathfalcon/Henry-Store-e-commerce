@@ -1,12 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 /* import Catalogo from './Components/Catalogo/catalogo'; */
-import CategoryForm from "./Components/CategoryForm/categoryForm";
-import ProductForm from "./Components/Product/productForm";
-import Product from "./Components/Product/product";
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter, Route, Redirect } from "react-router-dom";
 import Landing from "./Components/Landing/landing";
 import SearchBar from "./Components/Product/SearchBar/SearchBar";
+import SearchResults from "./Components/SearchResults/SearchResults";
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -16,20 +14,31 @@ function App() {
       .then((r) => r.json())
       .then((data) => {
         // data = array que devuelve la db con los productos que hacen match
-        setProducts(data);
+        setProducts(data);     
       })
-      .catch((err) => alert("Debes ingresar un texto válido"));
+      .catch((err) => console.log(err));
   };
+
   return (
     <BrowserRouter>
       <Route
         path="/"
         render={() => <SearchBar handleSearch={handleSearch} />}
       />
+      {products.length > 0 && <Redirect
+          to={{
+            pathname: "/product/search/",
+            state: { products: products },
+          }}
+        /> }
       <Route
         exact
         path="/"
-        render={() => <Landing handleSearch={handleSearch} />}
+        render={() => <Landing />}
+      />
+      <Route
+        path="/product/search"
+        render={() => <SearchResults products={products}/>}
       />
     </BrowserRouter>
   );

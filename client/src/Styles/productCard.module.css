@@ -2,7 +2,7 @@
 
 .container{
     position: relative;
-    margin: 15px 15px;
+    margin: 15px auto;
 }
 .card {
     position: relative;
