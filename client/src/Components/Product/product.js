@@ -8,7 +8,7 @@ export default function Product(props) {
         <div className={styles.container}>
             <div className={styles.card}>
                 <div className={styles.imgBx}>
-                    <img src={henryShirt}/>
+                    <img src={henryShirt} alt=''/>
                 </div>
                 <div className={styles.contentBx}>
                     <h2>{props.product.name}</h2>
