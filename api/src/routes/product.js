@@ -142,7 +142,7 @@ server.post("/create-product", (req, res, next) => {
       //Sucess handler
       res
         .status(200)
-        .send(`El producto ${product[0].dataValues.name} se creó con exito`);
+        .send(product[0]);
     })
     .catch((err) => {
       //Error Handler

@@ -1,21 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;500&display=swap');
 body {
     box-sizing: border-box;
-    margin:0 auto;
+    margin:0;
     min-height: 100%;
-    background-color:#464646;
-}
-.container{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    background-color:black;
 }
 
 .form{
     display: flex;
     flex-direction: column;    
-    margin: auto;
+    margin: 0 auto;
     width: 1000px;
     height: 600px;    
 }
@@ -40,7 +34,7 @@ body {
     justify-content: space-evenly;
 }
 
-input, textarea{    
+.form input, textarea{    
     background-color:#ececec;
     border-style: none;
     border-radius: .2rem;
@@ -63,111 +57,55 @@ textarea{
     text-align: center;
 }
 
+button{
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 22px;
+    line-height: 50px;
+    align-self: center;
+    width:60%;   
+    text-decoration: none;  
+    color: #000000;
+    background: #FFFFFF;
+    border: 1px solid #DDDDDD;
+    box-sizing: border-box;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
 .imgLogo{
     width: 6em;
     margin: 0 auto;
 }
-h2 {
-    font-weight: normal;
-    margin: .5em;
-    font-family: Roboto;
-    font-style: normal;
-    font-size: 46px;
-    text-align: center;  
-    font-weight: lighter;
-}
+
 h3{
-    margin: .5em;
     font-family: Roboto;
     font-style: normal;
     font-size: 32px;
     text-align: center; 
-    font-weight: normal;
-}
-h4{
-    font-weight: 300;
-
-}   
-h5{
-    font-weight: 200;
-
 }
 .Multiselect{
     font-family: Roboto;
     font-style: normal;
     font-size: 11px;
-    text-align: center;  
+    text-align: center; 
+    padding: 0; 
+}
+.Multiselect input {
+    background-color: red;
 }
 
-.SubmitButton {
-    height: 2.5em;
-    width: 5em;
-    margin: 0 40%;
-}
-.SubmitButton:hover{
-    background: rgb(238, 238, 238);
-    width: 5em;
-    margin: 0 40%;
-    height: 2.5em;
-    border: 1px solid rgba(0, 0, 0, 0.25)
-}
-
-.ControlButton {
-    border: 1px solid black;
-    border-radius: .5em;
-    margin: .5em;
-    display: bock;
-    align-items: center;
-    justify-content: center;
-    width: 6em;
-    height: 2.5em;
-    background: #adadad;
-    border: 1px solid #AFAFAF;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-}
-.ItemCard{
-    margin: .5em auto;
-    width: 60em;
-    height: 4em;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    background-color: white;
-    border-radius: 1em;
-    border: 1px solid rgb(46, 46, 46);
-}
-.CreateButton{
-    margin: auto;
-    width: 100%;
-    height: 2.5em;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #ffff84;
-    box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 10px;
-}
-.GestorCard{
-    padding: 2em;
-    margin: 1em;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background-color: rgb(255, 230, 0);
-    box-shadow: 6px 6px 6px rgba(0, 0, 0, 0.25);
-}
-@media screen and (min-width:768px) {
-
+@media screen and (min-width:768px) { 
     .buttons{        
         flex: 0 2 35%;
-        order:-1;
+        order:-1;        
     }
     .priceStock{
-        display: flex;       
+        display: flex;
+                     
     }
     .priceStock input{        
         margin-top: 1.5rem;
+                
     }    
 }

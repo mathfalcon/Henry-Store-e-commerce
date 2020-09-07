@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter, Route, Link } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 import productForm from "../Product/productForm";
-import styles from "../../Styles/productForm.module.css";
-import axios from "axios";
+import styles from '../../Styles/adminPanel.module.css';
+const axios = require('axios');
 
 function AdminPanel() {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [deleted, setStatus] = useState(0);
 
   /*Peticion GET para obtener array con los productos */
   useEffect(() => getProducts(), []);
@@ -22,31 +23,34 @@ function AdminPanel() {
   useEffect(() => getCategories(), []);
 
   const getCategories = () => {
-    fetch("http://localhost:3100/products")
+    fetch("http://localhost:3100/categories")
       .then((data) => data.json())
       .then((categories) => setCategories(categories))
       .catch((err) => console.log(err));
   }
   
   const handleDelete = async (id) => {
-    console.log(id)
-    await axios.delete("http://localhost:3100/products/" + id + "/delete")
-  }
-
+    fetch(`http://localhost:3100/products/${id}/delete`, {
+      method: 'DELETE', // or 'PUT'
+      headers:{
+        'Content-Type': 'application/json'
+      }
+    }).then((data) => setStatus(Math.random()))
+    .catch((err) => console.log(err))
+    console.log(deleted)
+  }  
   return (
-    <BrowserRouter>
-      <Route path="/create-product" component={productForm} exact />
       <div className={styles.container}>
         <h2>PANEL DE ADMINISTRADOR</h2>
 
         {/* Sección Productos */}
         <div className={styles.GestorCard}>
           <h3>GESTOR DE PRODUCTOS</h3>
-          <Link to="/create-product" className={styles.CreateButton}>
+          <Link to="/product/crud" className={styles.CreateButton}>
             CREAR UN NUEVO PRODUCTO
           </Link>
           {/* Mapeo de productos */}
-          {products.map((product) => (
+          {products.map((product) => ( 
             <div className={styles.ItemCard}>
               <h4 key={product.id}>Nombre: {product.name}</h4>
               <h5>Descripción: {product.description}</h5>
@@ -77,7 +81,6 @@ function AdminPanel() {
           ))}
         </div>
       </div>
-    </BrowserRouter>
   );
 }
 export default AdminPanel;

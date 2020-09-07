@@ -22,18 +22,27 @@ function App() {
       .catch((err) => alert("Debes ingresar un texto válido"));
   };
   return (
-    <AdminPanel />
-    // <BrowserRouter>
-    //   <Route
-    //     path="/"
-    //     render={() => <SearchBar handleSearch={handleSearch} />}
-    //   />
-    //   <Route
-    //     exact
-    //     path="/"
-    //     render={() => <Landing handleSearch={handleSearch} />}
-    //   />
-    // </BrowserRouter>
+    <BrowserRouter>
+      <Route
+        path="/"
+        render={() => <SearchBar handleSearch={handleSearch} />}
+      />
+      <Route
+        exact
+        path="/"
+        render={() => <Landing handleSearch={handleSearch} />}
+      />
+      <Route
+      exact
+        path="/product/crud"
+        render={() => <ProductForm />}
+      />
+      <Route
+      exact
+        path="/product/admin"
+        render={() => <AdminPanel />}
+      />
+    </BrowserRouter>
   );
 }
 

@@ -7,13 +7,14 @@ import axios from "axios";
 function ProductForm() {
   /* Estados */
   const [state, setState] = useState({});
+  const [categories, setCategories] = useState([]);
 
   /* Peticion GET a categories */
   useEffect(() => {
     fetch("http://localhost:3100/categories")
       .then((data) => data.json())
       .then((data) => {
-        setState({ ...state, categories: data });
+        setCategories(data);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -35,6 +36,12 @@ function ProductForm() {
       "stock": state.stock
      }
     }); */
+    var selected = [];
+    for (var option of document.getElementById("category-select").options) {
+      if (option.selected) {
+        selected.push(option.value);
+      }
+    }
     axios({
       method: "post",
       url: "http://localhost:3100/products/create-product",
@@ -44,11 +51,23 @@ function ProductForm() {
         price: state.price,
         stock: state.stock,
       },
-    });
+    }).then((data) => {if(selected.length > 0){
+      var selectedCategoriesId = categories.filter((e) => selected.indexOf(e.id.toString()) !== -1);
+      console.log(categories[0].id)
+      console.log(selected.indexOf(2))
+      console.log(typeof(selected[0]));
+      console.log(selectedCategoriesId);
+      selectedCategoriesId.forEach((e) => {
+        axios({
+        method: "post",
+        url: `http://localhost:3100/products/${data.data.id}/addCategory/${e.id}`,
+      })})
+      }
+    }).then(alert('El producto se ha creado con éxito'))
+    .catch((err) => console.log(err));
     setState({ ...state, name: "", description: "", price: "", stock: "" });
   };
 
-  console.log(state);
 
   return (
     <div>
@@ -97,9 +116,11 @@ function ProductForm() {
             <input type="file" name="dropimage" accept="image/*" />
           </div>
           <div>
-            <button type="submit" className={styles.SubmitButton}>
-              Enviar
-            </button>
+            <input
+              type="submit"
+              className={styles.SubmitButton}
+              value="Enviar"
+            />
           </div>
         </div>
 
@@ -109,11 +130,12 @@ function ProductForm() {
           {/* Selector multiple de categorias */}
           <div className={styles.Multiselect}>
             <h2>Seleccionar Categorias: </h2>
-            <Multiselect
-              name="Seleccionar"
-              options={state.categories}
-              displayValue="name"
-            />
+            <select id="category-select" multiple="multiple">
+              {categories.length > 0 &&
+                categories.map((e, index) => {
+                  return <option key={index} value={e.id}>{e.name}</option>;
+                })}
+            </select>
           </div>
           <img className={styles.imgLogo} src={logoText} alt="logoHenry" />
         </div>
