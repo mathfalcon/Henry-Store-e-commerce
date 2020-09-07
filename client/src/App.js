@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./App.css";
 /* import Catalogo from './Components/Catalogo/catalogo'; */
+import AdminPanel from "./Components/AdminPanel/AdminPanel"
 import CategoryForm from "./Components/CategoryForm/categoryForm";
 import ProductForm from "./Components/Product/productForm";
 import Product from "./Components/Product/product";
@@ -21,7 +22,7 @@ function App() {
       .catch((err) => alert("Debes ingresar un texto válido"));
   };
   return (
-    <ProductForm />
+    <AdminPanel />
     // <BrowserRouter>
     //   <Route
     //     path="/"

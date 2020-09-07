@@ -105,12 +105,10 @@ function ProductForm() {
 
         <div className={styles.buttons}>
           <h3>Gestor de Productos</h3>
-          <button type="submit">Crear</button>
-          <button type="submit">Actualizar</button>
-          <button type="submit">Eliminar</button>
+          <h2>Crear Producto</h2>
           {/* Selector multiple de categorias */}
           <div className={styles.Multiselect}>
-            <h3>Categorias</h3>
+            <h2>Seleccionar Categorias: </h2>
             <Multiselect
               name="Seleccionar"
               options={state.categories}
