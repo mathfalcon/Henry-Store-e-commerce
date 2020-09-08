@@ -16,12 +16,15 @@ function CategoryForm() {
     event.preventDefault();
     axios({
       method: "post",
-      url: "http://localhost:3100/products/create-category",
+      url: "http://localhost:3000/products/create-category",
       data: {
         name: state.name,
         description: state.description,
       }
-    }).then(alert('La categoria se ha creado con éxito'))
+    }).then(()=> {
+      alert(`La categoria ${state.name} se creó con éxito.`)
+      window.location.replace('http://localhost:3001/product/admin')
+    })
       .catch((err) => console.log(err));
       setState({name: "", description: ""});
   };

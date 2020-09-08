@@ -4,8 +4,8 @@ import styles from "../../Styles/productForm.module.css";
 import logoText from "../../Styles/Assets/logo henry black.png";
 import axios from "axios";
 
-
-function ProductForm() {
+function ProductUpdate(props) {
+  console.log(window.location)
   /* Categorias de ejemplo */
   const data = [
     { Category: "Category1", id: 1 },
@@ -15,9 +15,11 @@ function ProductForm() {
   ];
   const [options] = useState(data);
   /* Estados */
-  const [state, setState] = useState({});
   const [categories, setCategories] = useState([]);
+  const [toUpdate, setUpdate] = useState({});
+  const [state, setState] = useState(toUpdate);
 
+  const id = window.location.search.split("=").pop();
   /* Peticion GET a categories */
   useEffect(() => {
     fetch("http://localhost:3000/categories")
@@ -26,8 +28,12 @@ function ProductForm() {
         setCategories(data);
       })
       .catch((err) => console.log(err));
-  }, []);
 
+    fetch(`http://localhost:3000/products/${id}`)
+      .then((data) => data.json())
+      .then((data) => setUpdate(data));
+  }, []);
+  
   const handleChange = ({ target }) => {
     const { name, value } = target;
     setState({ ...state, [name]: value });
@@ -41,17 +47,19 @@ function ProductForm() {
         selected.push(option.value);
       }
     }
+    const body = state;
+    if (!state.name) body.name = toUpdate.name
+    if (!state.description) body.description = toUpdate.description
+    if (!state.price) body.price = toUpdate.price
+    if (!state.stock) body.stock = toUpdate.stock
+
     axios({
-      method: "post",
-      url: "http://localhost:3000/products/create-product",
-      data: {
-        name: state.name,
-        description: state.description,
-        price: state.price,
-        stock: state.stock,
-      },
+      method: "put",
+      url: `http://localhost:3000/products/${toUpdate.id}/update`,
+      data: body,
     })
       .then((data) => {
+          console.log(data)
         if (selected.length > 0) {
           var selectedCategoriesId = categories.filter(
             (e) => selected.indexOf(e.id.toString()) !== -1
@@ -59,19 +67,18 @@ function ProductForm() {
           selectedCategoriesId.forEach((e) => {
             axios({
               method: "post",
-              url: `http://localhost:3000/products/${data.data.id}/addCategory/${e.id}`,
+              url: `http://localhost:3000/products/${toUpdate.id}/addCategory/${e.id}`,
             });
           });
         }
       })
       .then(() => {
         alert("El producto se ha creado con éxito");
-        window.location.replace('http://localhost:3001/product/admin')
+        // window.location.replace("http://localhost:3001/product/admin");
       })
       .catch((err) => console.log(err));
     setState({ ...state, name: "", description: "", price: "", stock: "" });
   };
-
   return (
     <div>
       <form className={styles.form} onSubmit={handleSubmit}>
@@ -79,7 +86,13 @@ function ProductForm() {
           <div className={styles.name}>
             <label>Nombre</label>
             <br />
-            <input name="name" onChange={handleChange} value={state.name} />
+            <input
+              name="name"
+              onChange={handleChange}
+              value={state.name}
+              defaultValue={toUpdate.name}
+              placeholder={toUpdate.name}
+            />
             <br />
           </div>
           <div className={styles.description}>
@@ -89,6 +102,8 @@ function ProductForm() {
               name="description"
               onChange={handleChange}
               value={state.description}
+              defaultValue={toUpdate.description}
+              placeholder={toUpdate.description}
             />
             <br />
           </div>
@@ -101,7 +116,9 @@ function ProductForm() {
               min="0.00"
               step="0.01"
               onChange={handleChange}
+              defaultValue={toUpdate.price}
               value={state.price}
+              placeholder={toUpdate.price}
             />
             <label>Stock</label>
             <br />
@@ -112,6 +129,8 @@ function ProductForm() {
               step="1"
               onChange={handleChange}
               value={state.stock}
+              defaultValue={toUpdate.stock}
+              placeholder={toUpdate.stock}
             />
           </div>
           <div>
@@ -150,4 +169,4 @@ function ProductForm() {
     </div>
   );
 }
-export default ProductForm;
+export default ProductUpdate;

@@ -9,6 +9,9 @@ import { BrowserRouter, Route, Redirect } from "react-router-dom";
 import Landing from "./Components/Landing/landing";
 import SearchBar from "./Components/Product/SearchBar/SearchBar";
 import SearchResults from "./Components/SearchResults/SearchResults";
+import ProductUpdate from './Components/Product/productUpdate'
+import CategoryUpdate from "./Components/CategoryForm/categoryUpdate";
+import ProductCard from "./Components/ProductCard/productCard";
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -28,6 +31,10 @@ function App() {
       <Route
         path="/"
         render={() => <SearchBar handleSearch={handleSearch} />}
+      />
+      <Route
+        path="/product/detailed/"
+        render={() => <ProductCard />}
       />
       {products.length > 0 && <Redirect
           to={{
@@ -50,6 +57,10 @@ function App() {
         render={() => <ProductForm />}
       />
       <Route
+        path="/product/update"
+        render={() => <ProductUpdate />}
+      />
+      <Route
       exact
         path="/product/admin"
         render={() => <AdminPanel />}
@@ -58,6 +69,11 @@ function App() {
       exact
         path="/create-category"
         render={() => <CategoryForm />}
+      />
+      <Route
+      exact
+        path="/categories/update"
+        render={() => <CategoryUpdate />}
       />
     </BrowserRouter>
   );

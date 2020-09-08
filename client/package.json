@@ -9,7 +9,9 @@
     "axios": "^0.20.0",
     "multiselect-react-dropdown": "^1.5.7",
     "react": "^16.13.1",
+    "react-css-dropdown": "^1.1.2",
     "react-dom": "^16.13.1",
+    "react-dropdown": "^1.8.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1"
   },
