@@ -34,6 +34,7 @@ body {
     justify-content: space-evenly;
 }
 
+
 .form input, textarea{    
     background-color:#ececec;
     border-style: none;
@@ -91,9 +92,11 @@ h3{
     text-align: center; 
     padding: 0; 
 }
+
 .Multiselect input {
     background-color: red;
 }
+
 
 @media screen and (min-width:768px) { 
     .buttons{        

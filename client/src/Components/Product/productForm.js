@@ -5,6 +5,14 @@ import logoText from "../../Styles/Assets/logo henry black.png";
 import axios from "axios";
 
 function ProductForm() {
+  /* Categorias de ejemplo */
+  const data = [
+    { Category: "Category1", id: 1 },
+    { Category: "Category2", id: 2 },
+    { Category: "Category3", id: 3 },
+    { Category: "Category4", id: 4 },
+  ];
+  const [options] = useState(data);
   /* Estados */
   const [state, setState] = useState({});
   const [categories, setCategories] = useState([]);
@@ -60,6 +68,7 @@ function ProductForm() {
       <form className={styles.form} onSubmit={handleSubmit}>
         <div className={styles.inputs}>
           <div className={styles.name}>
+
             <label>Nombre</label>
             <br />
             <input name="name" onChange={handleChange} value={state.name} />
@@ -126,23 +135,6 @@ function ProductForm() {
           <img className={styles.imgLogo} src={logoText} alt="logoHenry" />
         </div>
       </form>
-
-      {/* <h1>
-        Nombre: 
-        <p>{state.name}</p> 
-      </h1>
-      <h1>
-        Descripcion: 
-        <p>{state.description}</p>
-      </h1>
-      <h1>
-         Price:
-        <p>${state.price}</p> 
-      </h1>
-      <h1>
-        Stock: 
-        <p>{state.stock}</p>
-      </h1> */}
     </div>
   );
 }
