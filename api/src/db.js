@@ -2,6 +2,7 @@ require('dotenv').config();
 const { Sequelize } = require('sequelize');
 const fs = require('fs');
 const path = require('path');
+const Order = require('./models/Order');
 const {
   DB_USER, DB_PASSWORD, DB_HOST,
 } = process.env;
@@ -33,9 +34,13 @@ sequelize.models = Object.fromEntries(capsEntries);
 const { Product } = sequelize.models;
 const { Image } = sequelize.models;
 const { Categories } = sequelize.models;
+const { Order } = sequelize.models;
 // Aca vendrian las relaciones
 Product.hasMany(Image)
 Image.belongsTo(Product)
+// Order.belongsTo(User) descomentar cuando este el modelo 'user' creado
+// Order.hasMany(orderLine) descomentar cuando este el modelo 'orderLine' creado
+
 // Product.hasMany(Reviews);
 
 Product.belongsToMany(Categories, { through: 'categoryTable'});
