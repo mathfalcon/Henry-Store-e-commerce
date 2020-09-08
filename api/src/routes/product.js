@@ -2,8 +2,8 @@ const server = require("express").Router();
 const { Product, Categories } = require("../db.js");
 const { Op } = require("sequelize");
 
+// Busca todos los productos y los devuelve en un array
 server.get("/", (req, res, next) => {
-  // Busca todos los productos y los devuelve en un array
   Product.findAll()
     .then((products) => {
       res.status(200).send(products);
@@ -28,6 +28,21 @@ server.post("/:idProducto/addCategory/:idCategoria", (req, res, next) => {
     })
     .catch(next);
 });
+
+//Borra un producto
+server.delete("/:idProducto/delete", (req, res, next) => {
+	let id = req.params.idProducto;
+	Product.destroy({
+		where: {
+			id
+		}
+	}).then((deleted) => {
+		res.status(200).send(`Se borraron un total de ${deleted} producto/s`)
+	}).catch((err) => {
+		res.status(400).send('El id de Producto provisto no existe en la base de datos');
+	})
+});
+
 //Trae los detalles de un producto segun su Id
 server.get("/:idProducto", (req, res, next) => {
   Product.findByPk(req.params.idProducto)
@@ -59,6 +74,15 @@ server.delete("/:idProducto/deleteCategory/:idCategoria", (req, res, next) => {
 //     });
 // });
 
+//Trae todas las categorias
+server.get("/cat", (req, res, next) => {
+  Categories.findAll()
+    .then((cat) => {
+      res.status(200).send(cat);
+    })
+    .catch(next);
+});
+
 //Trae todos los productos de una categoria
 server.get("/category/:nombreCat", (req, res, next) => {
   const name = req.params.nombreCat;
@@ -74,6 +98,7 @@ server.get("/category/:nombreCat", (req, res, next) => {
     .catch(next);
 });
 
+//Elimina una categoria segun su id
 server.delete("/category/:id", (req, res, next) => {
   const id = req.params.id;
 
@@ -117,7 +142,7 @@ server.post("/create-product", (req, res, next) => {
       //Sucess handler
       res
         .status(200)
-        .send(`El producto ${product[0].dataValues.name} se creó con exito`);
+        .send(product[0]);
     })
     .catch((err) => {
       //Error Handler

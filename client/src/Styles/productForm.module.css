@@ -3,7 +3,7 @@ body {
     box-sizing: border-box;
     margin:0;
     min-height: 100%;
-    background-color:#464646;
+    background-color:black;
 }
 
 .form{
@@ -34,7 +34,8 @@ body {
     justify-content: space-evenly;
 }
 
-input, textarea{    
+
+.form input, textarea{    
     background-color:#ececec;
     border-style: none;
     border-radius: .2rem;
@@ -74,6 +75,8 @@ button{
 }
 
 .imgLogo{
+    width: 6em;
+    margin: 0 auto;
 }
 
 h3{
@@ -89,6 +92,11 @@ h3{
     text-align: center; 
     padding: 0; 
 }
+
+.Multiselect input {
+    background-color: red;
+}
+
 
 @media screen and (min-width:768px) { 
     .buttons{        
