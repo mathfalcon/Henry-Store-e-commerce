@@ -1,7 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;500&display=swap');
 
 .container{
-    width: 75%;
     display: flex;
     flex-direction: column;
     margin: auto;
@@ -9,38 +8,44 @@
 .container h2 {
     color: white;
     text-align: center;
+    font-size: 4em;
+    margin-bottom: 0;
+    margin-top: 1em;
+}
+.container h3 {
+    margin: .4em;
 }
 
-.SubmitButton {
-    height: 2.5em;
-    width: 5em;
-    margin: 0 40%;
+.container h4 {
+    font-weight: 400;
 }
-.SubmitButton:hover{
-    background: rgb(238, 238, 238);
-    width: 5em;
-    margin: 0 40%;
-    height: 2.5em;
-    border: 1px solid rgba(0, 0, 0, 0.25)
+.container h5 {
+    font-weight: 300;
 }
 
 .ControlButton {
     border: 1px solid black;
     border-radius: .5em;
     margin: .5em;
-    display: bock;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 6em;
-    height: 2.5em;
-    background: #adadad;
+    width: 5em;
+    height: 2em;
+    background: #cecece;
     border: 1px solid #AFAFAF;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    font-size: 1.1em;
+    transition: all .6s;
+}
+.ControlButton:hover {
+    background-color: #000000;
+    color: white;
 }
 .ItemCard{
-    margin: .5em auto;
-    width: 60em;
+    width: 90%;
     height: 4em;
+    margin: .5em auto;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -52,26 +57,36 @@
 }
 .CreateButton{
     margin: auto;
-    padding-left: 7.5px;
-    padding-right: 7.5px;
-    width: 60em;
+    width: 30%;
     height: 2.5em;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #ffff84;
+    background-color: #fffd74;
     box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 10px;
 }
+.CreateButton:hover {
+    background-color: black;
+    color: white;
+    opacity: 100%;
+    font-size: 1.05em;
+}
 .GestorCard{
-    padding: 2em;
-    margin: 1em;
+    padding: 1em;
+    padding-bottom: 2em;
+    margin: 2em auto;
+    width: 55%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: rgb(255, 230, 0);
-    box-shadow: 6px 6px 6px rgba(0, 0, 0, 0.25);
+    background-color: #FFFF01;
+    box-shadow: 6px 6px 6px rgba(77, 77, 77, 0.514);
+    transition: all .3s;
+}
+.GestorCard:hover {
+    padding: 2em;
 }
 @media screen and (min-width:768px) {
 
