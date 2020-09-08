@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Redirect, Link } from "react-router-dom";
-import productForm from "../Product/productForm";
 import styles from '../../Styles/adminPanel.module.css';
 const axios = require('axios');
 
@@ -29,16 +28,28 @@ function AdminPanel() {
       .catch((err) => console.log(err));
   }
   
-  const handleDelete = async (id) => {
+  const handleDeleteProduct = async (id) => {
     fetch(`http://localhost:3100/products/${id}/delete`, {
-      method: 'DELETE', // or 'PUT'
+      method: 'DELETE',
       headers:{
         'Content-Type': 'application/json'
       }
     }).then((data) => setStatus(Math.random()))
     .catch((err) => console.log(err))
     console.log(deleted)
-  }  
+  }
+
+  const handleDeleteCategory = async (id) => {
+    fetch(`http://localhost:3100/products/category/${id}`, {
+      method: 'DELETE',
+      headers:{
+        'Content-Type': 'application/json'
+      }
+    }).then((data) => setStatus(Math.random()))
+    .catch((err) => console.log(err))
+    console.log(deleted)
+  }
+
   return (
       <div className={styles.container}>
         <h2>PANEL DE ADMINISTRADOR</h2>
@@ -56,7 +67,7 @@ function AdminPanel() {
               <h5>Descripción: {product.description}</h5>
               <div>
                 <button className={styles.ControlButton}>Actualizar</button>
-                <button onClick={() => handleDelete(product.id)} className={styles.ControlButton}>Borrar</button>
+                <button onClick={() => handleDeleteProduct(product.id)} className={styles.ControlButton}>Borrar</button>
               </div>
             </div>
           ))}
@@ -75,7 +86,7 @@ function AdminPanel() {
               <h5>Descripción: {categories.description}</h5>
               <div>
                 <button className={styles.ControlButton}>Actualizar</button>
-                <button className={styles.ControlButton}>Borrar</button>
+                <button onClick={() => handleDeleteCategory(categories.id)} className={styles.ControlButton}>Borrar</button>
               </div>
             </div>
           ))}
@@ -84,3 +95,4 @@ function AdminPanel() {
   );
 }
 export default AdminPanel;
+

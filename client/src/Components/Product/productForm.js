@@ -26,16 +26,6 @@ function ProductForm() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    /* fetch('https://localhost:3100/products/create-product', {
-     method: 'post',
-     headers: {'Content-Type':'application/json'},
-     body: {
-      "name": state.name,
-      "description": state.description,
-      "price": state.price,
-      "stock": state.stock
-     }
-    }); */
     var selected = [];
     for (var option of document.getElementById("category-select").options) {
       if (option.selected) {
@@ -53,10 +43,6 @@ function ProductForm() {
       },
     }).then((data) => {if(selected.length > 0){
       var selectedCategoriesId = categories.filter((e) => selected.indexOf(e.id.toString()) !== -1);
-      console.log(categories[0].id)
-      console.log(selected.indexOf(2))
-      console.log(typeof(selected[0]));
-      console.log(selectedCategoriesId);
       selectedCategoriesId.forEach((e) => {
         axios({
         method: "post",
