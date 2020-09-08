@@ -42,6 +42,11 @@ function App() {
         path="/product/admin"
         render={() => <AdminPanel />}
       />
+      <Route
+      exact
+        path="/create-category"
+        render={() => <CategoryForm />}
+      />
     </BrowserRouter>
   );
 }
