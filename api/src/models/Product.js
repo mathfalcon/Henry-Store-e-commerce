@@ -37,7 +37,7 @@ module.exports = (sequelize) => {
       allowNull: false,
     }
   });
-  sequelize.define('order-line', {
+  sequelize.define('orderLine', {
     amount: {
       type: DataTypes.INTEGER,
       allowNull: false,

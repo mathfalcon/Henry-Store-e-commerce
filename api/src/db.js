@@ -47,9 +47,9 @@ Image.belongsTo(Product)
 Product.belongsToMany(Categories, { through: 'categoryTable'});
 Categories.belongsToMany(Product, { through: 'categoryTable'});
 
-//Relacion entre los modelos order y product en la tabla order-line
-Product.belongsToMany(Order, { through: 'order-line'});
-Order.belongsToMany(Product, { through: 'order-line'});
+//Relacion entre los modelos order y product en la tabla orderLine
+Product.belongsToMany(Orders, { through: 'orderLine'});
+Orders.belongsToMany(Product, { through: 'orderLine'});
 
 module.exports = {
   ...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');
