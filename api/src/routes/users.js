@@ -29,5 +29,25 @@ server.put("/:id", (req, res, next) => {
     })
     .catch((err) => {
       res.status(400).send(err);
+
+// Ruta para crear un usuario
+server.post("/create", (req, res, next) => {
+  Users.findOrCreate({
+    where: {
+      name: req.body.name,
+      username: req.body.username,
+      email: req.body.email
+    },
+  })
+    .then((user) => {
+      //Sucess handler
+      res
+        .status(200)
+        .send(user[0]);
+    })
+    .catch((err) => {
+      //Error Handler
+      console.log(err);
+      res.status(400).send("No se pudo crear el usuario solicitado");
     });
 });
