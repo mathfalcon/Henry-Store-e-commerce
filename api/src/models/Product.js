@@ -37,6 +37,16 @@ module.exports = (sequelize) => {
       allowNull: false,
     }
   });
+  sequelize.define('order-line', {
+    amount: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    price: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    }
+  });
   sequelize.define('users', {
     name: {
       type: DataTypes.STRING,
