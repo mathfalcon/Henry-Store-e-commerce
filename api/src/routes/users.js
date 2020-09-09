@@ -29,6 +29,8 @@ server.put("/:id", (req, res, next) => {
     })
     .catch((err) => {
       res.status(400).send(err);
+    });
+})
 
 // Ruta para crear un usuario
 server.post("/create", (req, res, next) => {
@@ -50,6 +52,20 @@ server.post("/create", (req, res, next) => {
       console.log(err);
       res.status(400).send("No se pudo crear el usuario solicitado");
     });
+});
+
+//Borra una orden. Al borrarla tambien se borra la relacion con el usuario, por lo tanto vacia el carrito.
+server.delete("/:idOrder", (req, res, next) => {
+	let id = req.params.idOrder;
+	Orders.destroy({
+		where: {
+			id
+		}
+	}).then((deleted) => {
+		res.status(200).send(`Se borraron un total de ${deleted} orden/es`)
+	}).catch((err) => {
+		res.status(400).send('El id de la orden provisto no existe en la base de datos');
+	})
 });
 
 module.exports = server;
