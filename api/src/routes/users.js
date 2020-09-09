@@ -51,3 +51,5 @@ server.post("/create", (req, res, next) => {
       res.status(400).send("No se pudo crear el usuario solicitado");
     });
 });
+
+module.exports = server;
