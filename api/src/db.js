@@ -34,7 +34,9 @@ sequelize.models = Object.fromEntries(capsEntries);
 const { Product } = sequelize.models;
 const { Image } = sequelize.models;
 const { Categories } = sequelize.models;
+const { Users } = sequelize.models;
 const { Order } = sequelize.models;
+
 // Aca vendrian las relaciones
 Product.hasMany(Image)
 Image.belongsTo(Product)
