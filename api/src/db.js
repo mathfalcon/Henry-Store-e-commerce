@@ -2,7 +2,6 @@ require('dotenv').config();
 const { Sequelize } = require('sequelize');
 const fs = require('fs');
 const path = require('path');
-const Order = require('./models/Order');
 const {
   DB_USER, DB_PASSWORD, DB_HOST,
 } = process.env;
@@ -35,7 +34,7 @@ const { Product } = sequelize.models;
 const { Image } = sequelize.models;
 const { Categories } = sequelize.models;
 const { Users } = sequelize.models;
-const { Order } = sequelize.models;
+const { Orders } = sequelize.models;
 
 // Aca vendrian las relaciones
 Product.hasMany(Image)
