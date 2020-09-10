@@ -1,5 +1,5 @@
 const server = require("express").Router();
-const { Users } = require("../db.js");
+const { Users, OrderLine, Order } = require("../db.js");
 
 // Busca todos los usuarios y los devuelve en un array
 server.get("/", (req, res, next) => {
@@ -29,6 +29,9 @@ server.put("/:id", (req, res, next) => {
     })
     .catch((err) => {
       res.status(400).send(err);
+    })
+});
+
 
 // Ruta para crear un usuario
 server.post("/create", (req, res, next) => {
@@ -51,5 +54,28 @@ server.post("/create", (req, res, next) => {
       res.status(400).send("No se pudo crear el usuario solicitado");
     });
 });
+
+// Ruta para crear una orden a partir de un producto
+server.post("/:idUser/cart", (req, res, next) => {
+  //suponiendo que en req.body viene el id del producto como 'idProducto'
+  // la cantidad de items como 'amount' y el precio como 'price'
+  
+  const {idUser} = req.params;
+  const {idProducto, amount, price} = req.body;
+
+  Order.create({
+    state: 'created',
+    userId: idUser,
+  }).then((data) =>{
+    OrderLine.create({
+      amount: amount,
+      price: price,
+      orderId: data.id,
+      productId: idProducto
+    }).then((data) => res.status(200).send(data)).catch((err)=> res.status(204).send(err))
+  }).catch((err)=> res.status(204).send(err))
+});
+
+
 
 module.exports = server;

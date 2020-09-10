@@ -34,22 +34,27 @@ const { Product } = sequelize.models;
 const { Image } = sequelize.models;
 const { Categories } = sequelize.models;
 const { Users } = sequelize.models;
-const { Orders } = sequelize.models;
+const { Order } = sequelize.models;
+const { OrderLine } = sequelize.models;
+
 
 // Aca vendrian las relaciones
 Product.hasMany(Image)
 Image.belongsTo(Product)
-// Order.belongsTo(User) descomentar cuando este el modelo 'user' creado
-// Order.hasMany(orderLine) descomentar cuando este el modelo 'orderLine' creado
+
+//Asociaciones de Order
+Order.belongsTo(Users) 
+Order.hasMany(OrderLine)
+
 
 // Product.hasMany(Reviews);
 
+
 Product.belongsToMany(Categories, { through: 'categoryTable'});
 Categories.belongsToMany(Product, { through: 'categoryTable'});
+Product.belongsToMany(Order, { through: OrderLine});
 
-//Relacion entre los modelos order y product en la tabla order-line
-Product.belongsToMany(Order, { through: 'order-line'});
-Order.belongsToMany(Product, { through: 'order-line'});
+
 
 module.exports = {
   ...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');
