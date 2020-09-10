@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Multiselect } from "multiselect-react-dropdown";
+// import { Multiselect } from "multiselect-react-dropdown";
 import styles from "../../Styles/productForm.module.css";
 import logoText from "../../Styles/Assets/logo henry black.png";
 import axios from "axios";
@@ -19,7 +19,7 @@ function ProductForm() {
 
   /* Peticion GET a categories */
   useEffect(() => {
-    fetch("http://localhost:3100/categories")
+    fetch("http://localhost:3000/categories")
       .then((data) => data.json())
       .then((data) => {
         setCategories(data);
@@ -42,7 +42,7 @@ function ProductForm() {
     }
     axios({
       method: "post",
-      url: "http://localhost:3100/products/create-product",
+      url: "http://localhost:3000/products/create-product",
       data: {
         name: state.name,
         description: state.description,
@@ -54,7 +54,7 @@ function ProductForm() {
       selectedCategoriesId.forEach((e) => {
         axios({
         method: "post",
-        url: `http://localhost:3100/products/${data.data.id}/addCategory/${e.id}`,
+        url: `http://localhost:3000/products/${data.data.id}/addCategory/${e.id}`,
       })})
       }
     }).then(alert('El producto se ha creado con éxito'))

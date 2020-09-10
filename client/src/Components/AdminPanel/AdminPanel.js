@@ -12,7 +12,7 @@ function AdminPanel() {
   useEffect(() => getProducts(), []);
 
   const getProducts = () => {
-    fetch("http://localhost:3100/products")
+    fetch("http://localhost:3000/products")
       .then((data) => data.json())
       .then((products) => setProducts(products))
       .catch((err) => console.log(err));
@@ -22,14 +22,14 @@ function AdminPanel() {
   useEffect(() => getCategories(), []);
 
   const getCategories = () => {
-    fetch("http://localhost:3100/categories")
+    fetch("http://localhost:3000/categories")
       .then((data) => data.json())
       .then((categories) => setCategories(categories))
       .catch((err) => console.log(err));
   }
   
   const handleDeleteProduct = async (id) => {
-    fetch(`http://localhost:3100/products/${id}/delete`, {
+    fetch(`http://localhost:3000/products/${id}/delete`, {
       method: 'DELETE',
       headers:{
         'Content-Type': 'application/json'
@@ -40,7 +40,7 @@ function AdminPanel() {
   }
 
   const handleDeleteCategory = async (id) => {
-    fetch(`http://localhost:3100/products/category/${id}`, {
+    fetch(`http://localhost:3000/products/category/${id}`, {
       method: 'DELETE',
       headers:{
         'Content-Type': 'application/json'

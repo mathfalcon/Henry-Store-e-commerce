@@ -9,25 +9,28 @@ import { BrowserRouter, Route, Redirect } from "react-router-dom";
 import Landing from "./Components/Landing/landing";
 import SearchBar from "./Components/Product/SearchBar/SearchBar";
 import SearchResults from "./Components/SearchResults/SearchResults";
+import { Provider } from 'react-redux';
+import store from './store';
 
 function App() {
   const [products, setProducts] = useState([]);
-  const handleSearch = function (value) {
-    //esta funcion deberia ser pasada como props, en el componente que genere todos los productos resultantes
-    fetch(`http://localhost:3000/products/search/${value}`)
-      .then((r) => r.json())
-      .then((data) => {
-        // data = array que devuelve la db con los productos que hacen match
-        setProducts(data);     
-      })
-      .catch((err) => console.log(err));
-  };
+  // const handleSearch = function (value) {
+  //   //esta funcion deberia ser pasada como props, en el componente que genere todos los productos resultantes
+  //   fetch(`http://localhost:3000/products/search/${value}`)
+  //     .then((r) => r.json())
+  //     .then((data) => {
+  //       // data = array que devuelve la db con los productos que hacen match
+  //       setProducts(data);     
+  //     })
+  //     .catch((err) => console.log(err));
+  // };
 
   return (
+    <Provider store={store}>
     <BrowserRouter>
       <Route
         path="/"
-        render={() => <SearchBar handleSearch={handleSearch} />}
+        render={() => <SearchBar />} //handleSearch={handleSearch}
       />
       {products.length > 0 && <Redirect
           to={{
@@ -60,8 +63,8 @@ function App() {
         render={() => <CategoryForm />}
       />
     </BrowserRouter>
+    </Provider>
   );
 }
 
 export default App;
-//Borrar despues esta linea comentada
