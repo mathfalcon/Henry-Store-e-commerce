@@ -60,6 +60,8 @@ server.post("/:idUser/cart", (req, res, next) => {
   //suponiendo que en req.body viene el id del producto como 'idProducto'
   // la cantidad de items como 'amount' y el precio como 'price'
   
+  //hay que cambiarla
+
   const {idUser} = req.params;
   const {idProducto, amount, price} = req.body;
 
@@ -72,14 +74,39 @@ server.post("/:idUser/cart", (req, res, next) => {
       price: price,
       orderId: data.id,
       productId: idProducto
-    }).then((data) => res.status(200).send(data)).catch((err)=> res.status(204).send(err))
-  }).catch((err)=> res.status(204).send(err))
+    }).then((data) => res.status(200).send(data))
+    .catch((err)=> res.status(204).send(next))
+  }).catch((err) => res.status(204).send(next))
+});
+
+// Ruta para editar las cantidades de un producto
+server.put("/:idUser/cart", (req, res, next) => {
+  //suponiendo que en req.body viene el id del producto como 'productId', el id de la orden a editar como 'orderId' y la cantidad a setear como 'amountToSet'
+  // la cantidad de items como 'amount' y el precio como 'price'
+  
+  const {idUser} = req.params;
+  const {productId, orderId, amountToSet} = req.body;
+
+  Order.findOne({
+    where: {
+      userId: idUser,
+      id: orderId
+    },
+    include: OrderLine,
+  }).then(orders => {
+    const toEdit = orders.orderLines.find((e) => e.productId == productId);
+    toEdit.amount = Number(amountToSet);
+    toEdit.save();
+    res.status(200).send(orders.orderLines.find((e) => e.productId == productId))
+    })
+  .catch(err => res.status(204).send(err))
+
 });
 
 //Borra una orden. Al borrarla tambien se borra la relacion con el usuario, por lo tanto vacia el carrito.
 server.delete("/:idOrder", (req, res, next) => {
 	let id = req.params.idOrder;
-	Orders.destroy({
+	Order.destroy({
 		where: {
 			id
 		}
