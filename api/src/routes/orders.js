@@ -27,10 +27,10 @@ server.put("/:id", (req, res, next) => {
   // este estado deberia solo puede tener los values: ['inCart', 'created', 'processing','canceled','complete']
   // dichas limitaciones deben controlarse desde el frontend, y mandar el estado a editar como query ej: http://localhost:3100/orders/1?state=completed
 
-        server.get("/:idOrder", (req, res, next) => {
-          Orders.findByPk(req.params.idOrder)
-          .then((order) => res.send(order))
-          .catch(next);
-              });
+server.get("/:idOrder", (req, res, next) => {
+  Orders.findByPk(req.params.idOrder)
+  .then((order) => res.send(order))
+  .catch(next);
+});
 
 module.exports = server;
