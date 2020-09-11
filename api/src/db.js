@@ -45,7 +45,7 @@ Image.belongsTo(Product)
 //Asociaciones de Order
 Order.belongsTo(Users) 
 Order.hasMany(OrderLine)
-
+Users.hasMany(Order)
 
 // Product.hasMany(Reviews);
 

@@ -90,5 +90,17 @@ server.delete("/:idOrder", (req, res, next) => {
 	})
 });
 
+//Ruta que retorna todas las ordenes de los usuarios
+server.get("/:userId/orders", (req, res, next) => {
+  const id = req.params.userId;
+  Users.findOne({
+    where: {
+      id: id
+    },
+    include: Order,
+  })
+    .then((rows) => res.status(200).json(rows))
+    .catch(next);
+});
 
 module.exports = server;
