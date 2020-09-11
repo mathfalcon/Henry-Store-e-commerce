@@ -60,7 +60,8 @@ server.post("/:idUser/cart", (req, res, next) => {
   //suponiendo que en req.body viene el id del producto como 'idProducto'
   // la cantidad de items como 'amount' y el precio como 'price'
   
-  //hay que cambiarla
+  //hay que editarla, deberia crear una orden con status created, la order line deberia filtrar las ordenes de un usuario y si encuentra una que este
+  // 'activa' deberia agregar orderline a esa orden, en este caso la ordenline se crea al crear la orden, no cumple el proposito de una orden muchas orderlines.
 
   const {idUser} = req.params;
   const {idProducto, amount, price} = req.body;
@@ -97,7 +98,7 @@ server.put("/:idUser/cart", (req, res, next) => {
     const toEdit = orders.orderLines.find((e) => e.productId == productId);
     toEdit.amount = Number(amountToSet);
     toEdit.save();
-    res.status(200).send(orders.orderLines.find((e) => e.productId == productId))
+    res.status(200).send() //No responde nada, ya que solo actualiza, si se quiere mandar un mensaje al usuario hacerlo en base al statusCode
     })
   .catch(err => res.status(204).send(err))
 
