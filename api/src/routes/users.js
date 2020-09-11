@@ -1,5 +1,5 @@
 const server = require("express").Router();
-const { Users, OrderLine, Order } = require("../db.js");
+const { Users, OrdersLines, Orders } = require("../db.js");
 
 // Busca todos los usuarios y los devuelve en un array
 server.get("/", (req, res, next) => {
@@ -66,11 +66,11 @@ server.post("/:idUser/cart", (req, res, next) => {
   const {idUser} = req.params;
   const {idProducto, amount, price} = req.body;
 
-  Order.create({
+  Orders.create({
     state: 'created',
     userId: idUser,
   }).then((data) =>{
-    OrderLine.create({
+    OrdersLines.create({
       amount: amount,
       price: price,
       orderId: data.id,
@@ -118,5 +118,17 @@ server.delete("/:idOrder", (req, res, next) => {
 	})
 });
 
+//Ruta que retorna todas las ordenes de los usuarios
+server.get("/:userId/orders", (req, res, next) => {
+  const id = req.params.userId;
+  Users.findOne({
+    where: {
+      id: id
+    },
+    include: Orders,
+  })
+    .then((rows) => res.status(200).json(rows))
+    .catch(next);
+});
 
 module.exports = server;
