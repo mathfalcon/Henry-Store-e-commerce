@@ -79,7 +79,7 @@ server.post("/:idUser/cart", (req, res, next) => {
 //Borra una orden. Al borrarla tambien se borra la relacion con el usuario, por lo tanto vacia el carrito.
 server.delete("/:idOrder", (req, res, next) => {
 	let id = req.params.idOrder;
-	Orders.destroy({
+	Order.destroy({
 		where: {
 			id
 		}
