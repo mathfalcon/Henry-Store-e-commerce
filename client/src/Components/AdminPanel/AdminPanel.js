@@ -40,7 +40,7 @@ function AdminPanel() {
   }
 
   const handleDeleteCategory = async (id) => {
-    fetch(`http://localhost:3100/products/category/${id}`, {
+    fetch(`http://localhost:3100/categories/${id}`, {
       method: 'DELETE',
       headers:{
         'Content-Type': 'application/json'

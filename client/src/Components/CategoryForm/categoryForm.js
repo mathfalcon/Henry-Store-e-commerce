@@ -11,12 +11,12 @@ function CategoryForm() {
     const { name, value } = target;
     setState({ ...state, [name]: value });
   };
-
+  console.log(state)
   const handleSubmit = (event) => {
     event.preventDefault();
     axios({
       method: "post",
-      url: "http://localhost:3100/products/create-category",
+      url: "http://localhost:3100/categories/create-category",
       data: {
         name: state.name,
         description: state.description,
