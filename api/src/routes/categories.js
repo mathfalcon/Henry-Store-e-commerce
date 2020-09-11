@@ -1,5 +1,6 @@
 const server = require("express").Router();
-const { Categories } = require("../db.js");
+const { Categories, Products } = require("../db.js");
+const { Op } = require("sequelize");
 
 server.get("/", (req, res, next) => {
   // Busca todos los productos y los devuelve en un array
@@ -20,7 +21,7 @@ server.get("/category/:name", (req, res, next) => {
         [Op.iLike]: `%${name}%`,
       },
     },
-    include: Product,
+    include: Products,
   })
     .then((rows) => res.status(200).json(rows))
     .catch(next);

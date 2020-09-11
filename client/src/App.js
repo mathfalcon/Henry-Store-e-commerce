@@ -9,6 +9,7 @@ import { BrowserRouter, Route, Redirect } from "react-router-dom";
 import Landing from "./Components/Landing/landing";
 import SearchBar from "./Components/Product/SearchBar/SearchBar";
 import SearchResults from "./Components/SearchResults/SearchResults";
+import OrdersTable from "./Components/Order/OrdersTable"
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -58,6 +59,11 @@ function App() {
       exact
         path="/create-category"
         render={() => <CategoryForm />}
+      />
+      <Route
+      exact
+        path="/show-table"
+        render={() => <OrdersTable />}
       />
     </BrowserRouter>
   );
