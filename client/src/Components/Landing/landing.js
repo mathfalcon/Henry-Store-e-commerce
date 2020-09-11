@@ -28,6 +28,7 @@ export default function Landing(props) {
         {allProducts.map((el,index)=> {
           return <Product product={el} key={index}/>
         })}
+        
       </section>
     </body>
   );
