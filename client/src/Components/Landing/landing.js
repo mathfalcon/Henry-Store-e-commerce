@@ -13,19 +13,18 @@ export default function Landing() {
   const [selectedCategory, setCategory] = useState('');
 
   useEffect(() => {    
-    if (selectedCategory) {
-      console.log('selectedCategory',selectedCategory);      
-      fetch(`http://localhost:3000/products/category/${selectedCategory}`)
+    if (selectedCategory) {      
+      fetch(`http://localhost:3100/categories/category/${selectedCategory}`)
         .then((data) => data.json())
         .then((data) => setProducts(data.products))
         .catch((err) => console.log(err));
     } else {
-      fetch("http://localhost:3000/products/")
+      fetch("http://localhost:3100/products/")
         .then((data) => data.json())
         .then((data) => setProducts(data))
         .catch((err) => console.log(err));
     }
-    fetch("http://localhost:3000/categories")
+    fetch("http://localhost:3100/categories")
       .then((data) => data.json())
       .then((data) => setCategories(data));
   }, [selectedCategory]);

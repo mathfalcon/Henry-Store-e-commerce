@@ -4,7 +4,7 @@ const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
   // defino el modelo
-  sequelize.define('product', {
+  sequelize.define('products', {
     name: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -21,7 +21,7 @@ module.exports = (sequelize) => {
       allowNull: false,
     },
   });
-  sequelize.define('image', {
+  sequelize.define('images', {
     source: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -37,7 +37,7 @@ module.exports = (sequelize) => {
       allowNull: false,
     }
   });
-  sequelize.define('orderLine', {
+  sequelize.define('ordersLines', {
     amount: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -66,7 +66,7 @@ module.exports = (sequelize) => {
     }
   }
   })
-  sequelize.define('order', {
+  sequelize.define('orders', {
     state: {
       type:   DataTypes.ENUM,
       values: ['inCart', 'created', 'processing','canceled','complete']
