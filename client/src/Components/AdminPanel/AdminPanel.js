@@ -91,6 +91,15 @@ function AdminPanel() {
             </div>
           ))}
         </div>
+
+        {/* Sección Categorias */}
+        <div className={styles.GestorCard}>
+          <h3>LISTADO DE ORDENES</h3>
+          <Link to="/show-table" className={styles.CreateButton}>
+            VER LISTADO DE ORDENES
+          </Link>
+        </div>
+
       </div>
   );
 }
