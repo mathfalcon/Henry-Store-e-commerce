@@ -40,6 +40,7 @@ server.get("/:idOrder", (req, res, next) => {
   Orders.findByPk(req.params.idOrder)
   .then((order) => res.send(order))
   .catch(next);
+  });
 });
 
 module.exports = server;
