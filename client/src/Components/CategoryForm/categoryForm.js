@@ -11,7 +11,7 @@ function CategoryForm() {
     const { name, value } = target;
     setState({ ...state, [name]: value });
   };
-  console.log(state)
+
   const handleSubmit = (event) => {
     event.preventDefault();
     axios({
@@ -21,7 +21,9 @@ function CategoryForm() {
         name: state.name,
         description: state.description,
       }
-    }).then(alert('La categoria se ha creado con éxito'))
+    }).then(() => {
+      alert('La categoría se ha creado con éxito')
+      window.location.href = ("http://localhost:3000/product/admin");})
       .catch((err) => console.log(err));
       setState({name: "", description: ""});
   };

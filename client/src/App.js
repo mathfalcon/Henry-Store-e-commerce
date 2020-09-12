@@ -10,12 +10,14 @@ import Landing from "./Components/Landing/landing";
 import SearchBar from "./Components/Product/SearchBar/SearchBar";
 import SearchResults from "./Components/SearchResults/SearchResults";
 import OrdersTable from "./Components/Order/OrdersTable"
+import Cart from '../src/Components/Cart/cart'
+import LoginForm from '../src/Components/User/loginForm'
 
 function App() {
   const [products, setProducts] = useState([]);
   const handleSearch = function (value) {
     //esta funcion deberia ser pasada como props, en el componente que genere todos los productos resultantes
-    fetch(`http://localhost:3000/products/search/${value}`)
+    fetch(`http://localhost:3100/products/search/${value}`)
       .then((r) => r.json())
       .then((data) => {
         // data = array que devuelve la db con los productos que hacen match
@@ -64,6 +66,16 @@ function App() {
       exact
         path="/show-table"
         render={() => <OrdersTable />}
+      />
+      <Route
+      exact
+        path="/user/cart"
+        render={() => <Cart />}
+      />
+      <Route
+      exact
+        path="/user"
+        render={() => <LoginForm />}
       />
     </BrowserRouter>
   );

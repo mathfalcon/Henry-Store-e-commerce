@@ -1,10 +1,10 @@
 const server = require("express").Router();
-const { Products, Categories } = require("../db.js");
+const { Product, Categories } = require("../db.js");
 const { Op } = require("sequelize");
 
 // Busca todos los productos y los devuelve en un array
 server.get("/", (req, res, next) => {
-  Products.findAll()
+  Product.findAll()
     .then((products) => {
       res.status(200).send(products);
     })
@@ -14,7 +14,7 @@ server.get("/", (req, res, next) => {
 
 //Trae los detalles de un producto segun su Id
 server.get("/:idProducto", (req, res, next) => {
-  Products.findByPk(req.params.idProducto)
+  Product.findByPk(req.params.idProducto)
     .then((producto) => res.send(producto))
     .catch(next);
 });
@@ -22,7 +22,7 @@ server.get("/:idProducto", (req, res, next) => {
 
 // Ruta para crear un producto
 server.post("/create-product", (req, res, next) => {
-  Products.findOrCreate({
+  Product.findOrCreate({
     where: {
       name: req.body.name,
       description: req.body.description,
@@ -48,7 +48,7 @@ server.post("/create-product", (req, res, next) => {
 server.put("/:idProducto/update", (req, res, next) => {
   const { name, description, price, stock } = req.body;
 
-  Products.findByPk(req.params.idProducto)
+  Product.findByPk(req.params.idProducto)
     .then((data) => {
       console.log(data);
       if (name) data.name = name;
@@ -71,7 +71,7 @@ server.put("/:idProducto/update", (req, res, next) => {
 //Borra un producto
 server.delete("/:idProducto/delete", (req, res, next) => {
 	let id = req.params.idProducto;
-	Products.destroy({
+	Product.destroy({
 		where: {
 			id
 		}
@@ -86,7 +86,7 @@ server.delete("/:idProducto/delete", (req, res, next) => {
 // Ruta para asigna una categoria a un producto
 server.post("/:idProducto/addCategory/:idCategoria", (req, res, next) => {
   const { idProducto, idCategoria } = req.params;
-  var product = Products.findByPk(idProducto);
+  var product = Product.findByPk(idProducto);
   var category = Categories.findByPk(idCategoria);
 
   Promise.all([product, category])
@@ -105,7 +105,7 @@ server.post("/:idProducto/addCategory/:idCategoria", (req, res, next) => {
 //Ruta para remover una categoria de un producto
 server.delete("/:idProducto/deleteCategory/:idCategoria", (req, res, next) => {
   const { idProducto, idCategoria } = req.params;
-  var product = Products.findByPk(idProducto);
+  var product = Product.findByPk(idProducto);
   var category = Categories.findByPk(idCategoria);
 
   Promise.all([product, category])
@@ -129,7 +129,7 @@ server.delete("/:idProducto/deleteCategory/:idCategoria", (req, res, next) => {
 //Busca elproducto ingresado en el SearchBar
 server.get("/search/:search", (req, res, next) => {
   
-  Products.findAll({
+  Product.findAll({
     where: {
       [Op.or]: {
         name: {

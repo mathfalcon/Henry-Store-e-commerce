@@ -57,7 +57,9 @@ function ProductForm() {
         url: `http://localhost:3100/products/${data.data.id}/addCategory/${e.id}`,
       })})
       }
-    }).then(alert('El producto se ha creado con éxito'))
+    }).then(() => {
+      alert('El producto se ha creado con éxito')
+      window.location.href = ("http://localhost:3000/product/admin");})
     .catch((err) => console.log(err));
     setState({ ...state, name: "", description: "", price: "", stock: "" });
   };
