@@ -49,8 +49,8 @@ Users.hasMany(Orders)
 // Products.hasMany(Reviews);
 
 Products.belongsToMany(Categories, { through: 'categoryTable'});
-Categories.belongsToMany(Product, { through: 'categoryTable'});
-Products.belongsToMany(Order, { through: OrdersLines});
+Categories.belongsToMany(Products, { through: 'categoryTable'});
+// Products.belongsToMany(Orders, { through: OrdersLines});
 
 
 //PARA TESTEAR
