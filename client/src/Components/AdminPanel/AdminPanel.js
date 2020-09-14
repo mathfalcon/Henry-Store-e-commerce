@@ -149,11 +149,19 @@ function AdminPanel() {
       </div>
 
 
-        {/* Sección Categorias */}
+        {/* Sección Ordenes */}
         <div className={styles.GestorCard}>
           <h3>LISTADO DE ORDENES</h3>
           <Link to="/show-table" className={styles.CreateButton}>
             VER LISTADO DE ORDENES
+          </Link>
+        </div>
+
+        {/* Sección Usuarioss */}
+        <div className={styles.GestorCard}>
+          <h3>LISTADO DE USUARIOS</h3>
+          <Link to="/list-users" className={styles.CreateButton}>
+            VER LISTADO DE USUARIOS
           </Link>
         </div>
 
