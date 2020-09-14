@@ -8,12 +8,15 @@ import { BrowserRouter, Route, Redirect } from "react-router-dom";
 import Landing from "./Components/Landing/landing";
 import SearchBar from "./Components/Product/SearchBar/SearchBar";
 import SearchResults from "./Components/SearchResults/SearchResults";
-import OrdersTable from "./Components/Order/OrdersTable"
-import Cart from '../src/Components/Cart/cart'
-import LoginForm from '../src/Components/User/loginForm'
+import OrdersTable from "./Components/Order/OrdersTable";
+import Cart from '../src/Components/Cart/cart';
+import LoginForm from '../src/Components/User/loginForm';
 import ProductCard from "./Components/ProductCard/productCard";
 import ProductUpdate from './Components/Product/productUpdate'
 import CategoryUpdate from "./Components/CategoryForm/categoryUpdate";
+import SignUp from "../src/Components/User/signUp";
+import {PrivateRoute} from './Components/PrivateRoute/PrivateRoute';
+
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -54,10 +57,11 @@ function App() {
         path="/product/crud"
         render={() => <ProductForm />}
       />
-      <Route
+      <PrivateRoute
       exact
         path="/product/admin"
-        render={() => <AdminPanel />}
+        roles='admin'
+        component={AdminPanel}
       />
       <Route
       exact
@@ -91,6 +95,11 @@ function App() {
       exact
         path="/categories/update"
         render={() => <CategoryUpdate />}
+      />
+      <Route
+        exact
+        path="/sign-up"
+        render={() => <SignUp />}
       />
     </BrowserRouter>
   );
