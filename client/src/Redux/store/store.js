@@ -1,6 +1,20 @@
-// import { createStore } from 'redux';
-// import rootReducer from './reducer';
+import { createStore, applyMiddleware, combineReducers, compose } from "redux";
+import { orderListReducer } from '../reducers/orderReducer'
+import { getLoggedUserReducer, userListReducer } from '../reducers/userReducer';
+import thunk from "redux-thunk";
 
-// export default createStore(rootReducer);
+const reducer = combineReducers({
+    orderList: orderListReducer,
+    getLoggedUser: getLoggedUserReducer,
+    userList: userListReducer
+});
 
-// Descomentar cuando se cree un reducer
+// const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__() || compose;
+
+const store = createStore(
+    reducer,
+    applyMiddleware(thunk)
+);
+//composeEnhancer(applyMiddleware(thunk))
+
+export default store;
