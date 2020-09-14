@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import Product from "../product";
+import { Link } from "react-router-dom";
 import styles from "../../../Styles/searchBar.module.css";
 import logo from "../../../content/logo.png";
 //Componente de busqueda de productos mediante una keyword
 
 export default function SearchBar(props) {
   const [value, searchValue] = useState("");
-
+  document.title = "Henry Store";
   return (
     <div className={styles.navBar}>
       <span className={styles.logoSpan}>
@@ -28,14 +28,20 @@ export default function SearchBar(props) {
         />
         <input className={styles.searchButton} type="submit" value="BUSCAR" />
       </form>
+      <span>       
+        {/* user.role === Role.Admin */}
+        { true &&
+          <Link to="/product/admin" className="nav-item nav-link">Panel Admin</Link>
+        }
+      </span>
       <span>
-        <a href="#">Registrarse</a>
+        <a href="/sign-up">Registrarse</a>
       </span>
       <span>
         <a href="#">Ingresar</a>
       </span>
       <span className={styles.cartSpan}>
-        <a href="#">Carrito</a>
+        <a href="http://localhost:3000/user/cart">Carrito</a>
       </span>
     </div>
   );

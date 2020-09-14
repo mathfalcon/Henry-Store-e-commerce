@@ -2,6 +2,7 @@ require('dotenv').config();
 const { Sequelize } = require('sequelize');
 const fs = require('fs');
 const path = require('path');
+const { getMaxListeners } = require('process');
 const {
   DB_USER, DB_PASSWORD, DB_HOST,
 } = process.env;
@@ -30,28 +31,33 @@ sequelize.models = Object.fromEntries(capsEntries);
 
 // En sequelize.models están todos los modelos importados como propiedades
 // Para relacionarlos hacemos un destructuring
-const { Products } = sequelize.models;
-const { Images } = sequelize.models;
+const { Product } = sequelize.models;
+const { Image } = sequelize.models;
 const { Categories } = sequelize.models;
 const { Users } = sequelize.models;
-const { Orders } = sequelize.models;
-const { OrdersLines } = sequelize.models;
+const { Order } = sequelize.models;
+const { OrderLine } = sequelize.models;
+console.log(sequelize.models)
 
 // Aca vendrian las relaciones
-Products.hasMany(Images)
-Images.belongsTo(Products)
+Product.hasMany(Image)
+Image.belongsTo(Product);
 
-//Asociaciones de Orders
-Orders.belongsTo(Users) 
-Orders.hasMany(OrdersLines)
-Users.hasMany(Orders)
+//Asociaciones de Order
+Users.hasMany(Order);
+Order.belongsTo(Users);
 
-// Products.hasMany(Reviews);
+Order.hasMany(OrderLine);
+Order.hasMany(Product);
+OrderLine.belongsTo(Order);
 
-Products.belongsToMany(Categories, { through: 'categoryTable'});
-Categories.belongsToMany(Products, { through: 'categoryTable'});
-// Products.belongsToMany(Orders, { through: OrdersLines});
 
+// Product.hasMany(Reviews)
+
+Product.belongsToMany(Categories, { through: 'categoryTable'});
+Categories.belongsToMany(Product, { through: 'categoryTable'});
+Product.belongsToMany(Order, { through: OrderLine});
+Order.belongsToMany(Product, { through: OrderLine});
 
 //PARA TESTEAR
 

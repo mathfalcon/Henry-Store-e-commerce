@@ -1,10 +1,10 @@
-const { DataTypes } = require('sequelize');
+const { DataTypes } = require("sequelize");
 // Exportamos una funcion que define el modelo
 // Luego le injectamos la conexion a sequelize.
 
 module.exports = (sequelize) => {
   // defino el modelo
-  sequelize.define('products', {
+  sequelize.define("product", {
     name: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -21,13 +21,13 @@ module.exports = (sequelize) => {
       allowNull: false,
     },
   });
-  sequelize.define('images', {
+  sequelize.define("image", {
     source: {
       type: DataTypes.STRING,
       allowNull: false,
-    }
- });
-  sequelize.define('categories', {
+    },
+  });
+  sequelize.define("categories", {
     name: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -35,9 +35,9 @@ module.exports = (sequelize) => {
     description: {
       type: DataTypes.STRING,
       allowNull: false,
-    }
+    },
   });
-  sequelize.define('ordersLines', {
+  sequelize.define("orderLine", {
     amount: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -45,9 +45,9 @@ module.exports = (sequelize) => {
     price: {
       type: DataTypes.INTEGER,
       allowNull: false,
-    }
+    },
   });
-  sequelize.define('users', {
+  sequelize.define("users", {
     name: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -58,20 +58,23 @@ module.exports = (sequelize) => {
       unique: true,
     },
     email: {
-      type    : DataTypes.STRING,
-      unique :true,
-      allowNull:false,
-      validate:{
-          isEmail : true
-    }
-  }
-  })
-  sequelize.define('orders', {
-    state: {
-      type:   DataTypes.ENUM,
-      values: ['inCart', 'created', 'processing','canceled','complete']
+      type: DataTypes.STRING,
+      unique: true,
+      allowNull: false,
+      validate: {
+        isEmail: true,
+      },
     },
-}); 
+    role: {
+      type: DataTypes.ENUM,
+      values: ['admin','client'],
+      allowNull: false,
+    },
+  });
+  sequelize.define("order", {
+    state: {
+      type: DataTypes.ENUM,
+      values: ["inCart", "created","active", "processing", "canceled", "complete"],
+    },
+  });
 };
-
-

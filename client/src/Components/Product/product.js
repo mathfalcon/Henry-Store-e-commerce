@@ -4,6 +4,7 @@ import henryShirt from "../../content/henryShirt.png";
 
 
 export default function Product(props) {
+    const {id, name, description} = props.product
     return (
         <div className={styles.container}>
             <div className={styles.card}>
@@ -11,11 +12,11 @@ export default function Product(props) {
                     <img src={henryShirt} alt="Henry Shirt"/>
                 </div>
                 <div className={styles.contentBx}>
-                    <h2>{props.product.name}</h2>
+                    <h2>{name}</h2>
                     <div className={styles.description}>
-                        <p>{props.product.description}</p>
+                        <p>{description}</p>
                     </div>
-                    <a href='#'>ver más</a>
+                    <a href={`http://localhost:3000/product/detailed/${id}`}>ver más</a>
                 </div>
             </div>
         </div>

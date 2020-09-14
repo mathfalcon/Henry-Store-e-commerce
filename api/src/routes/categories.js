@@ -1,9 +1,9 @@
 const server = require("express").Router();
-const { Categories, Products } = require("../db.js");
+const { Categories, Product } = require("../db.js");
 const { Op } = require("sequelize");
 
 server.get("/", (req, res, next) => {
-  // Busca todos los productos y los devuelve en un array
+  // Busca todas las categorias y las devuelve en un array
   Categories.findAll()
     .then((categories) => {
       res.status(200).send(categories);
@@ -11,6 +11,31 @@ server.get("/", (req, res, next) => {
     .catch(next);
 });
 
+//Trae los detalles de una categoria segun su id
+server.get("/:idCategoria", (req, res, next) => {
+  Categories.findByPk(req.params.idCategoria)
+    .then((categoria) => res.send(categoria))
+    .catch(next);
+});
+
+server.put("/:idCategory/update", (req, res, next) => {
+  const { name, description} = req.body;
+
+    Categories.findByPk(req.params.idCategory)
+    .then((data) => {
+      if (name) data.name = name;
+      if (description) data.description = description;
+      data.save();
+      res
+        .status(200)
+        .send(
+          `La categoria ${data.dataValues.name} con id ${data.dataValues.id} se actualizó con éxito`
+        );
+    })
+    .catch((err) => {
+      res.status(400).send(err);
+    });
+});
 
 //Trae todos los productos de una categoria
 server.get("/category/:name", (req, res, next) => {
@@ -21,7 +46,7 @@ server.get("/category/:name", (req, res, next) => {
         [Op.iLike]: `%${name}%`,
       },
     },
-    include: Products,
+    include: Product,
   })
     .then((rows) => res.status(200).json(rows))
     .catch(next);

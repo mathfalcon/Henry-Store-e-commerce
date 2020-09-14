@@ -1,11 +1,18 @@
-import React from 'react';
-// import styles from '../../Styles/searchResults.module.css'
-import SearchResults from './SearchComponent'
+import React from "react";
+import styles from "../../Styles/searchResults.module.css";
+import Product from "../Product/product";
 
 const SearchBar = (props) => {
-    return props.products.map((e,index) => <SearchResults product={e} key={index} />)
-
-}
+  console.log(props.products);
+  if (!props.products[0]) window.location.href = "http://localhost:3000/";
+  return (
+    <div className={styles.divResults}>
+      <h1>Resultados de la busqueda:</h1>
+      {props.products.map((e, index) => (
+        <Product product={e} key={index} />
+      ))}
+    </div>
+  );
+};
 
 export default SearchBar;
-
