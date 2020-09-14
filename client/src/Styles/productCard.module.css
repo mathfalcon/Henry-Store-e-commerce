@@ -76,6 +76,11 @@
     letter-spacing: 1px;
     padding-top: 5px;
     color: #fff;
+    max-height: 18px;
+    font-size: 1.3em;
+    width: auto;
+    overflow:hidden;
+    text-overflow: ellipsis;
 }
 .description{
     display: flex;

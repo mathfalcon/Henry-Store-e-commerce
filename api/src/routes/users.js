@@ -150,7 +150,7 @@ server.put("/:idUser/cart", (req, res, next) => {
   })
     .then((orders) => {
       const toEdit = orders.orderLines.find((e) => e.productId == productId);
-      toEdit.amount = Number(amountToSet);
+      toEdit.amount += Number(amountToSet);
       toEdit.save();
       res.status(200).send(); //No responde nada, ya que solo actualiza, si se quiere mandar un mensaje al usuario hacerlo en base al statusCode
     })

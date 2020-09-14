@@ -35,7 +35,7 @@ export default function SearchBar(props) {
         }
       </span>
       <span>
-        <a href="#">Registrarse</a>
+        <a href="/sign-up">Registrarse</a>
       </span>
       <span>
         <a href="#">Ingresar</a>
