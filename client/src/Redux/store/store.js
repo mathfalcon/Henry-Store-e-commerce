@@ -1,6 +1,7 @@
 import { createStore, applyMiddleware, combineReducers, compose } from "redux";
 import { orderListReducer } from '../reducers/orderReducer'
 import { getLoggedUserReducer } from '../reducers/userReducer';
+
 import thunk from "redux-thunk";
 
 const reducer = combineReducers({
