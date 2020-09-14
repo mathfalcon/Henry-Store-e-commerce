@@ -3,8 +3,6 @@ import styles from "../../Styles/landing.module.css";
 import logoText from "../../content/logoComplete.png";
 import Product from "../Product/product.js";
 import ReactSelectMaterialUi from "react-select-material-ui";
-// import Dropdown from "react-dropdown";
-// import "react-dropdown/style.css";
 
 export default function Landing() {
   const [allProducts, setProducts] = useState([]);

@@ -22,7 +22,20 @@
 .sectionTable{
     display: flex;
     flex-direction: column;
-    width: 70%;
+    width: 80%;
     justify-content: center;
     margin: auto;
+}
+.buttonsAddRemove {
+    width: 25px;
+    height: auto;
+    
+}
+.iconAddRemove{
+    color: white;
+}
+.iconAddRemove:hover {
+    color: black;
+    border-radius: 25px;
+    background-color: #FFFF01;
 }

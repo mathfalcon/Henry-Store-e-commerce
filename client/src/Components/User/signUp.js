@@ -5,12 +5,11 @@ import axios from "axios";
 
 function SignUp() {
 
-    const [state, setState] = useState({});
+    const [state, setState] = useState({role: "client"});
 
     const handleChange = ({ target }) => {
         const { name, value } = target;
         setState({ ...state, [name]: value });
-        console.log(state);
       };
 
     const handleSubmit = (event) => {
@@ -23,7 +22,7 @@ function SignUp() {
               name: state.name,
               username: state.username,
               email: state.email,
-              role: "client",
+              role: state.role,
             },
         }).then(() => {
             alert('El usuario se ha creado con éxito')
@@ -31,6 +30,12 @@ function SignUp() {
           .catch((err) => console.log(err));
           setState({ ...state, name: "", username: "", email: "", password: "", confirmPassword: ""});
     };
+
+    const handleSelected = (event) => {
+        event.preventDefault();
+        var selected = document.getElementById("select").value;
+        state.role = selected;
+    }
     
     return (
         <div className={styles.container}>
@@ -38,9 +43,9 @@ function SignUp() {
                 <div>
                     <label><b>Regístrate</b></label>
                     <h2>Selecciona tu Rol</h2>
-                    <select>
-                        <option>Cliente</option>
-                        <option>Administrador</option>
+                    <select id="select" onChange={handleSelected}>
+                        <option value="client">Cliente</option>
+                        <option value="admin">Administrador</option>
                     </select>
                     <p>Como <b>Cliente</b> podrás comprar productos, y como <b>Administrador</b> tendrás la posibilidad de vender productos para que otras personas los compren.</p>
                 </div>
@@ -57,7 +62,7 @@ function SignUp() {
                     <label>Contraseña</label>
                     <input name="password" type="password" onChange={handleChange} value={state.password}/>
                     <label>Confirmar contraseña</label>
-                    <input name="confirm-password" type="password" onChange={handleChange} value={state.confirmPassword}/>
+                    <input name="confirmPassword" type="password" onChange={handleChange} value={state.confirmPassword}/>
                     <div className={styles.button}>
                         <input name="sign-up" type="submit"/>
                         <label>o <a>Inicia sesión</a></label>

@@ -3,16 +3,14 @@ import { Redirect, Link } from "react-router-dom";
 import styles from "../../Styles/adminPanel.module.css";
 const axios = require("axios");
 
-
 function AdminPanel() {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [deleted, setStatus] = useState(0);
   const [redirect, setRedirect] = useState(false);
   const [redirectProduct, setRedirectProduct] = useState(false);
-  const [idCategoria, setIdCategoria] = useState('')
-  const [idProduct, setIdProduct] = useState('')
-
+  const [idCategoria, setIdCategoria] = useState("");
+  const [idProduct, setIdProduct] = useState("");
 
   /*Peticion GET para obtener array con los productos */
   useEffect(() => getProducts(), []);
@@ -41,7 +39,9 @@ function AdminPanel() {
         "Content-Type": "application/json",
       },
     })
-      .then((data) => window.location.href = ("http://localhost:3000/product/admin"))
+      .then(
+        (data) => (window.location.href = "http://localhost:3000/product/admin")
+      )
       .catch((err) => console.log(err));
     console.log(deleted);
   };
@@ -53,19 +53,21 @@ function AdminPanel() {
         "Content-Type": "application/json",
       },
     })
-      .then((data) => window.location.href = ("http://localhost:3000/product/admin"))
+      .then(
+        (data) => (window.location.href = "http://localhost:3000/product/admin")
+      )
       .catch((err) => console.log(err));
     console.log(deleted);
   };
 
   const handleUpdateProduct = (id) => {
-    setIdProduct(id)
-    setRedirectProduct(true)
+    setIdProduct(id);
+    setRedirectProduct(true);
   };
 
   const handleUpdateCategory = (id) => {
     setIdCategoria(id);
-    setRedirect(true)
+    setRedirect(true);
   };
 
   return (
@@ -79,7 +81,7 @@ function AdminPanel() {
           CREAR UN NUEVO PRODUCTO
         </Link>
         {/* Mapeo de productos */}
-        {products.map((product,index) => (
+        {products.map((product, index) => (
           <div className={styles.ItemCard} key={index}>
             <h4 key={product.id}>Nombre: {product.name}</h4>
             <h5>Descripción: {product.description}</h5>
@@ -117,13 +119,14 @@ function AdminPanel() {
           CREAR UNA NUEVA CATEGORIA
         </Link>
         {/* Mapeo de categorias */}
-        {categories.map((categories,index) => (
+        {categories.map((categories, index) => (
           <div className={styles.ItemCard} key={index}>
             <h4>{categories.id}</h4>
             <h4 key={categories.id}>Nombre: {categories.name}</h4>
             <h5>Descripción: {categories.description}</h5>
             <div>
-              <button id={categories.id}
+              <button
+                id={categories.id}
                 className={styles.ControlButton}
                 onClick={(e) => handleUpdateCategory(e.target.id)}
               >
@@ -148,17 +151,14 @@ function AdminPanel() {
         ))}
       </div>
 
-
-        {/* Sección Categorias */}
-        <div className={styles.GestorCard}>
-          <h3>LISTADO DE ORDENES</h3>
-          <Link to="/show-table" className={styles.CreateButton}>
-            VER LISTADO DE ORDENES
-          </Link>
-        </div>
-
+      {/* Sección Categorias */}
+      <div className={styles.GestorCard}>
+        <h3>LISTADO DE ORDENES</h3>
+        <Link to="/show-table" className={styles.CreateButton}>
+          VER LISTADO DE ORDENES
+        </Link>
       </div>
+    </div>
   );
 }
 export default AdminPanel;
-
