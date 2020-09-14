@@ -15,6 +15,7 @@ import ProductCard from "./Components/ProductCard/productCard";
 import ProductUpdate from './Components/Product/productUpdate'
 import CategoryUpdate from "./Components/CategoryForm/categoryUpdate";
 import SignUp from "../src/Components/User/signUp";
+import UserList from "../src/Components/User/UserList";
 import {PrivateRoute} from './Components/PrivateRoute/PrivateRoute';
 
 
@@ -100,6 +101,11 @@ function App() {
         exact
         path="/sign-up"
         render={() => <SignUp />}
+      />
+      <Route
+      exact
+        path="/list-users"
+        render={() => <UserList />}
       />
     </BrowserRouter>
   );
