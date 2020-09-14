@@ -4,7 +4,6 @@ import "./App.css";
 import AdminPanel from "./Components/AdminPanel/AdminPanel"
 import CategoryForm from "./Components/CategoryForm/categoryForm";
 import ProductForm from "./Components/Product/productForm";
-import Product from "./Components/Product/product";
 import { BrowserRouter, Route, Redirect } from "react-router-dom";
 import Landing from "./Components/Landing/landing";
 import SearchBar from "./Components/Product/SearchBar/SearchBar";
@@ -13,6 +12,8 @@ import OrdersTable from "./Components/Order/OrdersTable"
 import Cart from '../src/Components/Cart/cart'
 import LoginForm from '../src/Components/User/loginForm'
 import ProductCard from "./Components/ProductCard/productCard";
+import ProductUpdate from './Components/Product/productUpdate'
+import CategoryUpdate from "./Components/CategoryForm/categoryUpdate";
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -81,6 +82,15 @@ function App() {
       <Route
         path="/product/detailed/:id"
         render={() => <ProductCard />}
+      />
+      <Route
+        path="/product/update"
+        render={() => <ProductUpdate />}
+      />
+      <Route
+      exact
+        path="/categories/update"
+        render={() => <CategoryUpdate />}
       />
     </BrowserRouter>
   );

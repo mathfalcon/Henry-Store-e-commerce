@@ -5,8 +5,6 @@ import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import henryShirt from "../../content/henryShirt.png";
-import AddIcon from "@material-ui/icons/Add";
-import RemoveIcon from "@material-ui/icons/Remove";
 import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
@@ -21,7 +19,6 @@ const useStyles = makeStyles((theme) => ({
 const ProductCard = () => {
   let { id } = useParams();
   const [product, setProduct] = useState({});
-  const [count, setCount] = useState(0);
 
   const classes = useStyles();
   useEffect(() => getProduct(), []);

@@ -63,23 +63,52 @@ server.post("/:idUser/cart", (req, res, next) => {
 
   const { idUser } = req.params;
   const { idProducto, amount } = req.body;
-
   Order.findAll({
     where: {
       userId: idUser,
       state: "active",
     },
-    include: Users,
+    include: [
+      {
+        model: Product,
+        as: "products",
+        required: false,
+        // Pass in the Product attributes that you want to retrieve
+        attributes: ["id", "name", "description", "stock", "price"],
+        through: {
+          // This block of code allows you to retrieve the properties of the join table
+          model: OrderLine,
+          as: "amount",
+          attributes: ["amount"],
+        },
+      },
+    ],
   }).then((order) => {
     var product = Product.findByPk(idProducto);
     if (order[0]) {
       product.then((data) => {
-        OrderLine.create({
-          amount: amount,
-          price: data.price,
-          orderId: order[0].id,
-          productId: idProducto,
-        }).then((data) => res.status(200).send(data));
+        var existingProduct = order[0].products.findIndex(
+          (e) => e.id === data.id
+        );
+        if (existingProduct > -1) {
+          OrderLine.findOne({
+            where: {
+              productId: data.id,
+            },
+          }).then((orderLine) => {
+            orderLine.amount += Number(amount);
+            orderLine.save();
+            res.status(200).send(orderLine);
+          })
+          
+        } else if (existingProduct === -1) {
+          OrderLine.create({
+            amount: amount,
+            price: data.price,
+            orderId: order[0].id,
+            productId: idProducto,
+          }).then((data) => res.status(200).send(data));
+        }
       });
     } else {
       product
@@ -131,12 +160,12 @@ server.put("/:idUser/cart", (req, res, next) => {
 //Borra una orden. Al borrarla tambien se borra la relacion con el usuario, por lo tanto vacia el carrito.
 server.delete("/:idOrder", (req, res, next) => {
   let id = req.params.idOrder;
-  let {product} = req.body;
+  let { product } = req.body;
   //id de la orderline
   OrderLine.destroy({
     where: {
       orderId: id,
-      productId: product
+      productId: product,
     },
   })
     .then((deleted) => {

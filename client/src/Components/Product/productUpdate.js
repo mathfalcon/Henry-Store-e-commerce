@@ -49,7 +49,8 @@ function getStyles(name, personName, theme) {
   };
 }
 
-function ProductForm() {
+function ProductUpdate(props) {
+  console.log(window.location);
   /* Categorias de ejemplo */
   const data = [
     { Category: "Category1", id: 1 },
@@ -58,16 +59,18 @@ function ProductForm() {
     { Category: "Category4", id: 4 },
   ];
   const [options] = useState(data);
-  const classes = useStyles();
   /* Estados */
-  const [state, setState] = useState({});
   const [categories, setCategories] = useState([]);
+  const [toUpdate, setUpdate] = useState({});
+  const [state, setState] = useState(toUpdate);
   const theme = useTheme();
   const [personName, setPersonName] = useState([]);
+  
   const handleChanges = (event) => {
     setPersonName(event.target.value);
   };
 
+  const id = window.location.search.split("=").pop();
   /* Peticion GET a categories */
   useEffect(() => {
     fetch("http://localhost:3100/categories")
@@ -76,6 +79,10 @@ function ProductForm() {
         setCategories(data);
       })
       .catch((err) => console.log(err));
+
+    fetch(`http://localhost:3100/products/${id}`)
+      .then((data) => data.json())
+      .then((data) => setUpdate(data));
   }, []);
 
   const handleChange = ({ target }) => {
@@ -85,30 +92,33 @@ function ProductForm() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    const body = state;
+    if (!state.name) body.name = toUpdate.name;
+    if (!state.description) body.description = toUpdate.description;
+    if (!state.price) body.price = toUpdate.price;
+    if (!state.stock) body.stock = toUpdate.stock;
+    
+    console.log(body)
 
     axios({
-      method: "post",
-      url: "http://localhost:3100/products/create-product",
-      data: {
-        name: state.name,
-        description: state.description,
-        price: state.price,
-        stock: state.stock,
-      },
+      method: "put",
+      url: `http://localhost:3100/products/${toUpdate.id}/update`,
+      data: body,
     })
       .then((data) => {
+        console.log(data)
         if (personName.length > 0) {
           personName.forEach((e) => {
             axios({
               method: "post",
-              url: `http://localhost:3100/products/${data.data.id}/addCategory/${e}`,
+              url: `http://localhost:3100/products/${toUpdate.id}/addCategory/${e}`,
             });
           });
         }
       })
       .then(() => {
-        alert("El producto se ha creado con éxito");
-        window.location.href = "http://localhost:3000/product/admin";
+        alert("El producto se ha actualizado con éxito");
+        // window.location.href = "http://localhost:3000/product/admin";
       })
       .catch((err) => console.log(err));
     setState({ ...state, name: "", description: "", price: "", stock: "" });
@@ -121,7 +131,13 @@ function ProductForm() {
           <div className={styles.name}>
             <label>Nombre</label>
             <br />
-            <input name="name" onChange={handleChange} value={state.name} />
+            <input
+              name="name"
+              onChange={handleChange}
+              value={state.name}
+              defaultValue={toUpdate.name}
+              placeholder={toUpdate.name}
+            />
             <br />
           </div>
           <div className={styles.description}>
@@ -131,6 +147,8 @@ function ProductForm() {
               name="description"
               onChange={handleChange}
               value={state.description}
+              defaultValue={toUpdate.description}
+              placeholder={toUpdate.description}
             />
             <br />
           </div>
@@ -143,7 +161,9 @@ function ProductForm() {
               min="0.00"
               step="0.01"
               onChange={handleChange}
+              defaultValue={toUpdate.price}
               value={state.price}
+              placeholder={toUpdate.price}
             />
             <label>Stock</label>
             <br />
@@ -154,6 +174,8 @@ function ProductForm() {
               step="1"
               onChange={handleChange}
               value={state.stock}
+              defaultValue={toUpdate.stock}
+              placeholder={toUpdate.stock}
             />
           </div>
           <div>
@@ -205,4 +227,4 @@ function ProductForm() {
     </div>
   );
 }
-export default ProductForm;
+export default ProductUpdate;
