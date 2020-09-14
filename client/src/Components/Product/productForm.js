@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Multiselect } from "multiselect-react-dropdown";
 import styles from "../../Styles/productForm.module.css";
 import logoText from "../../Styles/Assets/logo henry black.png";
 import axios from "axios";
-
+import Button from "@material-ui/core/Button";
+import PublishIcon from '@material-ui/icons/Publish';
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -116,7 +116,7 @@ function ProductForm() {
 
   return (
     <div>
-      <form className={styles.form} onSubmit={handleSubmit}>
+      <form className={styles.form} >
         <div className={styles.inputs}>
           <div className={styles.name}>
             <label>Nombre</label>
@@ -161,16 +161,19 @@ function ProductForm() {
             <input type="file" name="dropimage" accept="image/*" />
           </div>
           <div>
-            <input
-              type="submit"
-              className={styles.SubmitButton}
-              value="Enviar"
-            />
+            <Button
+              variant="contained"
+              color="secondary"
+              className={classes.button}
+              onClick={handleSubmit}
+              style={{backgroundColor: '#ffff5a', color: 'black'}}
+              endIcon={<PublishIcon />}
+            >CREAR</Button>
           </div>
         </div>
 
         <div className={styles.buttons}>
-          <h3>Crear Producto</h3>
+          <h3 className={styles.h3Title}>Crear Producto</h3>
           {/* Selector multiple de categorias */}
           <div className={styles.Multiselect}>
             <h2>Seleccionar Categorias: </h2>

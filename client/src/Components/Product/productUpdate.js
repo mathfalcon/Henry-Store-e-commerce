@@ -3,7 +3,8 @@ import { Multiselect } from "multiselect-react-dropdown";
 import styles from "../../Styles/productForm.module.css";
 import logoText from "../../Styles/Assets/logo henry black.png";
 import axios from "axios";
-
+import Button from "@material-ui/core/Button";
+import ReplayIcon from '@material-ui/icons/Replay';
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -65,7 +66,7 @@ function ProductUpdate(props) {
   const [state, setState] = useState(toUpdate);
   const theme = useTheme();
   const [personName, setPersonName] = useState([]);
-  
+
   const handleChanges = (event) => {
     setPersonName(event.target.value);
   };
@@ -97,8 +98,8 @@ function ProductUpdate(props) {
     if (!state.description) body.description = toUpdate.description;
     if (!state.price) body.price = toUpdate.price;
     if (!state.stock) body.stock = toUpdate.stock;
-    
-    console.log(body)
+
+    console.log(body);
 
     axios({
       method: "put",
@@ -106,7 +107,7 @@ function ProductUpdate(props) {
       data: body,
     })
       .then((data) => {
-        console.log(data)
+        console.log(data);
         if (personName.length > 0) {
           personName.forEach((e) => {
             axios({
@@ -118,7 +119,7 @@ function ProductUpdate(props) {
       })
       .then(() => {
         alert("El producto se ha actualizado con éxito");
-        // window.location.href = "http://localhost:3000/product/admin";
+        window.location.href = "http://localhost:3000/product/admin";
       })
       .catch((err) => console.log(err));
     setState({ ...state, name: "", description: "", price: "", stock: "" });
@@ -126,7 +127,7 @@ function ProductUpdate(props) {
 
   return (
     <div>
-      <form className={styles.form} onSubmit={handleSubmit}>
+      <form className={styles.form}>
         <div className={styles.inputs}>
           <div className={styles.name}>
             <label>Nombre</label>
@@ -183,11 +184,15 @@ function ProductUpdate(props) {
             <input type="file" name="dropimage" accept="image/*" />
           </div>
           <div>
-            <input
-              type="submit"
-              className={styles.SubmitButton}
-              value="Enviar"
-            />
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={handleSubmit}
+              style={{ backgroundColor: "#ffff5a", color: "black" }}
+              endIcon={<ReplayIcon />}
+            >
+              ACTUALIZAR
+            </Button>
           </div>
         </div>
 

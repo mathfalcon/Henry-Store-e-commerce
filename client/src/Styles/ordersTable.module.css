@@ -1,13 +1,31 @@
 .content {
-    margin: 1rem;
+
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    margin: auto;
 }
   
 .table {
-    width: 100%;
+    margin: 1rem;
+    border-radius: 15px 15px 15px 15px;
+    -moz-border-radius: 15px 15px 15px 15px;
+    -webkit-border-radius: 15px 15px 15px 15px;
+    border: 2px solid #ffffff;
+    padding: 15px;
+}
+.table thead {
+    background-color: #ffff01;
+}
+.table td{
+    padding: 15px;
 }
 
-th {
+.table th {
     text-align: left;
+    padding: 25px;
+    width: 700px;
+    color: black;
 }
 
 tbody > tr:nth-child(odd) {
@@ -15,5 +33,20 @@ tbody > tr:nth-child(odd) {
 }
 
 tbody > tr:nth-child(even) {
-    background-color: yellow;
+    background-color: #ffff5a;
+}
+
+tbody > tr:nth-child(odd) .buttonDelete{
+    color: black;
+    background-color:  #ffff5a;
+}
+
+tbody > tr:nth-child(even) .buttonDelete{
+    background-color: black;
+    color: white;
+}
+
+.buttonDelete:hover {
+    opacity: 85%;
+    transition: 0.3s;
 }

@@ -99,8 +99,7 @@ server.post("/:idUser/cart", (req, res, next) => {
             orderLine.amount += Number(amount);
             orderLine.save();
             res.status(200).send(orderLine);
-          })
-          
+          });
         } else if (existingProduct === -1) {
           OrderLine.create({
             amount: amount,
@@ -187,6 +186,26 @@ server.get("/:userId/orders", (req, res, next) => {
   })
     .then((rows) => res.status(200).json(rows))
     .catch(next);
+});
+
+//Eliminar usuario
+
+server.delete("/delete/:id", (req, res, next) => {
+  const idUser = req.params.id;
+  console.log(idUser)
+  Users.destroy({ where: { id: idUser } })
+    .then((users) => {
+      if (users > 0) {
+        return res
+          .status(200)
+          .json({ message: "El Usuario se ha borrado satisfactoriamente." });
+      } else {
+        return res.status(400).json({
+          message: `No hay ningun usuario con el id: ${idUser}`,
+        });
+      }
+    })
+    .catch((error) => next(error));
 });
 
 module.exports = server;

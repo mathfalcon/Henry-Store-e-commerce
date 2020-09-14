@@ -84,7 +84,7 @@ function AdminPanel() {
         {products.map((product, index) => (
           <div className={styles.ItemCard} key={index}>
             <h4 key={product.id}>Nombre: {product.name}</h4>
-            <h5>Descripción: {product.description}</h5>
+            <h5 className={styles.productDescriptionAdmin}>Descripción: {product.description}</h5>
             <div>
               <button
                 id={product.id}
@@ -150,21 +150,20 @@ function AdminPanel() {
           </div>
         ))}
       </div>
-        {/* Sección Ordenes */}
-        <div className={styles.GestorCard}>
-          <h3>LISTADO DE ORDENES</h3>
-          <Link to="/show-table" className={styles.CreateButton}>
-            VER LISTADO DE ORDENES
-          </Link>
-        </div>
+      {/* Sección Ordenes */}
+      <div className={styles.GestorCard}>
+        <h3>LISTADO DE ORDENES</h3>
+        <Link to="/show-table" className={styles.CreateButton}>
+          VER LISTADO DE ORDENES
+        </Link>
+      </div>
 
-        {/* Sección Usuarioss */}
-        <div className={styles.GestorCard}>
-          <h3>LISTADO DE USUARIOS</h3>
-          <Link to="/list-users" className={styles.CreateButton}>
-            VER LISTADO DE USUARIOS
-          </Link>
-        </div>
+      {/* Sección Usuarioss */}
+      <div className={styles.GestorCard}>
+        <h3>LISTADO DE USUARIOS</h3>
+        <Link to="/list-users" className={styles.CreateButton}>
+          VER LISTADO DE USUARIOS
+        </Link>
       </div>
     </div>
   );

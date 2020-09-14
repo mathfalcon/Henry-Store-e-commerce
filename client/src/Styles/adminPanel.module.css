@@ -44,7 +44,7 @@
 }
 .ItemCard{
     width: 90%;
-    height: 4em;
+    height: auto;
     margin: .5em auto;
     display: flex;
     flex-direction: row;
@@ -87,6 +87,11 @@
 }
 .GestorCard:hover {
     padding: 2em;
+}
+
+.productDescriptionAdmin{
+    max-width: 35%;
+;
 }
 @media screen and (min-width:768px) {
 
