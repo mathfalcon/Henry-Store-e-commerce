@@ -133,7 +133,8 @@ function AdminPanel() {
                 Actualizar
               </button>
               <button
-                onClick={() => handleDeleteCategory(categories.id)}
+                id={categories.id}
+                onClick={(e) => handleDeleteCategory(e.target.id)}
                 className={styles.ControlButton}
               >
                 Borrar
