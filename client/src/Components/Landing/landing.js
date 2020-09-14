@@ -11,13 +11,13 @@ export default function Landing() {
   const [allCategories, setCategories] = useState([]);
   const [selectedCategory, setCategory] = useState("");
 
-  useEffect(() => {
+  useEffect(() => {    
     if (selectedCategory) {
       fetch(`http://localhost:3100/categories/category/${selectedCategory}`)
         .then((data) => data.json())
         .then((data) => setProducts(data.products))
         .catch((err) => console.log(err));
-    } else {
+    } else {      
       fetch("http://localhost:3100/products/")
         .then((data) => data.json())
         .then((data) => {
@@ -55,9 +55,10 @@ export default function Landing() {
 
           <ReactSelectMaterialUi
             className={styles.selectCategory}
-            value={"Selecciona una categoría"}
+            value={selectedCategory}         
             options={options}
             onChange={handleCategoryChange}
+            placeholder="Seleccione una Categoria"
           />
         </div>
         {allProducts.map((el, index) => (

@@ -14,6 +14,7 @@ import Cart from '../src/Components/Cart/cart';
 import LoginForm from '../src/Components/User/loginForm';
 import ProductCard from "./Components/ProductCard/productCard";
 import SignUp from "../src/Components/User/signUp";
+import {PrivateRoute} from './Components/PrivateRoute/PrivateRoute';
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -54,10 +55,11 @@ function App() {
         path="/product/crud"
         render={() => <ProductForm />}
       />
-      <Route
+      <PrivateRoute
       exact
         path="/product/admin"
-        render={() => <AdminPanel />}
+        roles='admin'
+        component={AdminPanel}
       />
       <Route
       exact
