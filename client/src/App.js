@@ -9,10 +9,11 @@ import { BrowserRouter, Route, Redirect } from "react-router-dom";
 import Landing from "./Components/Landing/landing";
 import SearchBar from "./Components/Product/SearchBar/SearchBar";
 import SearchResults from "./Components/SearchResults/SearchResults";
-import OrdersTable from "./Components/Order/OrdersTable"
-import Cart from '../src/Components/Cart/cart'
-import LoginForm from '../src/Components/User/loginForm'
+import OrdersTable from "./Components/Order/OrdersTable";
+import Cart from '../src/Components/Cart/cart';
+import LoginForm from '../src/Components/User/loginForm';
 import ProductCard from "./Components/ProductCard/productCard";
+import SignUp from "../src/Components/User/signUp";
 import {PrivateRoute} from './Components/PrivateRoute/PrivateRoute';
 
 function App() {
@@ -83,6 +84,11 @@ function App() {
       <Route
         path="/product/detailed/:id"
         render={() => <ProductCard />}
+      />
+      <Route
+      exact
+        path="/sign-up"
+        render={() => <SignUp />}
       />
     </BrowserRouter>
   );
