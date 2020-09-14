@@ -7,7 +7,6 @@ import ReactSelectMaterialUi from "react-select-material-ui";
 // import "react-dropdown/style.css";
 
 export default function Landing() {
-  document.title = "Henry Store";
   const [allProducts, setProducts] = useState([]);
   const [allCategories, setCategories] = useState([]);
   const [selectedCategory, setCategory] = useState("");

@@ -4,6 +4,57 @@ import styles from "../../Styles/productForm.module.css";
 import logoText from "../../Styles/Assets/logo henry black.png";
 import axios from "axios";
 
+
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import { red } from "@material-ui/core/colors";
+
+const useStyles = makeStyles((theme) => ({
+  formControl: {
+    margin: theme.spacing(1),
+  },
+  chips: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  chip: {
+    margin: 2,
+  },
+  noLabel: {
+    marginTop: theme.spacing(3),
+  },
+}));
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: '500px',
+    },
+  },
+};
+
+
+
+function getStyles(name, personName, theme) {
+  return {
+    backgroundColor:
+      personName.indexOf(name) === -1
+        ? 'white'
+        : '#dddd37',
+    fontWeight:
+      personName.indexOf(name) === -1
+        ? theme.typography.fontWeightRegular
+        : theme.typography.fontWeightMedium,
+  };
+}
+
 function ProductForm() {
   /* Categorias de ejemplo */
   const data = [
@@ -13,9 +64,12 @@ function ProductForm() {
     { Category: "Category4", id: 4 },
   ];
   const [options] = useState(data);
+  const classes = useStyles();
+  const theme = useTheme();
   /* Estados */
   const [state, setState] = useState({});
   const [categories, setCategories] = useState([]);
+  const [personName, setPersonName] = useState([])
 
   /* Peticion GET a categories */
   useEffect(() => {
@@ -34,12 +88,7 @@ function ProductForm() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    var selected = [];
-    for (var option of document.getElementById("category-select").options) {
-      if (option.selected) {
-        selected.push(option.value);
-      }
-    }
+    
     axios({
       method: "post",
       url: "http://localhost:3100/products/create-product",
@@ -49,12 +98,11 @@ function ProductForm() {
         price: state.price,
         stock: state.stock,
       },
-    }).then((data) => {if(selected.length > 0){
-      var selectedCategoriesId = categories.filter((e) => selected.indexOf(e.id.toString()) !== -1);
-      selectedCategoriesId.forEach((e) => {
+    }).then((data) => {if(personName.length > 0){
+      personName.forEach((e) => {
         axios({
         method: "post",
-        url: `http://localhost:3100/products/${data.data.id}/addCategory/${e.id}`,
+        url: `http://localhost:3100/products/${data.data.id}/addCategory/${e}`,
       })})
       }
     }).then(() => {
@@ -62,6 +110,10 @@ function ProductForm() {
       window.location.href = ("http://localhost:3000/product/admin");})
     .catch((err) => console.log(err));
     setState({ ...state, name: "", description: "", price: "", stock: "" });
+  };
+
+  const handleChanges = (event) => {
+    setPersonName(event.target.value);
   };
 
 
@@ -122,17 +174,29 @@ function ProductForm() {
         </div>
 
         <div className={styles.buttons}>
-          <h3>Gestor de Productos</h3>
-          <h2>Crear Producto</h2>
+          <h3>Crear Producto</h3>
           {/* Selector multiple de categorias */}
           <div className={styles.Multiselect}>
             <h2>Seleccionar Categorias: </h2>
-            <select id="category-select" multiple="multiple">
               {categories.length > 0 &&
-                categories.map((e, index) => {
-                  return <option key={index} value={e.id}>{e.name}</option>;
-                })}
-            </select>
+                <FormControl style={{width: '80%'}}>
+                <InputLabel id="demo-mutiple-name-label" >Categorías</InputLabel>
+                <Select
+                  labelId="demo-mutiple-name-label"
+                  id="demo-mutiple-name"
+                  multiple
+                  value={personName}
+                  onChange={handleChanges}
+                  input={<Input />}
+                  MenuProps={MenuProps}
+                >
+                  {categories.map((name,index) => (
+                    <MenuItem key={index} value={name.id} style={getStyles(name.id, personName, theme)}>
+                      {name.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>}
           </div>
           <img className={styles.imgLogo} src={logoText} alt="logoHenry" />
         </div>

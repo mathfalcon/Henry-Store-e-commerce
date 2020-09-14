@@ -48,7 +48,7 @@ section:nth-of-type(2) {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
-    
+    transition: 0.5s;
 }
 .textBox a{
     transition: color 0.3s ease-in-out;
@@ -64,7 +64,6 @@ section:nth-of-type(2) {
     color: #FFFF01;
     font-size:5em;
     font-weight: 900;
-    align-self: center;
     order: 2;
     margin-left: 20px;
 }
@@ -129,4 +128,27 @@ section:nth-of-type(2) {
     width: 100%;
     display: flex;
     flex-direction: column;
+}
+
+@media screen and (max-width:600px) {
+    section{
+        padding-top: 35px;
+    }
+    .textBox{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .textBox h2{
+        font-size: 2.5em;
+    }
+    .textBox img{
+        width: 16em;
+        height: auto;
+        padding-top: 60px;
+    }
+    .textBox p{
+        font-size: 4em;
+        margin-left: 0px;
+    }
 }

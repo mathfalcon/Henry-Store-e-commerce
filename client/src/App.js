@@ -12,6 +12,7 @@ import SearchResults from "./Components/SearchResults/SearchResults";
 import OrdersTable from "./Components/Order/OrdersTable"
 import Cart from '../src/Components/Cart/cart'
 import LoginForm from '../src/Components/User/loginForm'
+import ProductCard from "./Components/ProductCard/productCard";
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -76,6 +77,10 @@ function App() {
       exact
         path="/user"
         render={() => <LoginForm />}
+      />
+      <Route
+        path="/product/detailed/:id"
+        render={() => <ProductCard />}
       />
     </BrowserRouter>
   );

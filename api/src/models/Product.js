@@ -74,7 +74,7 @@ module.exports = (sequelize) => {
   sequelize.define("order", {
     state: {
       type: DataTypes.ENUM,
-      values: ["inCart", "created", "processing", "canceled", "complete"],
+      values: ["inCart", "created","active", "processing", "canceled", "complete"],
     },
   });
 };

@@ -62,27 +62,47 @@ server.post("/:idUser/cart", (req, res, next) => {
   // 'activa' deberia agregar orderline a esa orden, en este caso la ordenline se crea al crear la orden, no cumple el proposito de una orden muchas orderlines.
 
   const { idUser } = req.params;
-  const { idProducto, amount} = req.body;
+  const { idProducto, amount } = req.body;
 
-  var product = Product.findByPk(idProducto);
-  var order = Order.create({
-    state: "created",
-    userId: idUser,
+  Order.findAll({
+    where: {
+      userId: idUser,
+      state: "active",
+    },
+    include: Users,
+  }).then((order) => {
+    var product = Product.findByPk(idProducto);
+    if (order[0]) {
+      product.then((data) => {
+        OrderLine.create({
+          amount: amount,
+          price: data.price,
+          orderId: order[0].id,
+          productId: idProducto,
+        }).then((data) => res.status(200).send(data));
+      });
+    } else {
+      product
+        .then((product) => {
+          Order.create({
+            state: "active",
+            userId: idUser,
+          })
+            .then((orderCreated) => {
+              OrderLine.create({
+                amount: amount,
+                price: product.price,
+                orderId: orderCreated.id,
+                productId: product.id,
+              })
+                .then((data) => res.status(200).send(data))
+                .catch(next);
+            })
+            .catch(next);
+        })
+        .catch(next);
+    }
   });
-
-  Promise.all([product,order])
-    .then((data) => {
-      OrderLine.create({
-        amount: amount,
-        price: data[0].price,
-        orderId: data[1].id,
-        productId: idProducto,
-      })
-        .then((data) => res.status(200).send(data))
-        .catch((err) => res.status(204).send(next));
-    })
-    .catch((err) => res.status(204).send(next));
-    
 });
 
 // Ruta para editar las cantidades de un producto
@@ -111,23 +131,19 @@ server.put("/:idUser/cart", (req, res, next) => {
 //Borra una orden. Al borrarla tambien se borra la relacion con el usuario, por lo tanto vacia el carrito.
 server.delete("/:idOrder", (req, res, next) => {
   let id = req.params.idOrder;
-
+  let {product} = req.body;
+  //id de la orderline
   OrderLine.destroy({
     where: {
-      orderId: id
-    }
+      orderId: id,
+      productId: product
+    },
   })
     .then((deleted) => {
-      Order.findByPk(id).then((order) => {
-        order.state = 'canceled',
-        order.save()
-        res.status(200).send(`Se borraron un total de ${deleted} orden/es`);
-      })
+      res.status(200).send(`Se borraron un total de ${deleted} orden/es`);
     })
     .catch((err) => {
-      res
-        .status(400)
-        .send(err);
+      res.status(400).send(err);
     });
 });
 
@@ -136,13 +152,12 @@ server.get("/:userId/orders", (req, res, next) => {
   const id = req.params.userId;
   Order.findAll({
     where: {
-      userId: id
+      userId: id,
     },
     include: Users,
   })
     .then((rows) => res.status(200).json(rows))
     .catch(next);
 });
-
 
 module.exports = server;
