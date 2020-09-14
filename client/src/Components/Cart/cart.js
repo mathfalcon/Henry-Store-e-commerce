@@ -16,9 +16,10 @@ function Cart() {
     fetch("http://localhost:3100/orders/products/1")
       .then((data) => data.json())
       .then((data) => {
+        console.log(data[0])
         setOrders(data[0]);
         let total = 0;
-        data[0].products.forEach((e) => total += e.price)
+        data[0].products.forEach((e) => total += (e.price * e.amount.amount))
         setTotal(total)
       })
       .catch((err) => console.log(err));

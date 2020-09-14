@@ -55,7 +55,7 @@ export default function Landing() {
 
           <ReactSelectMaterialUi
             className={styles.selectCategory}
-            value={selectedCategory}         
+            value={selectedCategory}
             options={options}
             onChange={handleCategoryChange}
             placeholder="Seleccione una Categoria"
