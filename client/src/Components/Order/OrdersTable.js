@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import { listOrders } from '../../actions/orderActions';
-import styles from "../../Styles/ordersTable.module.css"
+import { listOrders } from '../../Redux/actions/orderActions';
+import styles from "../../Styles/ordersTable.module.css";
 
 // la tabla esta mostrando un listado de productos para visualizarla
 // habria que reemplazar la consulta en el action para que traiga las ordenes

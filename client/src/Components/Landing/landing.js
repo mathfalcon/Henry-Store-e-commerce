@@ -10,10 +10,10 @@ export default function Landing() {
   document.title = "Henry Store";
   const [allProducts, setProducts] = useState([]);
   const [allCategories, setCategories] = useState([]);
-  const [selectedCategory, setCategory] = useState('');
+  const [selectedCategory, setCategory] = useState("");
 
-  useEffect(() => {    
-    if (selectedCategory) {      
+  useEffect(() => {
+    if (selectedCategory) {
       fetch(`http://localhost:3100/categories/category/${selectedCategory}`)
         .then((data) => data.json())
         .then((data) => setProducts(data.products))
@@ -21,7 +21,11 @@ export default function Landing() {
     } else {
       fetch("http://localhost:3100/products/")
         .then((data) => data.json())
-        .then((data) => setProducts(data))
+        .then((data) => {
+          data.forEach((e) => {
+            if (e.stock > 0) allProducts.push(e);
+          });
+        })
         .catch((err) => console.log(err));
     }
     fetch("http://localhost:3100/categories")
@@ -30,8 +34,8 @@ export default function Landing() {
   }, [selectedCategory]);
 
   const options = allCategories.map((e) => e.name);
-  const handleCategoryChange = function (selectedCategory) {    
-    setCategory(selectedCategory);    
+  const handleCategoryChange = function (selectedCategory) {
+    setCategory(selectedCategory);
   };
 
   return (
@@ -45,29 +49,22 @@ export default function Landing() {
         </div>
       </section>
       <section id="section-two" className={styles.productSection}>
-        <span>
-          <h1>CATÁLOGO</h1>
-        </span>
+        <div className={styles.divSelector}>
+          <span>
+            <h1>CATÁLOGO</h1>
+          </span>
 
-        <ReactSelectMaterialUi
-          style={{ width: 100 }}
-          value={"Selecciona una categoría"}
-          options={options}
-          onChange={handleCategoryChange}        
-        />
-      </section>
-        {/* <span className={styles.dropdown}>
-          <Dropdown
-            className={styles.dropdown}
-            controlClassName={styles.control}
-            onChange={(e) => handleCategoryChange(e)}
-            menuClassName={styles.menu}
-            options={options}
+          <ReactSelectMaterialUi
+            className={styles.selectCategory}
             value={"Selecciona una categoría"}
-            placeholder="Select an option"
+            options={options}
+            onChange={handleCategoryChange}
           />
-        </span> */}
-        { allProducts.map((el, index) => <Product product={el} key={index} /> )}
-  </Fragment>       
-  )
+        </div>
+        {allProducts.map((el, index) => (
+          <Product product={el} key={index} />
+        ))}
+      </section>
+    </Fragment>
+  );
 }

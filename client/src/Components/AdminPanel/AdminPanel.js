@@ -34,7 +34,8 @@ function AdminPanel() {
       headers:{
         'Content-Type': 'application/json'
       }
-    }).then((data) => setStatus(Math.random()))
+    }).then(() => {
+      window.location.href = ("http://localhost:3000/product/admin");})
     .catch((err) => console.log(err))
     console.log(deleted)
   }
@@ -45,7 +46,8 @@ function AdminPanel() {
       headers:{
         'Content-Type': 'application/json'
       }
-    }).then((data) => setStatus(Math.random()))
+    }).then(() => {
+      window.location.href = ("http://localhost:3000/product/admin");})
     .catch((err) => console.log(err))
     console.log(deleted)
   }
