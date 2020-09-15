@@ -77,4 +77,14 @@ module.exports = (sequelize) => {
       values: ["inCart", "created","active", "processing", "canceled", "complete"],
     },
   });
+  sequelize.define("reviews", {
+    value: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    review: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    }
+  });
 };
