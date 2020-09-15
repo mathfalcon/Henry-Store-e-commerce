@@ -37,6 +37,7 @@ const { Categories } = sequelize.models;
 const { Users } = sequelize.models;
 const { Order } = sequelize.models;
 const { OrderLine } = sequelize.models;
+const { Reviews } = sequelize.models;
 console.log(sequelize.models)
 
 // Aca vendrian las relaciones
@@ -51,6 +52,10 @@ Order.hasMany(OrderLine);
 Order.hasMany(Product);
 OrderLine.belongsTo(Order);
 
+//Asociaciones de review
+Reviews.belongsTo(Users, { as: 'authorId' });
+Reviews.belongsTo(Product, { as: 'productId' });
+
 
 // Product.hasMany(Reviews)
 
@@ -60,7 +65,10 @@ Product.belongsToMany(Order, { through: OrderLine});
 Order.belongsToMany(Product, { through: OrderLine});
 
 //PARA TESTEAR
-
+Reviews.create({
+  value: 5,
+  review: 'malisimo el producto la verdad'
+})
 
 
 
