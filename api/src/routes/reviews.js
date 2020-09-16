@@ -42,6 +42,7 @@ server.put("/update", (req, res, next) => {
   .catch(next)
 });
 
+
 //Ruta para eliminar una review de un producto segun sus ids
 server.delete("/product/idProduct/delete/:idReview", (req, res, next) => {
   const { idProduct, idReview } = req.params;
@@ -59,5 +60,20 @@ server.delete("/product/idProduct/delete/:idReview", (req, res, next) => {
     })
     .catch(next);
 });
+
+
+//Ruta para obtener todas las reviews del producto que viene como parametro
+server.get("/:idProduct", (req, res, next) => {
+  const idProduct = req.params.idProduct;
+  Reviews.findAll({
+    where: {
+      productId: idProduct,
+    }
+  })
+    .then((data) => res.status(200).send(data))
+    .catch(next);
+});
+
+
 
 module.exports = server;
