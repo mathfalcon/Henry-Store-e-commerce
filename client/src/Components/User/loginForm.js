@@ -1,92 +1,57 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styles from "../../Styles/loginForm.module.css";
+import logoHenry from "../../Styles/Assets/logo henry black.png";
+import axios from "axios";
+import Button from "@material-ui/core/Button";
+import CreateIcon from '@material-ui/icons/Create';
 
 function LoginForm() {
-    
-//   const signUpButton = document.getElementById("signUp");
-//   const signInButton = document.getElementById("signIn");
-//   const container = document.getElementById("container");
+  const [state, setState] = useState({});
 
-//   signUpButton.addEventListener("click", () => {
-//     container.classList.add("right-panel-active");
-//   });
-
-//   signInButton.addEventListener("click", () => {
-//     container.classList.remove("right-panel-active");
-//   });
+  const handleChange = ({ target }) => {
+    const { name, value } = target;
+    setState({ ...state, [name]: value });
+    console.log(state);
+  };
 
   return (
-    <div className={styles.containerDiv}>
-      <div className={styles.container} id="container">
-        <div
-          className={styles.formContainer}
-          className={styles.signUpContainer}
-        >
-          <form className={styles.formLogin} action="#">
-            <input
-              className={styles.inputLogin}
-              type="text"
-              placeholder="Name"
-            />
-            <input
-              className={styles.inputLogin}
-              type="email"
-              placeholder="Email"
-            />
-            <input
-              className={styles.inputLogin}
-              type="password"
-              placeholder="Password"
-            />
-            <button className={styles.buttonLogin}>Sign Up</button>
-          </form>
+    <div className={styles.container}>
+      <div className={styles.body}>
+        <div>
+          <label>
+            <b>Inicia Sesión</b>
+          </label>
         </div>
-        <div
-          className={styles.formContainer}
-          className={styles.signInContainer}
-        >
-          <form action="#">
-            <h1>Sign in</h1>
-            <span>or use your account</span>
-            <input
-              className={styles.inputLogin}
-              type="email"
-              placeholder="Email"
-            />
-            <input
-              className={styles.inputLogin}
-              type="password"
-              placeholder="Password"
-            />
-
-            <button className={styles.buttonLogin}>Sign In</button>
-
-            <a href="#">Forgot your password?</a>
-          </form>
-        </div>
-        <div className={styles.overlayContainer}>
-          <div className={styles.overlay}>
-            <div className={styles.overlayPanel} className={styles.overlayLeft}>
-              <h1>Welcome Back!</h1>
-              <p>
-                To keep connected with us please login with your personal info
-              </p>
-              <button className={styles.buttonGhost} id="signIn">
-                Sign In
-              </button>
-            </div>
-            <div
-              className={styles.overlayPanel}
-              className={styles.overlayRight}
+        <p>Lorem Ipsum is simply Ipsummy text en bt also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recentl</p>
+        <img src={logoHenry} alt="logoHenry" className={styles.imgLogo} />
+      </div>
+      <div className={styles.form}>
+        <form>
+          <label>Nombre de usuario</label>
+          <input
+            name="username"
+            onChange={handleChange}
+          />
+          <label>Contraseña</label>
+          <input
+            name="password"
+            type="password"
+            onChange={handleChange}
+          />
+          <div className={styles.button}>
+            <Button
+              variant="contained"
+              color="secondary"
+              style={{ backgroundColor: "#ffff5a", color: "black" }}
+              endIcon={<CreateIcon />}
             >
-              <h1>Hello, Friend!</h1>
-              <p>Enter your personal details and start journey with us</p>
-              <button class="ghost" id="signUp">
-                Sign Up
-              </button>
-            </div>
+              INICIAR SESION
+            </Button>
+            <label style={{marginLeft: '15px'}}>
+              o <a href="http://localhost:3000/sign-up">Regístrate</a>
+            </label>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   );

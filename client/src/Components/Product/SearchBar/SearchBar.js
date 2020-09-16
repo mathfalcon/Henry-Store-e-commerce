@@ -38,7 +38,7 @@ export default function SearchBar(props) {
         <a href="/sign-up">Registrarse</a>
       </span>
       <span>
-        <a href="#">Ingresar</a>
+        <a href="/login">Ingresar</a>
       </span>
       <span className={styles.cartSpan}>
         <a href="http://localhost:3000/user/cart">Carrito</a>
