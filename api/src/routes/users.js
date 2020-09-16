@@ -2,17 +2,21 @@ const server = require("express").Router();
 const { Users, OrderLine, Order, Product } = require("../db.js");
 
 // Busca todos los usuarios y los devuelve en un array
-server.get("/", (req, res, next) => {
+server.get("/", (req, res, next) => {  
   Users.findAll()
     .then((users) => {
       res.status(200).send(users);
     })
     .catch(next);
 });
+  
+// para el login:
+// si valid es true el password ingresado es igual al encriptado en la base de datos      
+// const valid = user.checkPassword('123456');
 
 //Modifica un usuario pasado por id (query)
 server.put("/update/:id", (req, res, next) => {
-  const { name, username, email, role } = req.body;
+  const { name, username, email, role, password } = req.body;
 
   Users.findByPk(req.params.id)
     .then((data) => {
@@ -20,6 +24,7 @@ server.put("/update/:id", (req, res, next) => {
       if (username) data.username = username;
       if (email) data.email = email;
       if (role) data.role = role;
+      if (password) data.password = password;
       data.save();
       res
         .status(200)
@@ -40,6 +45,7 @@ server.post("/create", (req, res, next) => {
       username: req.body.username,
       email: req.body.email,
       role: req.body.role,
+      password: req.body.password
     },
   })
     .then((user) => {

@@ -2,6 +2,7 @@ require('dotenv').config();
 const { Sequelize } = require('sequelize');
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 const { getMaxListeners } = require('process');
 const {
   DB_USER, DB_PASSWORD, DB_HOST,
@@ -64,9 +65,16 @@ Categories.belongsToMany(Product, { through: 'categoryTable'});
 Product.belongsToMany(Order, { through: OrderLine});
 Order.belongsToMany(Product, { through: OrderLine});
 
-//PARA TESTEAR
 
-
+Users.prototype.checkPassword = function(password) {
+let encryptPass = (    
+    crypto
+    .createHmac('sha1', this.salt)
+    .update(password)
+    .digest('hex')
+ );
+  if( encryptPass == this.password ) return true;
+}
 
 module.exports = {
   ...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');
