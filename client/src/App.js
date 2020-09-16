@@ -81,7 +81,7 @@ function App() {
       />
       <Route
       exact
-        path="/user"
+        path="/login"
         render={() => <LoginForm />}
       />
       <Route

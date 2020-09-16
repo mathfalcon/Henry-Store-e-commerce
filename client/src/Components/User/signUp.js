@@ -160,7 +160,7 @@ function SignUp() {
             </Button>
 
             <label style={{marginLeft: '15px'}}>
-              o <a>Inicia sesión</a>
+              o <a href="http://localhost:3000/login">Inicia sesión</a>
             </label>
           </div>
         </form>
