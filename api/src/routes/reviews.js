@@ -1,5 +1,5 @@
 const server = require("express").Router();
-const { Reviews, Order } = require("../db.js");
+const { Reviews, Order , Product} = require("../db.js");
 
 // Busca todas las review y las devuelve en un array
 server.get("/", (req, res, next) => {
@@ -42,6 +42,26 @@ server.put("/update", (req, res, next) => {
   .catch(next)
 });
 
+
+//Ruta para eliminar una review de un producto segun sus ids
+server.delete("/product/idProduct/delete/:idReview", (req, res, next) => {
+  const { idProduct, idReview } = req.params;
+  var product = Product.findByPk(idProduct);
+  var review = Reviews.findByPk(idReview);
+
+  Promise.all([product, review])
+    .then((data) => {
+      data[0].removeReviews(data[1]);
+      res
+        .status(200)
+        .send(
+          `Se elimino la review ${data[1].dataValues.review} del producto ${data[0].dataValues.name}`
+        );
+    })
+    .catch(next);
+});
+
+
 //Ruta para obtener todas las reviews del producto que viene como parametro
 server.get("/:idProduct", (req, res, next) => {
   const idProduct = req.params.idProduct;
@@ -53,6 +73,7 @@ server.get("/:idProduct", (req, res, next) => {
     .then((data) => res.status(200).send(data))
     .catch(next);
 });
+
 
 
 module.exports = server;
