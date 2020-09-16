@@ -6,7 +6,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import henryShirt from "../../content/henryShirt.png";
 import axios from "axios";
-
+import Review from "../Review/Review";
 const useStyles = makeStyles((theme) => ({
   button: {
     margin: theme.spacing(1),
@@ -38,7 +38,7 @@ const ProductCard = () => {
         idProducto: product.id,
         amount: 1,
       },
-    })
+    });
   };
 
   return (
@@ -66,6 +66,7 @@ const ProductCard = () => {
           </Button>
         </div>
       </div>
+      <Review product={product}/>
     </div>
   );
 };
