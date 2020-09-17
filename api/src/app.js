@@ -37,6 +37,7 @@ server.use(
   })
 );
 
+
 //Passport middleware
 server.use(passport.initialize());
 server.use(passport.session());

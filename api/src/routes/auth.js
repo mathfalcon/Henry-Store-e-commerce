@@ -3,6 +3,7 @@ const passport = require("passport");
 
 
 server.post('/login', (req, res, next) => {
+  
   passport.authenticate("local-login", (err,user,info) => {
     if(err){
       return res.status(200).send({
@@ -31,6 +32,12 @@ server.post('/login', (req, res, next) => {
   })(req,res,next)
 })
 
+server.get('/login', (req, res, next) => {
+  
+  console.log(req.session)
+  console.log(req.isAuthenticated())
+  res.send(req.user)
+})
 
 
 module.exports = server;
