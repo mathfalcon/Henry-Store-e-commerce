@@ -32,6 +32,8 @@ server.post('/login', (req, res, next) => {
   })(req,res,next)
 })
 
+
+//para testear
 server.get('/login', (req, res, next) => {
   
   console.log(req.session)
