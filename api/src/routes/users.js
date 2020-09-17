@@ -39,6 +39,7 @@ server.put("/update/:id", (req, res, next) => {
 
 // Ruta para crear un usuario
 server.post("/create", (req, res, next) => {
+  if(!req.body.role) req.body.role = 'client';
   Users.findOrCreate({
     where: {
       name: req.body.name,

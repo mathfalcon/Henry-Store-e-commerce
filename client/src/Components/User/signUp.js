@@ -31,6 +31,7 @@ function SignUp() {
           username: state.username,
           email: state.email,
           role: state.role,
+          password: state.password
         },
       })
         .then(() => {

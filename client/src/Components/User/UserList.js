@@ -31,6 +31,9 @@ function OrdersTable() {
 
   const handleClose = () => {
     setOpen(false);
+  };
+  const handleCloseDelete = () => {
+    setOpen(false);
     handleDelete(idUser);
   };
 
@@ -128,7 +131,7 @@ function OrdersTable() {
             Cancelar
           </Button>
           <Button
-            onClick={handleClose}
+            onClick={handleCloseDelete}
             color="primary"
             autoFocus
             style={{

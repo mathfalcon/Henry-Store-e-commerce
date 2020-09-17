@@ -32,7 +32,7 @@ sequelize.define("users", {
         type: DataTypes.STRING,
         allowNull: true,
         set(value) {
-          const rSalt = randomSalt();
+          const rSalt = this.randomSalt();
           this.setDataValue('salt',rSalt);
           this.setDataValue(
             'password',
@@ -47,8 +47,4 @@ sequelize.define("users", {
         type: DataTypes.STRING,
       },
     });
-
-    randomSalt = function() {
-        return crypto.randomBytes(20).toString('hex');
-    };
 }
