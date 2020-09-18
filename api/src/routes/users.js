@@ -214,4 +214,17 @@ server.delete("/delete/:id", (req, res, next) => {
     .catch((error) => next(error));
 });
 
+//Ruta para promover a un usuario
+server.put("/promote/:id", (req, res, next) => {
+  const { id } = req.params;
+
+  Users.findByPk(id)
+    .then((user) => {
+      user.role = "admin";
+      user.save().catch(next);
+      res.status(200).send(user);
+    })
+    .catch(next);
+});
+
 module.exports = server;
