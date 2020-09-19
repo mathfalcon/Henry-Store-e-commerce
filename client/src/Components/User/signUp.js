@@ -20,8 +20,8 @@ function SignUp() {
     console.log(data);        
     handleSend();
   }
-
-  const handleSend = () => {      
+  console.log(state)
+  const handleSend = () => {    
       axios({
         method: "post",
         url: "http://localhost:3100/users/create",
