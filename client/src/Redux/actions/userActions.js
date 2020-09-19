@@ -8,4 +8,4 @@ const listUser = () => {
    };
 }
 
-export { listUser };
+export default listUser;

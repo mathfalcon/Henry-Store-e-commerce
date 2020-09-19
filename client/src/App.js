@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import "./App.css";
 /* import Catalogo from './Components/Catalogo/catalogo'; */
-import AdminPanel from "./Components/AdminPanel/AdminPanel"
+import AdminPanel from "./Components/AdminPanel/AdminPanel";
 import CategoryForm from "./Components/CategoryForm/categoryForm";
 import ProductForm from "./Components/Product/productForm";
 import { BrowserRouter, Route, Redirect } from "react-router-dom";
@@ -9,15 +9,15 @@ import Landing from "./Components/Landing/landing";
 import SearchBar from "./Components/Product/SearchBar/SearchBar";
 import SearchResults from "./Components/SearchResults/SearchResults";
 import OrdersTable from "./Components/Order/OrdersTable";
-import Cart from '../src/Components/Cart/cart';
-import LoginForm from '../src/Components/User/loginForm';
+import Cart from "../src/Components/Cart/cart";
+import LoginForm from "../src/Components/User/loginForm";
 import ProductCard from "./Components/ProductCard/productCard";
-import ProductUpdate from './Components/Product/productUpdate'
+import ProductUpdate from "./Components/Product/productUpdate";
 import CategoryUpdate from "./Components/CategoryForm/categoryUpdate";
 import SignUp from "../src/Components/User/signUp";
 import UserList from "../src/Components/User/UserList";
-import {PrivateRoute} from './Components/PrivateRoute/PrivateRoute';
-
+import { PrivateRoute } from "./Components/PrivateRoute/PrivateRoute";
+import { useSelector } from "react-redux";
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -27,10 +27,12 @@ function App() {
       .then((r) => r.json())
       .then((data) => {
         // data = array que devuelve la db con los productos que hacen match
-        setProducts(data);     
+        setProducts(data);
       })
       .catch((err) => console.log(err));
   };
+
+  const userLogged = useSelector((state) => state.authUser);
 
   return (
     <BrowserRouter>
@@ -38,78 +40,68 @@ function App() {
         path="/"
         render={() => <SearchBar handleSearch={handleSearch} />}
       />
-      {products.length > 0 && <Redirect
+      {products.length > 0 && (
+        <Redirect
           to={{
             pathname: "/product/search/",
             state: { products: products },
           }}
-        /> }
-      <Route
-        exact
-        path="/"
-        render={() => <Landing />}
-      />
+        />
+      )}
+      <Route exact path="/" render={() => <Landing />} />
       <Route
         path="/product/search"
-        render={() => <SearchResults products={products}/>}
+        render={() => <SearchResults products={products} />}
       />
-      <Route
-      exact
-        path="/product/crud"
-        render={() => <ProductForm />}
+      <Route exact path="/user/cart" render={() => <Cart />} />
+      <Route exact path="/login" render={() => <LoginForm />} />
+      <Route path="/product/detailed/:id" render={() => <ProductCard />} />
+      <Route exact path="/sign-up" render={() => <SignUp />} />
+      {/* RUTAS PRIVADAS */}
+      <PrivateRoute
+        exact
+        path="/product/admin/crud"
+        userData={userLogged}
+        component={ProductForm}
       />
       <PrivateRoute
-      exact
+        exact
         path="/product/admin"
-        roles='admin'
+        userData={userLogged}
         component={AdminPanel}
       />
-      <Route
-      exact
-        path="/create-category"
-        render={() => <CategoryForm />}
-      />
-      <Route
-      exact
-        path="/show-table"
-        render={() => <OrdersTable />}
-      />
-      <Route
-      exact
-        path="/user/cart"
-        render={() => <Cart />}
-      />
-      <Route
-      exact
-        path="/login"
-        render={() => <LoginForm />}
-      />
-      <Route
-        path="/product/detailed/:id"
-        render={() => <ProductCard />}
-      />
-      <Route
-        path="/product/update"
-        render={() => <ProductUpdate />}
-      />
-      <Route
-      exact
-        path="/categories/update"
-        render={() => <CategoryUpdate />}
-      />
-      <Route
+      <PrivateRoute
         exact
-        path="/sign-up"
-        render={() => <SignUp />}
+        path="/product/admin/create-category"
+        userData={userLogged}
+        component={CategoryForm}
       />
-      <Route
-      exact
-        path="/list-users"
-        render={() => <UserList />}
+      <PrivateRoute
+        exact
+        path="/product/admin/show-table"
+        userData={userLogged}
+        component={OrdersTable}
+      />
+      <PrivateRoute
+        exact
+        path="/product/admin/update"
+        userData={userLogged}
+        component={ProductUpdate}
+      />
+      <PrivateRoute
+        exact
+        path="/product/admin/list-users"
+        userData={userLogged}
+        component={UserList}
+      />
+      <PrivateRoute
+        exact
+        path="/product/admin/categories/update"
+        userData={userLogged}
+        component={CategoryUpdate}
       />
     </BrowserRouter>
   );
 }
 
 export default App;
-//Borrar despues esta linea comentada

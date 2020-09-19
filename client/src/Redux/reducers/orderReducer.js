@@ -15,6 +15,4 @@ const initialState = {
     }
   };
 
-export {
-    orderListReducer,
-}
+export default orderListReducer;

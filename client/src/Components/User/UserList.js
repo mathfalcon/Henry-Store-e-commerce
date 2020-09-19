@@ -1,6 +1,6 @@
 import React, { useState, useEffect, Fragment } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { listUser } from "../../Redux/actions/userActions";
+import listUser from "../../Redux/actions/userActions";
 import styles from "../../Styles/ordersTable.module.css";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";

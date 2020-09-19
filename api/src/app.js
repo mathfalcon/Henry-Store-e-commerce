@@ -4,9 +4,10 @@ const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const routes = require("./routes/index.js");
 const passport = require("./passport/setup");
-const session = require('express-session')
-
-
+const cors = require('cors')
+const expressSession = require('express-session');
+const SessionStore = require('express-session-sequelize')(expressSession.Store);
+const { conn } = require('./db.js');
 
 require("./db.js");
 
@@ -28,19 +29,27 @@ server.use((req, res, next) => {
   next();
 });
 
-//Express session
-server.use(
-  session({
-    secret: 'un gran secreto',
-    resave: false,
-    saveUninitialized: true,
-  })
-);
+server.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 
+
+
+//Session store
+const sequelizeSessionStore = new SessionStore({
+  db: conn,
+});
+
+//Express session
+server.use(expressSession({
+  secret: 'keep it secret, keep it safe.',
+  store: sequelizeSessionStore,
+  resave: false,
+  saveUninitialized: false,
+}));
 
 //Passport middleware
 server.use(passport.initialize());
 server.use(passport.session());
+
 
 
 server.use("/", routes);

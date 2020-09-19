@@ -1,12 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "../../../Styles/searchBar.module.css";
 import logo from "../../../content/logo.png";
+import { useDispatch, useSelector } from "react-redux";
+import { isLoggedIn, logOutUser } from "../../../Redux/actions/authActions";
+
+
 //Componente de busqueda de productos mediante una keyword
+
 
 export default function SearchBar(props) {
   const [value, searchValue] = useState("");
   document.title = "Henry Store";
+  const [logOut, setLogOut] = useState(false);
+
+  const {loggedIn} = useSelector((state) => state.authUser);
+  const {userLogged} = useSelector((state) => state.authUser);
+
+  console.log(useSelector((state) => state.authUser))
+  const dispatch = useDispatch();
+  useEffect(() => dispatch(isLoggedIn()), [])
+
+  const handleLogOut = () => {
+    dispatch(logOutUser())
+    window.location.href = '/';
+  }
   return (
     <div className={styles.navBar}>
       <span className={styles.logoSpan}>
@@ -29,20 +47,16 @@ export default function SearchBar(props) {
         <input className={styles.searchButton} type="submit" value="BUSCAR" />
       </form>
       <span>       
-        {/* user.role === Role.Admin */}
-        { true &&
+        {/*Private route*/}
+        { userLogged.role === 'admin' &&
           <Link to="/product/admin" className="nav-item nav-link">Panel Admin</Link>
         }
       </span>
-      <span>
-        <a href="/sign-up">Registrarse</a>
-      </span>
-      <span>
-        <a href="/login">Ingresar</a>
-      </span>
-      <span className={styles.cartSpan}>
-        <a href="http://localhost:3000/user/cart">Carrito</a>
-      </span>
+      {loggedIn && <Link to='/' onClick={handleLogOut} className="nav-item nav-link">Cerrar Sesión</Link>}
+      {!loggedIn && <Link to="/sign-up" className="nav-item nav-link">Registrarse</Link>}
+      {!loggedIn && <Link to="/login" className="nav-item nav-link">Iniciar Sesión</Link>}
+      <Link to="/user/cart" className="nav-item nav-link">Carrito</Link>
+
     </div>
   );
 }
