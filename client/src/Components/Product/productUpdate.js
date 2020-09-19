@@ -51,7 +51,6 @@ function getStyles(name, personName, theme) {
 }
 
 function ProductUpdate(props) {
-  console.log(window.location);
   /* Categorias de ejemplo */
   const data = [
     { Category: "Category1", id: 1 },

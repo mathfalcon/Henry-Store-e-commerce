@@ -1,53 +1,87 @@
 import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import styles from "../../Styles/loginForm.module.css";
 import logoHenry from "../../Styles/Assets/logo henry black.png";
 import axios from "axios";
 import Button from "@material-ui/core/Button";
-import CreateIcon from '@material-ui/icons/Create';
+
+import { loginUser, logoutUser } from "../../Redux/actions/userActions";
 
 function LoginForm() {
-  const [state, setState] = useState({});
+  const [state, setState] = useState({
+    username: '',
+    password: ''
+  });
 
   const handleChange = ({ target }) => {
     const { name, value } = target;
     setState({ ...state, [name]: value });
-    console.log(state);
   };
+
+  const handleSubmit = (e) => {
+    axios({
+      method: "post",
+      url: "http://localhost:3100/auth/login",
+      data: {
+        email: state.username,
+        password: state.password,
+      },
+      withCredentials: true,
+    }).then((data) => {
+      if (data.data.success) {
+        window.location.href = "http://localhost:3000/user/cart";
+      }
+    });
+  };
+
+// const userLogged = useSelector(state => state.userLogged);
+const dispatch = useDispatch();
+
+// reset login status
+useEffect(() => {
+    dispatch(logoutUser()); 
+}, []);
+
+function handleSubmit(e) {
+    e.preventDefault();
+    
+    if (username && password) {        
+        dispatch(loginUser(username, password));
+    }
+}
 
   return (
     <div className={styles.container}>
       <div className={styles.body}>
         <div>
           <label>
-            <b>Inicia Sesión</b>
+            <b>INICIAR SESIÓN</b>
           </label>
         </div>
-        <p>Lorem Ipsum is simply Ipsummy text en bt also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recentl</p>
+        <p>
+          Lorem Ipsum is simply Ipsummy text en bt also the leap into electronic
+          typesetting, remaining essentially unchanged. It was popularised in
+          the 1960s with the release of Letraset sheets containing Lorem Ipsum
+          passages, and more recentl
+        </p>
         <img src={logoHenry} alt="logoHenry" className={styles.imgLogo} />
       </div>
       <div className={styles.form}>
         <form>
-          <label>Nombre de usuario</label>
-          <input
-            name="username"
-            onChange={handleChange}
-          />
+          <label>Email</label>
+          <input name="username" onChange={handleChange} />
           <label>Contraseña</label>
-          <input
-            name="password"
-            type="password"
-            onChange={handleChange}
-          />
+          <input name="password" type="password" onChange={handleChange} />
           <div className={styles.button}>
             <Button
               variant="contained"
               color="secondary"
               style={{ backgroundColor: "#ffff5a", color: "black" }}
-              endIcon={<CreateIcon />}
+              onClick={handleSubmit}
             >
               INICIAR SESION
             </Button>
-            <label style={{marginLeft: '15px'}}>
+            <label style={{ marginLeft: "15px" }}>
               o <a href="http://localhost:3000/sign-up">Regístrate</a>
             </label>
           </div>

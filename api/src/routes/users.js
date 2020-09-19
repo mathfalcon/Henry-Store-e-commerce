@@ -2,21 +2,17 @@ const server = require("express").Router();
 const { Users, OrderLine, Order, Product } = require("../db.js");
 
 // Busca todos los usuarios y los devuelve en un array
-server.get("/", (req, res, next) => {  
+server.get("/", (req, res, next) => {
   Users.findAll()
     .then((users) => {
       res.status(200).send(users);
     })
     .catch(next);
 });
-  
-// para el login:
-// si valid es true el password ingresado es igual al encriptado en la base de datos      
-// const valid = user.checkPassword('123456');
 
 //Modifica un usuario pasado por id (query)
 server.put("/update/:id", (req, res, next) => {
-  const { name, username, email, role, password } = req.body;
+  const { name, username, email, role } = req.body;
 
   Users.findByPk(req.params.id)
     .then((data) => {
@@ -24,7 +20,6 @@ server.put("/update/:id", (req, res, next) => {
       if (username) data.username = username;
       if (email) data.email = email;
       if (role) data.role = role;
-      if (password) data.password = password;
       data.save();
       res
         .status(200)
@@ -39,13 +34,13 @@ server.put("/update/:id", (req, res, next) => {
 
 // Ruta para crear un usuario
 server.post("/create", (req, res, next) => {
+  if(!req.body.role) req.body.role = 'client';
   Users.findOrCreate({
     where: {
       name: req.body.name,
       username: req.body.username,
       email: req.body.email,
       role: req.body.role,
-      password: req.body.password
     },
   })
     .then((user) => {
@@ -66,9 +61,10 @@ server.post("/:idUser/cart", (req, res, next) => {
 
   //hay que editarla, deberia crear una orden con status created, la order line deberia filtrar las ordenes de un usuario y si encuentra una que este
   // 'activa' deberia agregar orderline a esa orden, en este caso la ordenline se crea al crear la orden, no cumple el proposito de una orden muchas orderlines.
-
+  
   const { idUser } = req.params;
   const { idProducto, amount } = req.body;
+  
   Order.findAll({
     where: {
       userId: idUser,
@@ -198,7 +194,6 @@ server.get("/:userId/orders", (req, res, next) => {
 
 server.delete("/delete/:id", (req, res, next) => {
   const idUser = req.params.id;
-  console.log(idUser)
   Users.destroy({ where: { id: idUser } })
     .then((users) => {
       if (users > 0) {
@@ -212,6 +207,19 @@ server.delete("/delete/:id", (req, res, next) => {
       }
     })
     .catch((error) => next(error));
+});
+
+//Ruta para promover a un usuario
+server.put("/promote/:id", (req, res, next) => {
+  const { id } = req.params;
+
+  Users.findByPk(id)
+    .then((user) => {
+      user.role = "admin";
+      user.save().catch(next);
+      res.status(200).send(user);
+    })
+    .catch(next);
 });
 
 module.exports = server;

@@ -40,21 +40,21 @@ function AdminPanel() {
       },
     })
       .then(
-        (data) => (window.location.href = "http://localhost:3000/product/admin")
+        (data) => (setStatus(5))
       )
       .catch((err) => console.log(err));
     console.log(deleted);
   };
 
   const handleDeleteCategory = async (id) => {
-    fetch(`http://localhost:3100/products/category/${id}`, {
+    fetch(`http://localhost:3100/categories/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
       },
     })
       .then(
-        (data) => (window.location.href = "http://localhost:3000/product/admin")
+        (data) => (setStatus(5))
       )
       .catch((err) => console.log(err));
     console.log(deleted);
@@ -77,7 +77,7 @@ function AdminPanel() {
       {/* Sección Productos */}
       <div className={styles.GestorCard}>
         <h3>GESTOR DE PRODUCTOS</h3>
-        <Link to="/product/crud" className={styles.CreateButton}>
+        <Link to="/product/admin/crud" className={styles.CreateButton}>
           CREAR UN NUEVO PRODUCTO
         </Link>
         {/* Mapeo de productos */}
@@ -103,7 +103,7 @@ function AdminPanel() {
             {redirectProduct && (
               <Redirect
                 to={{
-                  pathname: "/product/update",
+                  pathname: "/product/admin/update",
                   search: `?id=${idProduct}`,
                 }}
               />
@@ -115,7 +115,7 @@ function AdminPanel() {
       {/* Sección Categorias */}
       <div className={styles.GestorCard}>
         <h3>GESTOR DE CATEGORIAS</h3>
-        <Link to="/create-category" className={styles.CreateButton}>
+        <Link to="/product/admin/create-category" className={styles.CreateButton}>
           CREAR UNA NUEVA CATEGORIA
         </Link>
         {/* Mapeo de categorias */}
@@ -142,7 +142,7 @@ function AdminPanel() {
             {redirect && (
               <Redirect
                 to={{
-                  pathname: "/categories/update",
+                  pathname: "/product/admin/categories/update",
                   search: `?id=${idCategoria}`,
                 }}
               />
@@ -153,7 +153,7 @@ function AdminPanel() {
       {/* Sección Ordenes */}
       <div className={styles.GestorCard}>
         <h3>LISTADO DE ORDENES</h3>
-        <Link to="/show-table" className={styles.CreateButton}>
+        <Link to="/product/admin/show-table" className={styles.CreateButton}>
           VER LISTADO DE ORDENES
         </Link>
       </div>
@@ -161,7 +161,7 @@ function AdminPanel() {
       {/* Sección Usuarioss */}
       <div className={styles.GestorCard}>
         <h3>LISTADO DE USUARIOS</h3>
-        <Link to="/list-users" className={styles.CreateButton}>
+        <Link to="/product/admin/list-users" className={styles.CreateButton}>
           VER LISTADO DE USUARIOS
         </Link>
       </div>

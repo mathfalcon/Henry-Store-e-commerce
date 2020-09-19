@@ -9,4 +9,4 @@ const listOrders = () => {
    };
 }
 
-export { listOrders };
+export default listOrders;

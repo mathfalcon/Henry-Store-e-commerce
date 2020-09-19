@@ -54,7 +54,7 @@ server.get("/category/:name", (req, res, next) => {
 
 
 //Elimina una categoria segun su id
-server.delete("/category/:id", (req, res, next) => {
+server.delete("/:id", (req, res, next) => {
   const id = req.params.id;
 
   Categories.destroy({ where: { id } })
