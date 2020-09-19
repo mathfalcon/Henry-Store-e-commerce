@@ -208,20 +208,17 @@ server.delete("/delete/:id", (req, res, next) => {
     .catch((error) => next(error));
 });
 
-//log out
-server.get("/logout", function (req, res) {
+//Ruta para promover a un usuario
+server.put("/promote/:id", (req, res, next) => {
+  const { id } = req.params;
 
-  req.logout();
-
-  req.session.destroy(function (err) {
-    if (err) {
-      return next(err);
-    }
-    return res.send({ authenticated: req.isAuthenticated() });
-  });
-
+  Users.findByPk(id)
+    .then((user) => {
+      user.role = "admin";
+      user.save().catch(next);
+      res.status(200).send(user);
+    })
+    .catch(next);
 });
-
-
 
 module.exports = server;
