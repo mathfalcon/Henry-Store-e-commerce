@@ -1,18 +1,40 @@
 import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import styles from "../../Styles/loginForm.module.css";
 import logoHenry from "../../Styles/Assets/logo henry black.png";
 import axios from "axios";
 import Button from "@material-ui/core/Button";
 import CreateIcon from '@material-ui/icons/Create';
 
+import { loginUser, logoutUser } from "../../Redux/actions/userActions";
+
 function LoginForm() {
-  const [state, setState] = useState({});
+  const [state, setState] = useState({
+    username: '',
+    password: ''
+  });
 
   const handleChange = ({ target }) => {
     const { name, value } = target;
     setState({ ...state, [name]: value });
     console.log(state);
   };
+
+// const userLogged = useSelector(state => state.userLogged);
+const dispatch = useDispatch();
+
+// reset login status
+useEffect(() => {
+    dispatch(logoutUser()); 
+}, []);
+
+function handleSubmit(e) {
+    e.preventDefault();
+    
+    if (username && password) {        
+        dispatch(loginUser(username, password));
+    }
+}
 
   return (
     <div className={styles.container}>
@@ -22,11 +44,11 @@ function LoginForm() {
             <b>Inicia Sesión</b>
           </label>
         </div>
-        <p>Lorem Ipsum is simply Ipsummy text en bt also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recentl</p>
+        <p>Lorem Ipsum is simply Ipsummy text en bt also the leap into electronic typesetting...</p>
         <img src={logoHenry} alt="logoHenry" className={styles.imgLogo} />
       </div>
       <div className={styles.form}>
-        <form>
+        <form onSubmit={handleSubmit}>
           <label>Nombre de usuario</label>
           <input
             name="username"

@@ -1,23 +1,43 @@
-// let userLogged = JSON.parse(localStorage.getItem('user'));
-// const initialState = userLogged ? { loggedIn: true, userLogged } : {};
+let userLogged = JSON.parse(localStorage.getItem('user'));
+const initialState = userLogged ? { loggedIn: true, userLogged } : {};
 
 const initialState = {
-    userList:[]
+    userList:[],    
   };
 
-function getLoggedUserReducer(state = initialState, action) {
+function getLoggedUser(state = initialState, action) {
     switch (action.type) {
         case 'GET_LOGGED_USER':
-            return {
-                loggingIn: true,
-                userLogged: action.user
+            return {                
+                userLogged
             };
         default:
             return state
-        }
     }
+}
 
-function userListReducer (state = initialState, action){    
+function loginUser (state = initialState, action){
+    
+    // switch(action.type) {
+    
+    //     case "LOGIN_USER":      
+    //     return {
+            loggedIn = true;
+            localStorage.setItem('user', JSON.stringify(user));
+    //     };
+    // }
+}
+
+function logoutUser (state = initialState, action){
+    // switch(action.type) {    
+    //     case "LOGOUT_USER":
+            // return {   
+            localStorage.removeItem('user');
+            // }      
+    // }
+}
+
+function userList (state = initialState, action){    
     switch(action.type) {
     
         case 'USER_LIST':      
@@ -28,9 +48,11 @@ function userListReducer (state = initialState, action){
         default: 
         return state;
     }
-    };
+};
 
 export {
-    getLoggedUserReducer,
-    userListReducer
+    getLoggedUser,
+    userList,
+    loginUser,
+    logoutUser
 }
