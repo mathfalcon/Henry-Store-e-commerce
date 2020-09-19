@@ -7,6 +7,9 @@ import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import henryShirt from "../../content/henryShirt.png";
 import axios from "axios";
 import Review from "../Review/Review";
+import { useSelector, useDispatch } from "react-redux";
+import { isLoggedIn } from "../../Redux/actions/authActions";
+
 const useStyles = makeStyles((theme) => ({
   button: {
     margin: theme.spacing(1),
@@ -21,7 +24,16 @@ const ProductCard = () => {
   const [product, setProduct] = useState({});
 
   const classes = useStyles();
-  useEffect(() => getProduct(), []);
+  //Asignando el hook de dispatch a una constante
+  const dispatch = useDispatch();
+
+  //Se asigna el valor de userLogged por destructuring
+  const { userLogged } = useSelector((state) => state.authUser);
+
+  useEffect(() => {
+    dispatch(isLoggedIn());
+    getProduct();
+  }, []);
 
   const getProduct = () => {
     fetch(`http://localhost:3100/products/${id}`)
@@ -31,14 +43,16 @@ const ProductCard = () => {
   };
 
   const handleAddToCart = (e) => {
-    axios({
-      method: "post",
-      url: "http://localhost:3100/users/1/cart", //cuando se cree el sistema de autentificacion el "1" deberia ser reemplazado por el id del usuario
-      data: {
-        idProducto: product.id,
-        amount: 1,
-      },
-    });
+    if (userLogged) {
+      axios({
+        method: "post",
+        url: `http://localhost:3100/users/${userLogged.id}/cart`, //cuando se cree el sistema de autentificacion el "1" deberia ser reemplazado por el id del usuario
+        data: {
+          idProducto: product.id,
+          amount: 1,
+        },
+      });
+    }
   };
 
   return (
@@ -66,7 +80,7 @@ const ProductCard = () => {
           </Button>
         </div>
       </div>
-      <Review product={product}/>
+      <Review product={product} />
     </div>
   );
 };

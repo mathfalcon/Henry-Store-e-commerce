@@ -22,7 +22,6 @@ function SignUp() {
   }
 
   const handleSend = () => {      
-
       axios({
         method: "post",
         url: "http://localhost:3100/users/create",
@@ -31,6 +30,7 @@ function SignUp() {
           username: state.username,
           email: state.email,
           role: state.role,
+          password: state.password
         },
       })
         .then(() => {

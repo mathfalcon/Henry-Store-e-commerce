@@ -6,33 +6,38 @@ import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
+import { useSelector } from "react-redux";
 
 function Cart() {
   const [orders, setOrders] = useState([]);
   const [totalPrice, setTotal] = useState(0);
+
+  //Asignando el hook de dispatch a una constante
+  //Se asigna el valor de userLogged por destructuring
+  const {userLogged} = useSelector((state) => state.authUser);
+
   useEffect(() => {
-    getOrders();
-  }, []);
+    if(userLogged.id) getOrders();
+  }, [userLogged]);
 
-  //en un futuro cuando se implemente la autenticacion, se haria un fetch segun el id del usuario para traer sus
-  //ordenes
   const getOrders = () => {
-    fetch("http://localhost:3100/orders/products/1")
-      .then((data) => data.json())
-      .then((data) => {
-        setOrders(data[0]);
-        let total = 0;
-        data[0].products.forEach((e) => (total += e.price * e.amount.amount));
-        setTotal(total);
-      })
-      .catch((err) => console.log(err));
+    axios.get(`http://localhost:3100/users/${userLogged.id}/orders`).then((response) => { // Looks for users' orders
+      const activeOrder = response.data.find((e) => e.state = 'active');
+      axios.get(`http://localhost:3100/orders/products/${activeOrder.id}`)  //Looks for the information of the active order
+        .then((data) => {
+          setOrders(data.data[0]);
+          let total = 0;
+          data.data[0].products.forEach((e) => (total += e.price * e.amount.amount));
+          setTotal(total);
+        })
+        .catch((err) => console.log(err));
+    });
   };
-
   const handleRemoveCart = (id) => {
-    console.log(orders.id);
+    console.log(orders);
     axios({
       method: "delete",
-      url: `http://localhost:3100/users/${orders.id}`, //cuando se cree el sistema de autentificacion el "1" deberia ser reemplazado por el id del usuario
+      url: `http://localhost:3100/users/${orders.id}`,
       data: {
         product: id,
       },
@@ -43,7 +48,7 @@ function Cart() {
     orders.products.forEach((e) => {
       axios({
         method: "delete",
-        url: `http://localhost:3100/users/${orders.id}`, //cuando se cree el sistema de autentificacion el "1" deberia ser reemplazado por el id del usuario
+        url: `http://localhost:3100/users/${orders.id}`, 
         data: {
           product: e.id,
         },
@@ -52,10 +57,9 @@ function Cart() {
   };
 
   const handleAddQty = (productId) => {
-    console.log(orders);
     axios({
-      method: "put",
-      url: `http://localhost:3100/users/${orders.id}/cart`, //cuando se cree el sistema de autentificacion el "1" deberia ser reemplazado por el id del usuario
+      method: "put", 
+      url: `http://localhost:3100/users/${userLogged.id}/cart`, 
       data: {
         productId: productId,
         orderId: orders.id,
@@ -63,10 +67,11 @@ function Cart() {
       },
     }).then((data) => getOrders());
   };
+
   const handleRemoveQty = (productId) => {
     axios({
       method: "put",
-      url: `http://localhost:3100/users/${orders.id}/cart`, //cuando se cree el sistema de autentificacion el "1" deberia ser reemplazado por el id del usuario
+      url: `http://localhost:3100/users/${userLogged.id}/cart`, //cuando se cree el sistema de autentificacion el "1" deberia ser reemplazado por el id del usuario
       data: {
         productId: productId,
         orderId: orders.id,
@@ -104,7 +109,7 @@ function Cart() {
                         onClick={(e) => handleRemoveQty(order.id)}
                         aria-label="add"
                       >
-                        <RemoveIcon className={styles.iconAddRemove}/>
+                        <RemoveIcon className={styles.iconAddRemove} />
                       </IconButton>
                     )}
                   </td>

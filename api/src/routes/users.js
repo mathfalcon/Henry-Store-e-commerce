@@ -34,6 +34,7 @@ server.put("/update/:id", (req, res, next) => {
 
 // Ruta para crear un usuario
 server.post("/create", (req, res, next) => {
+  if(!req.body.role) req.body.role = 'client';
   Users.findOrCreate({
     where: {
       name: req.body.name,
@@ -60,9 +61,10 @@ server.post("/:idUser/cart", (req, res, next) => {
 
   //hay que editarla, deberia crear una orden con status created, la order line deberia filtrar las ordenes de un usuario y si encuentra una que este
   // 'activa' deberia agregar orderline a esa orden, en este caso la ordenline se crea al crear la orden, no cumple el proposito de una orden muchas orderlines.
-
+  
   const { idUser } = req.params;
   const { idProducto, amount } = req.body;
+  
   Order.findAll({
     where: {
       userId: idUser,
@@ -192,7 +194,6 @@ server.get("/:userId/orders", (req, res, next) => {
 
 server.delete("/delete/:id", (req, res, next) => {
   const idUser = req.params.id;
-  console.log(idUser)
   Users.destroy({ where: { id: idUser } })
     .then((users) => {
       if (users > 0) {
