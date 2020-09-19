@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import styles from "../../Styles/loginForm.module.css";
 import logoHenry from "../../Styles/Assets/logo henry black.png";
 import axios from "axios";
 import Button from "@material-ui/core/Button";
 
+import { loginUser, logoutUser } from "../../Redux/actions/userActions";
+
 function LoginForm() {
-  const [state, setState] = useState({});
+  const [state, setState] = useState({
+    username: '',
+    password: ''
+  });
 
   const handleChange = ({ target }) => {
     const { name, value } = target;
@@ -27,6 +33,22 @@ function LoginForm() {
       }
     });
   };
+
+// const userLogged = useSelector(state => state.userLogged);
+const dispatch = useDispatch();
+
+// reset login status
+useEffect(() => {
+    dispatch(logoutUser()); 
+}, []);
+
+function handleSubmit(e) {
+    e.preventDefault();
+    
+    if (username && password) {        
+        dispatch(loginUser(username, password));
+    }
+}
 
   return (
     <div className={styles.container}>

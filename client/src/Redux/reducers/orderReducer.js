@@ -2,7 +2,7 @@ const initialState = {
     orderList:[]
   };
   
-  function orderListReducer (state = initialState, action){    
+  function orderList (state = initialState, action){    
     switch(action.type) {
   
       case 'ORDER_LIST':      
@@ -14,5 +14,6 @@ const initialState = {
         return state;
     }
   };
+
 
 export default orderListReducer;

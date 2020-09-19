@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import NavBar from "../../NavBar/navBar"
 import styles from "../../../Styles/searchBar.module.css";
 import logo from "../../../content/logo.png";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,6 +12,9 @@ import { isLoggedIn, logOutUser } from "../../../Redux/actions/authActions";
 
 export default function SearchBar(props) {
   const [value, searchValue] = useState("");
+
+  const userLogged = true;
+
   document.title = "Henry Store";
   const [logOut, setLogOut] = useState(false);
 
@@ -34,7 +38,7 @@ export default function SearchBar(props) {
         onSubmit={(e) => {
           e.preventDefault();
           props.handleSearch(value);
-        }}>
+        }}>          
         <input
           className={styles.inputForm}
           placeholder="Busca un producto..."
@@ -56,7 +60,9 @@ export default function SearchBar(props) {
       {!loggedIn && <Link to="/sign-up" className="nav-item nav-link">Registrarse</Link>}
       {!loggedIn && <Link to="/login" className="nav-item nav-link">Iniciar Sesión</Link>}
       <Link to="/user/cart" className="nav-item nav-link">Carrito</Link>
-
+      <div className={styles.menuNav}>
+        <NavBar />
+      </div>
     </div>
   );
 }

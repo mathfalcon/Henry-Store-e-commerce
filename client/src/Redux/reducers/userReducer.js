@@ -1,5 +1,5 @@
-// let userLogged = JSON.parse(localStorage.getItem('user'));
-// const initialState = userLogged ? { loggedIn: true, userLogged } : {};
+let userLogged = JSON.parse(localStorage.getItem('user'));
+const initialState = userLogged ? { loggedIn: true, userLogged } : {};
 
 const initialState = {
   userList: [],
