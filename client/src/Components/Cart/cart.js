@@ -16,6 +16,21 @@ function Cart() {
   //Se asigna el valor de userLogged por destructuring
   const {userLogged} = useSelector((state) => state.authUser);
 
+  //carrito sin estar logeado
+  useEffect(() => {
+    sumTotal();
+    localStorage.setItem("Cart", JSON.stringify(orders.products));
+  }, [orders]);
+
+  const sumTotal = function () {
+    let suma = 0;
+    orders.products.forEach((prod) => {
+      var stotal = prod.quantity * prod.price;
+      suma += stotal;
+    });
+    setTotal(suma);
+  };
+
   useEffect(() => {
     if(userLogged.id) getOrders();
   }, [userLogged]);
