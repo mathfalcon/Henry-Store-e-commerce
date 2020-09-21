@@ -1,10 +1,10 @@
 const initialState = {
-    orderList:[]
+    orderList:[],
+    totalOrder:[]
   };
   
-  function orderList (state = initialState, action){    
-    switch(action.type) {
-  
+  function orderListReducer (state = initialState, action){    
+    switch(action.type) {      
       case 'ORDER_LIST':      
         return {
           ...state,
@@ -15,5 +15,19 @@ const initialState = {
     }
   };
 
+  function totalOrderReducer (state = initialState, action){
+    switch(action.type) {  
+      case 'TOTAL_ORDER':        
+        let total = 0;
+        const lineOrder = action.payload[0].products;        
+        lineOrder.forEach( line => (total += line.price * line.amount.amount));        
+        return {
+          ...state,
+          totalOrder: state.totalOrder.concat(total)
+        };
+      default: 
+       return state;      
+    }
+  }  
 
-export default orderList;
+export {orderListReducer, totalOrderReducer};
