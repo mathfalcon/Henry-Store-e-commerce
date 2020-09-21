@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styles from "../../Styles/productDetail.module.css";
 import Button from "@material-ui/core/Button";
-import Chip from '@material-ui/core/Chip';
 import { makeStyles } from "@material-ui/core/styles";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import henryShirt from "../../content/henryShirt.png";
@@ -13,7 +12,8 @@ import { isLoggedIn } from "../../Redux/actions/authActions";
 
 const useStyles = makeStyles((theme) => ({
   button: {
-    backgroundColor: '#ffff5a',
+    margin: theme.spacing(1),
+    backgroundColor: "white",
     height: "50px",
     width: "auto",
   },
@@ -41,6 +41,7 @@ const ProductCard = () => {
       .then((product) => setProduct(product))
       .catch((err) => console.log(err));
   };
+
   const handleAddToCart = (e) => {
     if (userLogged) {
       axios({
@@ -55,41 +56,31 @@ const ProductCard = () => {
   };
 
   return (
-    <div className={styles.container}>
-      <div className={styles.divCard}>
-        <div className={styles.mainInfo}>
-          <div className={styles.imgBx}>
-            <img src={henryShirt} alt="Henry Shirt" />
-          </div>
-          <div className={styles.divButtons}>
-            <span>
-              <p>{product.name}</p>
-            </span>
-            <p>${product.price}</p>
-            <div className={styles.chipDiv}>
-             {product.categories && product.categories.map(e => <Chip variant="outlined" color="primary" label={e.name} className={styles.chip} title={e.description}/>)}
-            </div>
-            <Button
-              variant="contained"
-              style={{width: '80%',marginTop: '10px'}}
-              onClick={(e) => handleAddToCart(e)}
-              href="http://localhost:3000/user/cart/"
-              className={classes.button}
-              startIcon={<AddShoppingCartIcon />}
-            >
-              Comprar
-            </Button>
-          </div>
+    <div className={styles.divCard}>
+      <h2>{product.name}</h2>
+      <div className={styles.divContent}>
+        <div className={styles.divDescription}>
+          <p>DESCRIPCIÓN:</p>
+          <p>{product.description}</p>
+          <p>PRECIO:</p>
+          <p>${product.price}</p>
         </div>
-        <div className={styles.divContent}>
-          <div className={styles.divDescription}>
-            <p>{product.description}</p>
-          </div>
+        <div className={styles.imgBx}>
+          <img src={henryShirt} alt="Henry Shirt" />
         </div>
-        <div className={styles.reviewsDiv}>
-          <Review product={product} />
+        <div className={styles.divButtons}>
+          <Button
+            variant="contained"
+            onClick={(e) => handleAddToCart(e)}
+            href="http://localhost:3000/user/cart/"
+            className={classes.button}
+            startIcon={<AddShoppingCartIcon />}
+          >
+            Comprar
+          </Button>
         </div>
       </div>
+      <Review product={product} />
     </div>
   );
 };

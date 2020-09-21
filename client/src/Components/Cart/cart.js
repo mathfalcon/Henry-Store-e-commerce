@@ -16,21 +16,6 @@ function Cart() {
   //Se asigna el valor de userLogged por destructuring
   const {userLogged} = useSelector((state) => state.authUser);
 
-  //carrito sin estar logeado
-  useEffect(() => {
-    sumTotal();
-    localStorage.setItem("Cart", JSON.stringify(orders.products));
-  }, [orders]);
-
-  const sumTotal = function () {
-    let suma = 0;
-    orders.products.forEach((prod) => {
-      var stotal = prod.quantity * prod.price;
-      suma += stotal;
-    });
-    setTotal(suma);
-  };
-
   useEffect(() => {
     if(userLogged.id) getOrders();
   }, [userLogged]);
@@ -105,10 +90,10 @@ function Cart() {
               <tbody key={index}>
                 <tr>
                   {/* <td>Imagen</td> */}
-                  <td style={{color: "white"}}>{order.name}</td>
-                  <td style={{color: "white"}}>{order.description}</td>
-                  <td style={{color: "white"}}>Cantidad a comprar: {order.amount.amount}</td>
-                  <td style={{color: "white"}}>
+                  <td>{order.name}</td>
+                  <td>{order.description}</td>
+                  <td>Cantidad a comprar: {order.amount.amount}</td>
+                  <td>
                     {order.amount.amount > -1 && (
                       <IconButton
                         className={styles.buttonsAddRemove}
@@ -128,7 +113,7 @@ function Cart() {
                       </IconButton>
                     )}
                   </td>
-                  <td style={{color: "white"}}>${order.price}</td>
+                  <td>${order.price}</td>
                   <a href="#">
                     <CancelIcon
                       style={{ color: "white", marginTop: "12px" }}

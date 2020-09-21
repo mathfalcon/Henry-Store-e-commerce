@@ -118,7 +118,7 @@ function ProductUpdate(props) {
       })
       .then(() => {
         alert("El producto se ha actualizado con éxito");
-        window.location.href = "http://localhost:3000/product/admin/product-table";
+        window.location.href = "http://localhost:3000/product/admin";
       })
       .catch((err) => console.log(err));
     setState({ ...state, name: "", description: "", price: "", stock: "" });
