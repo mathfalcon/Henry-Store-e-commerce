@@ -8,13 +8,14 @@ server.get("/", (req, res, next) => {
   if (!status) {
     Order.findAll({
       include: Users,
+      paranoid: true
     })
       .then((orders) => {
         res.status(200).send(orders);
       })
       .catch(next);
   } else {
-    Order.findAll({ where: { state: status } })
+    Order.findAll({ where: { state: status }, paranoid: false })
       .then((orders) => {
         res.status(200).send(orders);
       })

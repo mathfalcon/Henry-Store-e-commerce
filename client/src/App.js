@@ -18,6 +18,8 @@ import SignUp from "../src/Components/User/signUp";
 import UserList from "../src/Components/User/UserList";
 import { PrivateRoute } from "./Components/PrivateRoute/PrivateRoute";
 import { useSelector } from "react-redux";
+import ProductList from "./Components/ProductList/productList";
+import CategoryList from "./Components/CategoryList/categoryList";
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -99,6 +101,18 @@ function App() {
         path="/product/admin/categories/update"
         userData={userLogged}
         component={CategoryUpdate}
+      />
+      <PrivateRoute
+        exact
+        path="/product/admin/product-table"
+        userData={userLogged}
+        component={ProductList}
+      />
+      <PrivateRoute
+        exact
+        path="/product/admin/category-table"
+        userData={userLogged}
+        component={CategoryList}
       />
     </BrowserRouter>
   );
