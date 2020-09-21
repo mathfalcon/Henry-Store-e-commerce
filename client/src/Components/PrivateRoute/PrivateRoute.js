@@ -7,7 +7,6 @@ import { loadState } from "../../Local-Storage/localStorage";
 function PrivateRoute({ component: Component, ...rest }) {
 
     const userLogged = loadState().authUser
-    console.log(userLogged);
     return (
         <Route {...rest} render={props => {
             // const user = accountService.userValue;

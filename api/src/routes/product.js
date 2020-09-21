@@ -4,7 +4,9 @@ const { Op } = require("sequelize");
 
 // Busca todos los productos y los devuelve en un array
 server.get("/", (req, res, next) => {
-  Product.findAll()
+  Product.findAll({
+    include: Categories
+  })
     .then((products) => {
       res.status(200).send(products);
     })
@@ -14,8 +16,15 @@ server.get("/", (req, res, next) => {
 
 //Trae los detalles de un producto segun su Id
 server.get("/:idProducto", (req, res, next) => {
-  Product.findByPk(req.params.idProducto)
-    .then((producto) => res.send(producto))
+  Product.findOne({
+    where: {
+      id: req.params.idProducto
+    },
+    include: Categories
+  })
+    .then((producto) => {
+      
+      res.send(producto)})
     .catch(next);
 });
 

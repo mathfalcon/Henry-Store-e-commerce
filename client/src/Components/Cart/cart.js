@@ -7,6 +7,7 @@ import IconButton from "@material-ui/core/IconButton";
 import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
 import { useSelector } from "react-redux";
+import { Redirect } from "react-router-dom";
 
 function Cart() {
   const [orders, setOrders] = useState([]);
@@ -82,6 +83,7 @@ function Cart() {
 
   return (
     <div className={styles.title}>
+      {!userLogged.id && <Redirect to='/guest/cart'/>}
       <h1>ID de la orden: {orders.id}</h1>
       <div className={styles.sectionTable}>
         <table className={styles.cartTable}>
@@ -90,10 +92,10 @@ function Cart() {
               <tbody key={index}>
                 <tr>
                   {/* <td>Imagen</td> */}
-                  <td>{order.name}</td>
-                  <td>{order.description}</td>
-                  <td>Cantidad a comprar: {order.amount.amount}</td>
-                  <td>
+                  <td style={{color: "white"}}>{order.name}</td>
+                  <td style={{color: "white"}}>{order.description}</td>
+                  <td style={{color: "white"}}>Cantidad a comprar: {order.amount.amount}</td>
+                  <td style={{color: "white"}}>
                     {order.amount.amount > -1 && (
                       <IconButton
                         className={styles.buttonsAddRemove}
@@ -113,7 +115,7 @@ function Cart() {
                       </IconButton>
                     )}
                   </td>
-                  <td>${order.price}</td>
+                  <td style={{color: "white"}}>${order.price}</td>
                   <a href="#">
                     <CancelIcon
                       style={{ color: "white", marginTop: "12px" }}

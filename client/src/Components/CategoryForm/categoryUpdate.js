@@ -25,7 +25,7 @@ function CategoryUpdate() {
     })
       .then(() => {
         alert(`La categoria ${body.name} se actualizó con éxito.`);
-        window.location.href = ("http://localhost:3000/product/admin")
+        window.location.href = ("http://localhost:3000/product/admin/category-table")
       })
       .catch((err) => console.log(err));
     setState({ name: "", description: "" });

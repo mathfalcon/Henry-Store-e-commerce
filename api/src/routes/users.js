@@ -41,6 +41,7 @@ server.post("/create", (req, res, next) => {
       username: req.body.username,
       email: req.body.email,
       role: req.body.role,
+      password: req.body.password
     },
   })
     .then((user) => {
