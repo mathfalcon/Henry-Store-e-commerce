@@ -17,7 +17,6 @@ export default function SearchBar(props) {
   const { loggedIn } = useSelector((state) => state.authUser);
   const { userLogged } = useSelector((state) => state.authUser);
 
-  console.log(useSelector((state) => state.authUser));
   const dispatch = useDispatch();
   useEffect(() => dispatch(isLoggedIn()), []);
 
@@ -25,6 +24,7 @@ export default function SearchBar(props) {
     dispatch(logOutUser());
     window.location.href = "/";
   };
+
   return (
     <div className={styles.navBar}>
       <span className={styles.logoSpan}>

@@ -48,8 +48,6 @@ export default function Review({ product }) {
   const classes = useStyles();
 
   const { userLogged } = useSelector((state) => state.authUser);
-  console.log(valueNew);
-  console.log(userLogged);
 
   //la Id del producto deberia llegar como props o como parametro
   //const id = product.id

@@ -7,6 +7,7 @@ import IconButton from "@material-ui/core/IconButton";
 import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
 import { useSelector } from "react-redux";
+import { Redirect } from "react-router-dom";
 
 function Cart() {
   const [orders, setOrders] = useState([]);
@@ -15,21 +16,6 @@ function Cart() {
   //Asignando el hook de dispatch a una constante
   //Se asigna el valor de userLogged por destructuring
   const {userLogged} = useSelector((state) => state.authUser);
-
-  //carrito sin estar logeado
-  useEffect(() => {
-    sumTotal();
-    localStorage.setItem("Cart", JSON.stringify(orders.products));
-  }, [orders]);
-
-  const sumTotal = function () {
-    let suma = 0;
-    orders.products.forEach((prod) => {
-      var stotal = prod.quantity * prod.price;
-      suma += stotal;
-    });
-    setTotal(suma);
-  };
 
   useEffect(() => {
     if(userLogged.id) getOrders();
@@ -97,6 +83,7 @@ function Cart() {
 
   return (
     <div className={styles.title}>
+      {!userLogged.id && <Redirect to='/guest/cart'/>}
       <h1>ID de la orden: {orders.id}</h1>
       <div className={styles.sectionTable}>
         <table className={styles.cartTable}>

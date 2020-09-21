@@ -20,6 +20,7 @@ import { PrivateRoute } from "./Components/PrivateRoute/PrivateRoute";
 import { useSelector } from "react-redux";
 import ProductList from "./Components/ProductList/productList";
 import CategoryList from "./Components/CategoryList/categoryList";
+import GuestCart from "./Components/Cart/guestcart";
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -59,6 +60,7 @@ function App() {
       <Route exact path="/login" render={() => <LoginForm />} />
       <Route path="/product/detailed/:id" render={() => <ProductCard />} />
       <Route exact path="/sign-up" render={() => <SignUp />} />
+      <Route exact path="/guest/cart" render={() => <GuestCart />} />
       {/* RUTAS PRIVADAS */}
       <PrivateRoute
         exact
