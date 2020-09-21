@@ -42,9 +42,11 @@ sequelize.define("users", {
               .digest('hex'),
           );
          },
-      },    
+      },   
       salt: {
         type: DataTypes.STRING,
       },
+    },{
+      paranoid: true,
     });
 }

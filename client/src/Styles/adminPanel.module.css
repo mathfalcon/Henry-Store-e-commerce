@@ -8,9 +8,8 @@
 .container h2 {
     color: white;
     text-align: center;
-    font-size: 4em;
+    font-size: 2.8em;
     margin-bottom: 0;
-    margin-top: 1em;
 }
 .container h3 {
     margin: .4em;
@@ -62,7 +61,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #fffd74;
+    background-color: #ffff8e;
     box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 10px;
 }
@@ -73,27 +72,33 @@
     font-size: 1.05em;
 }
 .GestorCard{
-    padding: 1em;
-    padding-bottom: 2em;
+    padding: 2em;
     margin: 2em auto;
     width: 55%;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
-    background-color: #FFFF01;
+    background: rgba(238,226,68,1);
+    background: -moz-linear-gradient(left, rgba(238,226,68,1) 0%, rgba(229,230,0,1) 100%);
+    background: -webkit-gradient(left top, right top, color-stop(0%, rgba(238,226,68,1)), color-stop(100%, rgba(229,230,0,1)));
+    background: -webkit-linear-gradient(left, rgba(238,226,68,1) 0%, rgba(229,230,0,1) 100%);
+    background: -o-linear-gradient(left, rgba(238,226,68,1) 0%, rgba(229,230,0,1) 100%);
+    background: -ms-linear-gradient(left, rgba(238,226,68,1) 0%, rgba(229,230,0,1) 100%);
+    background: linear-gradient(to right, rgba(238,226,68,1) 0%, rgba(229,230,0,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eee244', endColorstr='#e5e600', GradientType=1 );
     box-shadow: 6px 6px 6px rgba(77, 77, 77, 0.514);
     transition: all .3s;
 }
 .GestorCard:hover {
-    padding: 2em;
+    padding: 3em;
 }
 
 .productDescriptionAdmin{
     max-width: 35%;
 ;
 }
-@media screen and (min-width:768px) {
+@media screen and (max-width:768px) {
 
     .buttons{        
         flex: 0 2 35%;
@@ -104,5 +109,24 @@
     }
     .priceStock input{        
         margin-top: 1.5rem;
+    }
+    .GestorCard{
+        flex-direction: column;
+    } 
+    .GestorCard h3{
+        text-align: center;
+    }
+    .GestorCard .CreateButton{
+        width: 50%;
+        padding: 8px;
+        font-size: 80%;
+        text-align: center;
     }    
+    .container h2 {
+        color: white;
+        text-align: center;
+        font-size: 2em;
+        margin-bottom: 0;
+        margin-top: 1em;
+    }
 }

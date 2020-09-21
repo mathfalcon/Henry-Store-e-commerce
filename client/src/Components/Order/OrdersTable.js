@@ -43,7 +43,7 @@ function OrdersTable() {
     })
   };
 
-  // console.log("orderlist", orderList);
+  console.log("orderlist", orderList);
 
   return (
     <div className={styles.content}>
