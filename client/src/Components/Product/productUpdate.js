@@ -40,11 +40,11 @@ const MenuProps = {
   },
 };
 
-function getStyles(name, personName, theme) {
+function getStyles(name, updateCat, theme) {
   return {
-    backgroundColor: personName.indexOf(name) === -1 ? "white" : "#dddd37",
+    backgroundColor: updateCat.indexOf(name) === -1 ? "white" : "#dddd37",
     fontWeight:
-      personName.indexOf(name) === -1
+    updateCat.indexOf(name) === -1
         ? theme.typography.fontWeightRegular
         : theme.typography.fontWeightMedium,
   };
@@ -64,10 +64,11 @@ function ProductUpdate(props) {
   const [toUpdate, setUpdate] = useState({});
   const [state, setState] = useState(toUpdate);
   const theme = useTheme();
-  const [personName, setPersonName] = useState([]);
+  const [actualCat, setActualCat] = useState([]);
+  const [updateCat, setUpdateCat] = useState([]);
 
-  const handleChanges = (event) => {
-    setPersonName(event.target.value);
+  const handleSelect = (event) => {
+    setUpdateCat(event.target.value);
   };
 
   const id = window.location.search.split("=").pop();
@@ -85,10 +86,18 @@ function ProductUpdate(props) {
       .then((data) => setUpdate(data));
   }, []);
 
+  useEffect(() => {
+    if ( toUpdate.categories !== undefined ) {
+      var ids = toUpdate.categories.map( cat => cat.id );      
+      setActualCat(ids);
+      setUpdateCat(ids);  
+    }
+  },[toUpdate]);
+
   const handleChange = ({ target }) => {
     const { name, value } = target;
     setState({ ...state, [name]: value });
-  };
+  };          
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -98,20 +107,28 @@ function ProductUpdate(props) {
     if (!state.price) body.price = toUpdate.price;
     if (!state.stock) body.stock = toUpdate.stock;
 
-    console.log(body);
+    let borrar = actualCat.filter( cat => !(updateCat.includes(cat)));
+    let actualizar = updateCat.filter( cat => !(actualCat.includes(cat)));    
 
     axios({
       method: "put",
       url: `http://localhost:3100/products/${toUpdate.id}/update`,
       data: body,
     })
-      .then((data) => {
-        console.log(data);
-        if (personName.length > 0) {
-          personName.forEach((e) => {
+      .then((data) => {        
+        if (actualizar.length > 0) {
+          actualizar.forEach((e) => {
             axios({
               method: "post",
               url: `http://localhost:3100/products/${toUpdate.id}/addCategory/${e}`,
+            });
+          });
+        }
+        if (borrar.length > 0) {
+          borrar.forEach((e) => {
+            axios({
+              method: "delete",
+              url: `http://localhost:3100/products/${toUpdate.id}/deleteCategory/${e}`,
             });
           });
         }
@@ -207,8 +224,8 @@ function ProductUpdate(props) {
                   labelId="demo-mutiple-name-label"
                   id="demo-mutiple-name"
                   multiple
-                  value={personName}
-                  onChange={handleChanges}
+                  value={updateCat}
+                  onChange={handleSelect}
                   input={<Input />}
                   MenuProps={MenuProps}
                 >
@@ -216,7 +233,7 @@ function ProductUpdate(props) {
                     <MenuItem
                       key={index}
                       value={name.id}
-                      style={getStyles(name.id, personName, theme)}
+                      style={getStyles(name.id, updateCat, theme)}
                     >
                       {name.name}
                     </MenuItem>

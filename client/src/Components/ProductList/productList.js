@@ -54,8 +54,7 @@ function ProductList() {
     setSnack(false);
   };
 
-  const handleDelete = (id) => {
-    console.log(id);
+  const handleDelete = (id) => {    
     fetch(`http://localhost:3100/products/${id}/delete`, {
       method: "DELETE",
       headers: {
@@ -72,9 +71,7 @@ function ProductList() {
   const handleUpdateProduct = (id) => {
     setProduct(id);
     setRedirectProduct(true);
-  };
-
-  console.log(products);
+  };  
 
   return (
     <Fragment>
