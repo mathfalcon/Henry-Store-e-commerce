@@ -6,14 +6,12 @@ import styles from "../../Styles/ordersTable.module.css";
 function OrderRow({order: {id, createdAt, user, state}}) {
   
   const { totalOrder } = useSelector((state) => state.totalOrder);  
-  
-  console.log('id',id);
-  console.log('totalOrder',totalOrder);
-  const dispatch = useDispatch();
+
+  const dispatch = useDispatch()
 
   useEffect(() => {        
     dispatch(getTotal(id))  
-  }, []);    
+  }, []);
   
     return (
         <tr> 
@@ -26,4 +24,5 @@ function OrderRow({order: {id, createdAt, user, state}}) {
         </tr>        
     );            
   }
+
 export default OrderRow;
