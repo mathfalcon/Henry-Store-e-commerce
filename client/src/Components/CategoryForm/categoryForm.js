@@ -23,7 +23,8 @@ function CategoryForm() {
     if(name === "" || description === ""){
       setError(true);      
     return;
-  }    
+  }
+  setError(false);
 
 if( !error ){  
     axios({
@@ -37,8 +38,7 @@ if( !error ){
       alert('La categoría se ha creado con éxito')
       window.location.href = ("http://localhost:3000/product/admin");})
       .catch((err) => console.log(err));
-      setState({name: "", description: ""});
-      setError(false);
+      setState({name: "", description: ""});      
   };  
 } 
     

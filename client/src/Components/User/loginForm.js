@@ -23,8 +23,7 @@ function LoginForm() {
         password: state.password,
       },
       withCredentials: true,
-    }).then((data) => {
-      console.log(data)
+    }).then((data) => {      
       if (data.data.success) {
         window.location.href = "http://localhost:3000/user/cart";
       } else {
