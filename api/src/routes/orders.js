@@ -1,18 +1,21 @@
 const server = require("express").Router();
-const { Order, OrderLine, Product } = require("../db.js");
+const { Order, OrderLine, Product, Users } = require("../db.js");
 
 // Busca todas las ordenes y los devuelve en un array y filtra si posee query con status
 //no se puede testear por que no existe ruta para crear ordenes
 server.get("/", (req, res, next) => {
   var status = req.query.status;
   if (!status) {
-    Order.findAll()
+    Order.findAll({
+      include: Users,
+      paranoid: true
+    })
       .then((orders) => {
         res.status(200).send(orders);
       })
       .catch(next);
   } else {
-    Order.findAll({ where: { state: status } })
+    Order.findAll({ where: { state: status }, paranoid: false })
       .then((orders) => {
         res.status(200).send(orders);
       })

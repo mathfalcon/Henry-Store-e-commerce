@@ -1,5 +1,5 @@
 const server = require("express").Router();
-const { Reviews, Order , Product} = require("../db.js");
+const { Reviews, Users , Product} = require("../db.js");
 
 // Busca todas las review y las devuelve en un array
 server.get("/", (req, res, next) => {
@@ -68,7 +68,11 @@ server.get("/:idProduct", (req, res, next) => {
   Reviews.findAll({
     where: {
       productId: idProduct,
-    }
+    },
+    include: [{
+      model: Users,
+      as: 'author'
+    }]
   })
     .then((data) => res.status(200).send(data))
     .catch(next);

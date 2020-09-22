@@ -1,17 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
 import styles from "../../Styles/loginForm.module.css";
 import logoHenry from "../../Styles/Assets/logo henry black.png";
 import axios from "axios";
 import Button from "@material-ui/core/Button";
 
-import { loginUser, logoutUser } from "../../Redux/actions/userActions";
-
 function LoginForm() {
-  const [state, setState] = useState({
-    username: '',
-    password: ''
-  });
+  const [state, setState] = useState({});
+
+
 
   const handleChange = ({ target }) => {
     const { name, value } = target;
@@ -27,42 +23,26 @@ function LoginForm() {
         password: state.password,
       },
       withCredentials: true,
-    }).then((data) => {
+    }).then((data) => {      
       if (data.data.success) {
         window.location.href = "http://localhost:3000/user/cart";
+      } else {
+        document.getElementById('error-message').innerHTML = data.data.info.message;
+        document.getElementById('error-message').style.color = 'red'
       }
     });
   };
-
-// const userLogged = useSelector(state => state.userLogged);
-const dispatch = useDispatch();
-
-// reset login status
-useEffect(() => {
-    dispatch(logoutUser()); 
-}, []);
-
-function handleSubmit(e) {
-    e.preventDefault();
-    
-    if (username && password) {        
-        dispatch(loginUser(username, password));
-    }
-}
 
   return (
     <div className={styles.container}>
       <div className={styles.body}>
         <div>
           <label>
-            <b>INICIAR SESIÓN</b>
+            <b>INICIA SESIÓN</b>
           </label>
         </div>
-        <p>
-          Lorem Ipsum is simply Ipsummy text en bt also the leap into electronic
-          typesetting, remaining essentially unchanged. It was popularised in
-          the 1960s with the release of Letraset sheets containing Lorem Ipsum
-          passages, and more recentl
+        <p id='error-message' style={{fontSize: '1.2em'}}>
+          con tu usuario o contraseña.
         </p>
         <img src={logoHenry} alt="logoHenry" className={styles.imgLogo} />
       </div>

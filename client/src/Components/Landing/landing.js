@@ -11,18 +11,27 @@ export default function Landing() {
   const [selectedCategory, setCategory] = useState("");
 
   useEffect(() => {
-    if (selectedCategory) {
+    setProducts([]);
+    if ( selectedCategory !== "Todas las Categorias" && selectedCategory) {      
       fetch(`http://localhost:3100/categories/category/${selectedCategory}`)
         .then((data) => data.json())
-        .then((data) => setProducts(data.products))
+        .then((data) => { 
+          data.products.forEach((e) => {            
+            if (e.stock > 0){              
+              setProducts((previousState) => previousState.concat(e));
+            }
+          });          
+        })
         .catch((err) => console.log(err));
     } else {
       fetch("http://localhost:3100/products/")
         .then((data) => data.json())
-        .then((data) => {
-          data.forEach((e) => {
-            if (e.stock > 0) allProducts.push(e);
-          });
+        .then((data) => {          
+          data.forEach((e) => {            
+            if (e.stock > 0){              
+              setProducts((previousState) => previousState.concat(e));
+            }
+          });          
         })
         .catch((err) => console.log(err));
     }
@@ -55,9 +64,12 @@ export default function Landing() {
           <ReactSelectMaterialUi
             className={styles.selectCategory}
             value={selectedCategory}
-            options={options}
+            options={options}            
             onChange={handleCategoryChange}
             placeholder="Seleccione una Categoria"
+            SelectProps={{              
+              msgNoOptionsAvailable: "No hay Categorias cargadas"              
+            }}
           />
         </div>
         {allProducts.map((el, index) => (

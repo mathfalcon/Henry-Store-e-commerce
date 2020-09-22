@@ -1,5 +1,5 @@
 import { createStore, applyMiddleware, combineReducers, compose } from "redux";
-import orderListReducer from "../reducers/orderReducer";
+import { orderListReducer, totalOrderReducer } from "../reducers/orderReducer";
 import userListReducer from "../reducers/userReducer";
 import authReducer from "../reducers/authReducer";
 import thunk from "redux-thunk";
@@ -8,6 +8,7 @@ import {throttle} from 'lodash';
 
 const reducer = combineReducers({
   orderList: orderListReducer,
+  totalOrder: totalOrderReducer,
   authUser: authReducer,
   userList: userListReducer,
 });
