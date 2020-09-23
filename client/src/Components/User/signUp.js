@@ -5,8 +5,27 @@ import styles from "../../Styles/signUp.module.css";
 import axios from "axios";
 import Button from "@material-ui/core/Button";
 import CreateIcon from '@material-ui/icons/Create';
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 function SignUp() {
+
+  //Estado para Alerta crear categoria
+  const [openCreate, setOpenCreate] = useState(false);
+
+  //Funciones para control de Alerta crear categoria
+
+  const handleCloseCreate = () => {
+    setOpenCreate(false);
+    window.location.href = "http://localhost:3000/login";
+  };
+
+  //Otros estados
+
   const [state, setState] = useState({ role: "client" });
     
   const { register, errors, getValues, handleSubmit } = useForm({ mode: "onBlur" });
@@ -34,7 +53,7 @@ function SignUp() {
         },
       })
         .then(() => {
-          alert("El usuario se ha creado con éxito");
+          setOpenCreate(true);
         })
         .catch((err) => console.log(err));
       setState({
@@ -164,7 +183,19 @@ function SignUp() {
             </label>
           </div>
         </form>
-
+        <Snackbar
+        open={openCreate}
+        autoHideDuration={7000}
+        onClose={handleCloseCreate}
+        >
+        <Alert
+          onClose={handleCloseCreate}
+          severity="success"
+          style={{ backgroundColor: "#ffff5a", color: "black" }}
+        >
+          El usuario se ha creado con éxito.
+        </Alert>
+      </Snackbar>
       </div>
     </div>
   );
