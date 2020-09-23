@@ -12,6 +12,12 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import { red } from "@material-ui/core/colors";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -51,14 +57,17 @@ function getStyles(name, updateCat, theme) {
 }
 
 function ProductUpdate(props) {
-  /* Categorias de ejemplo */
-  const data = [
-    { Category: "Category1", id: 1 },
-    { Category: "Category2", id: 2 },
-    { Category: "Category3", id: 3 },
-    { Category: "Category4", id: 4 },
-  ];
-  const [options] = useState(data);
+
+  //Estado para Alerta actualizar categoria
+  const [openUpdate, setOpenUpdate] = useState(false);
+
+  //Funciones para control de Alerta actualizar categoria
+
+  const handleCloseUpdate = () => {
+    setOpenUpdate(false);
+    window.location.href = "http://localhost:3000/product/admin/product-table";
+  };
+
   /* Estados */
   const [categories, setCategories] = useState([]);
   const [toUpdate, setUpdate] = useState({});
@@ -134,8 +143,7 @@ function ProductUpdate(props) {
         }
       })
       .then(() => {
-        alert("El producto se ha actualizado con éxito");
-        window.location.href = "http://localhost:3000/product/admin/product-table";
+        setOpenUpdate(true);
       })
       .catch((err) => console.log(err));
     setState({ ...state, name: "", description: "", price: "", stock: "" });
@@ -245,6 +253,19 @@ function ProductUpdate(props) {
           <img className={styles.imgLogo} src={logoText} alt="logoHenry" />
         </div>
       </form>
+      <Snackbar
+        open={openUpdate}
+        autoHideDuration={7000}
+        onClose={handleCloseUpdate}
+      >
+        <Alert
+          onClose={handleCloseUpdate}
+          severity="success"
+          style={{ backgroundColor: "#ffff5a", color: "black" }}
+        >
+          El producto fue actualizado con éxito.
+        </Alert>
+      </Snackbar>
     </div>
   );
 }
