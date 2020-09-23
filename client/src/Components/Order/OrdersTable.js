@@ -2,25 +2,50 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { listOrders } from "../../Redux/actions/orderActions";
 import OrderRow from "./OrderRow";
+import ReactSelectMaterialUi from "react-select-material-ui";
 import styles from "../../Styles/ordersTable.module.css";
 
 function OrdersTable() {
-  
+    
   const { orderList } = useSelector((state) => state.orderList); 
+  const [filterList, setFilterList] = useState();
+  const [filter, setFilter] = useState(false);
   
+  //["inCart", "created","active", "processing", "canceled", "complete"]
+  const options = ["Sin Filtro","active", "inCart", "canceled", "complete"];
+
   const dispatch = useDispatch(); 
-
+  
   useEffect(() => {
-    dispatch(listOrders());     
-  }, []);  
-
-  // {orderList.map((order) => (dispatch(getTotal(order.id))))}  
-
+    dispatch(listOrders());         
+  }, []);
+  
+  const handleState = (selectedState) => {    
+     if ( selectedState === "Sin Filtro" ){
+       setFilter(false);       
+     } else {
+      setFilter(true);
+      let filterList = orderList.filter( order => order.state === selectedState);      
+      return setFilterList(filterList);
+     }     
+  };
+  
   return (    
       <div className={styles.content}>
         <div>
           <h3>Listado de Ordenes</h3>
+
+          <ReactSelectMaterialUi
+            className={styles.selectState}
+            options={options}
+            onChange={handleState}
+            placeholder="Filtrar Estado"
+            SelectProps={{              
+              msgNoOptionsAvailable: "No hay filtros cargados"              
+            }}
+          />
         </div>
+
         <div>
           <table className={styles.table}>
             <thead>
@@ -34,19 +59,20 @@ function OrdersTable() {
               </tr>
             </thead>
             <tbody>
-              {orderList.map((order, index) => {                        
-                return (
-                  <OrderRow order={order} key={index} />
-                  // <tr key={order.id}> 
-                  //   <td>{order.id}</td>
-                  //   <td>{order.createdAt.split("T")[0]}</td>                                       
-                  //   <td>$ {totalOrder}</td>
-                  //   <td>{order.user.email}</td>
-                  //   <td>{order.state}</td>
-                  //   <td>VER PRODUCTOS</td>
-                  // </tr>
-                );
-              })}
+              { filter
+                ?
+                  filterList.map((order, index) => {                        
+                    return (
+                     <OrderRow order={order} key={index} />
+                    );
+                  })
+                :
+                  orderList.map((order, index) => {                        
+                    return (
+                      <OrderRow order={order} key={index} />
+                    );
+                  })
+              }
             </tbody>
           </table>          
         </div>        

@@ -13,6 +13,11 @@
   font-size: 1.5em;
   text-transform: uppercase;
 }
+
+.selectState {
+  width: 50%;  
+}
+
 .table {
   margin: 0.5rem;
   background-color: whitesmoke;
