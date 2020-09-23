@@ -42,13 +42,12 @@ const ProductCard = () => {
       .catch((err) => console.log(err));
   };
 
-  console.log(userLogged);
 
   const handleAddToCart = () => {
     if (userLogged.loggedIn) {
       axios({
         method: "post",
-        url: `http://localhost:3100/users/${userLogged.id}/cart`, //cuando se cree el sistema de autentificacion el "1" deberia ser reemplazado por el id del usuario
+        url: `http://localhost:3100/users/${userLogged.userLogged.id}/cart`, //cuando se cree el sistema de autentificacion el "1" deberia ser reemplazado por el id del usuario
         data: {
           idProducto: product.id,
           amount: 1,
@@ -100,7 +99,7 @@ const ProductCard = () => {
               variant="contained"
               style={{ width: "90%", marginTop: "10px" }}
               onClick={handleAddToCart}
-              href="http://localhost:3000/guest/cart/"
+              href="http://localhost:3000/user/cart/"
               className={classes.button}
               startIcon={<AddShoppingCartIcon />}
             >

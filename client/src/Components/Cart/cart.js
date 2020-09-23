@@ -24,6 +24,7 @@ function Cart() {
   const getOrders = () => {
     axios.get(`http://localhost:3100/users/${userLogged.id}/orders`).then((response) => { // Looks for users' orders
       const activeOrder = response.data.find((e) => e.state = 'active');
+      if(activeOrder){
       axios.get(`http://localhost:3100/orders/products/${activeOrder.id}`)  //Looks for the information of the active order
         .then((data) => {
           setOrders(data.data[0]);
@@ -32,6 +33,7 @@ function Cart() {
           setTotal(total);
         })
         .catch((err) => console.log(err));
+      }
     });
   };
   const handleRemoveCart = (id) => {
@@ -68,7 +70,7 @@ function Cart() {
       },
     }).then((data) => getOrders());
   };
-  console.log(!!userLogged.id)
+  
   const handleRemoveQty = (productId) => {
     axios({
       method: "put",
@@ -87,7 +89,7 @@ function Cart() {
       <h1>ID de la orden: {orders.id}</h1>
       <div className={styles.sectionTable}>
         <table className={styles.cartTable}>
-          {orders.products &&
+          {orders.products && orders.products[0] ?
             orders.products.map((order, index) => (
               <tbody key={index}>
                 <tr>
@@ -126,8 +128,28 @@ function Cart() {
                   </a>
                 </tr>
               </tbody>
-            ))}
+            )) : (
+              <div>
+                <h1 style={{ color: "white" }}>
+                  No tienes ningun producto en el carrito
+                </h1>
+                <Button
+                  variant="contained"
+                  style={{
+                    backgroundColor: "white",
+                    color: "black",
+                    maxWidth: "200px",
+                    marginTop: "15px",
+                    marginBottom: "15px",
+                  }}
+                  href="http://localhost:3000/#section-two"
+                >
+                  Ir al catalogo
+                </Button>
+              </div>
+            )}
         </table>
+        {orders.products && orders.products[0] ?
         <Button
           variant="contained"
           style={{
@@ -139,9 +161,9 @@ function Cart() {
           onClick={handleRemoveAllCart}
         >
           VACIAR CARRITO
-        </Button>
+        </Button> : <h2></h2>}
       </div>
-      <h2>Total: ${totalPrice}</h2>
+      {orders.products && orders.products[0] ? <h2>Total: ${totalPrice}</h2> : <h2></h2>}
     </div>
   );
 }

@@ -14,47 +14,35 @@ function GuestCart() {
   const userLogged = useSelector((state) => state.authUser);
   let [responseData, setResponseData] = useState([]);
 
-  const handleAddQty = useCallback(
-    (productId) => {
-      var storage = JSON.parse(localStorage.getItem("guestCart"));
-      var indexOfProductId = storage.findIndex(
-        (e) => e.productId === productId
-      );
-      storage[indexOfProductId].amount += 1;
-      localStorage.setItem("guestCart", JSON.stringify(storage));
-      window.location.reload();
+  const handleAddQty = useCallback((productId) => {
+    var storage = JSON.parse(localStorage.getItem("guestCart"));
+    var indexOfProductId = storage.findIndex((e) => e.productId === productId);
+    storage[indexOfProductId].amount += 1;
+    localStorage.setItem("guestCart", JSON.stringify(storage));
+    window.location.reload();
 
-      // Por X razon no actualiza el componente tras setear el nuevo estado
-      // setResponseData((previousState) => {
-      //   var array = previousState;
-      //   array[array.findIndex((e) => e.id === productId)].amount += 1;
-      //   return array;
-      // });
+    // Por X razon no actualiza el componente tras setear el nuevo estado
+    // setResponseData((previousState) => {
+    //   var array = previousState;
+    //   array[array.findIndex((e) => e.id === productId)].amount += 1;
+    //   return array;
+    // });
+  }, []);
 
-    },
-    []
-  );
+  const handleRemoveQty = useCallback((productId) => {
+    var storage = JSON.parse(localStorage.getItem("guestCart"));
+    var indexOfProductId = storage.findIndex((e) => e.productId === productId);
+    storage[indexOfProductId].amount -= 1;
+    localStorage.setItem("guestCart", JSON.stringify(storage));
+    window.location.reload();
 
-  const handleRemoveQty = useCallback(
-    (productId) => {
-      var storage = JSON.parse(localStorage.getItem("guestCart"));
-      var indexOfProductId = storage.findIndex(
-        (e) => e.productId === productId
-      );
-      storage[indexOfProductId].amount -= 1;
-      localStorage.setItem("guestCart", JSON.stringify(storage));
-      window.location.reload();
-
-      // Por X razon no actualiza el componente tras setear el nuevo estado
-      // setResponseData((previousState) => {
-      //   var array = previousState;
-      //   array[array.findIndex((e) => e.id === productId)].amount += 1;
-      //   return array;
-      // });
-
-    },
-    []
-  );
+    // Por X razon no actualiza el componente tras setear el nuevo estado
+    // setResponseData((previousState) => {
+    //   var array = previousState;
+    //   array[array.findIndex((e) => e.id === productId)].amount += 1;
+    //   return array;
+    // });
+  }, []);
 
   const fetchData = useCallback(() => {
     JSON.parse(localStorage.getItem("guestCart")).forEach((e) => {
@@ -80,7 +68,6 @@ function GuestCart() {
     if (JSON.parse(localStorage.getItem("guestCart"))) fetchData();
   }, []);
 
-
   const handleRemoveAllCart = () => {
     localStorage.removeItem("guestCart");
     window.location.reload();
@@ -93,7 +80,7 @@ function GuestCart() {
       <h1>Carrito de invitado </h1>
       <div className={styles.sectionTable}>
         <table className={styles.cartTable}>
-          {responseData &&
+          {responseData[0] ? (
             responseData.map((order, index) => (
               <tbody key={index}>
                 <tr>
@@ -134,20 +121,42 @@ function GuestCart() {
                   </a>
                 </tr>
               </tbody>
-            ))}
+            ))
+          ) : (
+            <div>
+              <h1 style={{ color: "white" }}>
+                No tienes ningun producto en el carrito
+              </h1>
+              <Button
+                variant="contained"
+                style={{
+                  backgroundColor: "white",
+                  color: "black",
+                  maxWidth: "200px",
+                  marginTop: "15px",
+                  marginBottom: "15px",
+                }}
+                href="http://localhost:3000/#section-two"
+              >
+                Ir al catalogo
+              </Button>
+            </div>
+          )}
         </table>
-        <Button
-          variant="contained"
-          style={{
-            backgroundColor: "black",
-            color: "white",
-            maxWidth: "200px",
-            marginTop: "15px",
-          }}
-          onClick={handleRemoveAllCart}
-        >
-          VACIAR CARRITO
-        </Button>
+        {responseData[0] && (
+          <Button
+            variant="contained"
+            style={{
+              backgroundColor: "black",
+              color: "white",
+              maxWidth: "200px",
+              marginTop: "15px",
+            }}
+            onClick={handleRemoveAllCart}
+          >
+            VACIAR CARRITO
+          </Button>
+        )}
       </div>
       <h2></h2>
       {/* No lo pude hacer funcionar <h2>Total: ${totalPrice}</h2> */}
