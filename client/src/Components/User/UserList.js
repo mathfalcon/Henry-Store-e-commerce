@@ -59,6 +59,20 @@ function OrdersTable() {
       })
       .catch((err) => console.log(err));
   };
+  
+  const handlePromote = (id) => {
+    fetch(`http://localhost:3100/users/promote/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((data) => {
+        dispatch(listUser());
+        setSnack(true);
+      })
+      .catch((err) => console.log(err));
+  };
 
   return (
     <Fragment>
@@ -86,13 +100,20 @@ function OrdersTable() {
                   <td>{user.username}</td>
                   <td>{user.email}</td>
                   <td>{user.role}</td>
-                  <td style={{ textAlign: "center" }}>
+                  <td style={{ textAlign: "center" , display: "flex" , justifyContent: "space-around"}}>
                     <Button
                       variant="contained"
                       className={styles.buttonDelete}
                       onClick={() => handleClickOpen(user.id)}
                     >
                       BORRAR
+                    </Button>
+                    <Button
+                      variant="contained"
+                      className={styles.buttonDelete}
+                      onClick={() => handlePromote(user.id)}
+                    >
+                      PROMOVER
                     </Button>
                   </td>
                 </tr>
