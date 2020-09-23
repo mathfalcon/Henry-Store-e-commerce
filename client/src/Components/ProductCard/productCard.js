@@ -42,7 +42,7 @@ const ProductCard = () => {
       .catch((err) => console.log(err));
   };
 
-  console.log(userLogged)
+  console.log(userLogged);
 
   const handleAddToCart = () => {
     if (userLogged.loggedIn) {
@@ -55,14 +55,18 @@ const ProductCard = () => {
         },
       });
     } else {
-      console.log('holaa')
       var storage = JSON.parse(localStorage.getItem("guestCart"));
       if (storage == null) {
         storage = [];
       }
 
-      var data = { productId: product.id, amount: 1 };
-      storage.push(data);
+      var doesExist = storage.findIndex((e) => e.productId === product.id);
+      if ( doesExist === -1) {
+        var data = { productId: product.id, amount: 1 };
+        storage.push(data);
+      } else {
+        storage[doesExist].amount += 1;
+      }
 
       localStorage.setItem("guestCart", JSON.stringify(storage));
     }
@@ -94,9 +98,9 @@ const ProductCard = () => {
             </div>
             <Button
               variant="contained"
-              style={{ width: "80%", marginTop: "10px" }}
+              style={{ width: "90%", marginTop: "10px" }}
               onClick={handleAddToCart}
-              // href="http://localhost:3000/user/cart/"
+              href="http://localhost:3000/guest/cart/"
               className={classes.button}
               startIcon={<AddShoppingCartIcon />}
             >

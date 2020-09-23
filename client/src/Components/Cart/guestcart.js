@@ -11,37 +11,86 @@ import { Redirect } from "react-router-dom";
 
 function GuestCart() {
   const [totalPrice, setTotal] = useState(0);
-
   const userLogged = useSelector((state) => state.authUser);
-  const [productsInfo, setProducts] = useState([]);
   let [responseData, setResponseData] = useState([]);
 
+  const handleAddQty = useCallback(
+    (productId) => {
+      var storage = JSON.parse(localStorage.getItem("guestCart"));
+      var indexOfProductId = storage.findIndex(
+        (e) => e.productId === productId
+      );
+      storage[indexOfProductId].amount += 1;
+      localStorage.setItem("guestCart", JSON.stringify(storage));
+      window.location.reload();
+
+      // Por X razon no actualiza el componente tras setear el nuevo estado
+      // setResponseData((previousState) => {
+      //   var array = previousState;
+      //   array[array.findIndex((e) => e.id === productId)].amount += 1;
+      //   return array;
+      // });
+
+    },
+    []
+  );
+
+  const handleRemoveQty = useCallback(
+    (productId) => {
+      var storage = JSON.parse(localStorage.getItem("guestCart"));
+      var indexOfProductId = storage.findIndex(
+        (e) => e.productId === productId
+      );
+      storage[indexOfProductId].amount -= 1;
+      localStorage.setItem("guestCart", JSON.stringify(storage));
+      window.location.reload();
+
+      // Por X razon no actualiza el componente tras setear el nuevo estado
+      // setResponseData((previousState) => {
+      //   var array = previousState;
+      //   array[array.findIndex((e) => e.id === productId)].amount += 1;
+      //   return array;
+      // });
+
+    },
+    []
+  );
+
   const fetchData = useCallback(() => {
-    var array = [];
     JSON.parse(localStorage.getItem("guestCart")).forEach((e) => {
       axios
         .get(`http://localhost:3100/products/${e.productId}`)
-        .then((data) =>
-          setResponseData((previousState) => previousState.concat({...data.data, amount: e.amount}))
-        )
+        .then((data) => {
+          setResponseData((previousState) =>
+            previousState.concat({ ...data.data, amount: e.amount })
+          );
+        })
         .catch((error) => {
           console.log(error);
         });
     });
+    // let total = 0;
+    // responseData.forEach(e => {
+    //   total = e.price * e.amount;
+    // })
+    // setTotal(total)
   }, []);
 
   useEffect(() => {
-    if(JSON.parse(localStorage.getItem("guestCart"))) fetchData();
+    if (JSON.parse(localStorage.getItem("guestCart"))) fetchData();
   }, []);
 
+
   const handleRemoveAllCart = () => {
-    localStorage.removeItem('guestCart')
-  }
+    localStorage.removeItem("guestCart");
+    window.location.reload();
+  };
+
   return (
     <div className={styles.title}>
-      {console.log(responseData)}
+      {console.log(totalPrice)}
       {userLogged.loggedIn && <Redirect to="/user/cart" />}
-      <h1>Carrito de invitado {productsInfo}</h1>
+      <h1>Carrito de invitado </h1>
       <div className={styles.sectionTable}>
         <table className={styles.cartTable}>
           {responseData &&
@@ -58,7 +107,7 @@ function GuestCart() {
                     {order.amount > -1 && (
                       <IconButton
                         className={styles.buttonsAddRemove}
-                        // onClick={(e) => handleAddQty(order.id)}
+                        onClick={(e) => handleAddQty(order.id)}
                         aria-label="add"
                       >
                         <AddIcon className={styles.iconAddRemove} />
@@ -67,7 +116,7 @@ function GuestCart() {
                     {order.amount > 1 && (
                       <IconButton
                         className={styles.buttonsAddRemove}
-                        // onClick={(e) => handleRemoveQty(order.id)}
+                        onClick={(e) => handleRemoveQty(order.id)}
                         aria-label="add"
                       >
                         <RemoveIcon className={styles.iconAddRemove} />
@@ -80,7 +129,7 @@ function GuestCart() {
                       style={{ color: "white", marginTop: "12px" }}
                       className={styles.buttonsRemove}
                       key={index}
-                    //   onClick={() => handleRemoveCart(order.id)}
+                      //   onClick={() => handleRemoveCart(order.id)}
                     />
                   </a>
                 </tr>
@@ -95,12 +144,13 @@ function GuestCart() {
             maxWidth: "200px",
             marginTop: "15px",
           }}
-            onClick={handleRemoveAllCart}
+          onClick={handleRemoveAllCart}
         >
           VACIAR CARRITO
         </Button>
       </div>
-      <h2>Total: ${totalPrice}</h2>
+      <h2></h2>
+      {/* No lo pude hacer funcionar <h2>Total: ${totalPrice}</h2> */}
     </div>
   );
 }

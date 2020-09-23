@@ -68,7 +68,7 @@ function Cart() {
       },
     }).then((data) => getOrders());
   };
-
+  console.log(!!userLogged.id)
   const handleRemoveQty = (productId) => {
     axios({
       method: "put",
