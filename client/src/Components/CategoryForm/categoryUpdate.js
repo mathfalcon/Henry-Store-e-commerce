@@ -2,8 +2,27 @@ import React from "react";
 import styles from "../../Styles/categoryForm.module.css";
 import axios from "axios";
 import { useState, useEffect } from "react";
-//Formulario para crear categorias
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
+//Formulario para actualizar categorias
 function CategoryUpdate() {
+
+  //Estado para Alerta actualizar categoria
+  const [openUpdate, setOpenUpdate] = useState(false);
+
+  //Funciones para control de Alerta actualizar categoria
+
+  const handleCloseUpdate = () => {
+    setOpenUpdate(false);
+    window.location.href = "http://localhost:3000/product/admin/category-table";
+  };
+
+  //Otros estados
   const [state, setState] = useState({});
   const [toUpdate, setUpdate] = useState({});
 
@@ -24,8 +43,7 @@ function CategoryUpdate() {
       data: body,
     })
       .then(() => {
-        alert(`La categoria ${body.name} se actualizó con éxito.`);
-        window.location.href = ("http://localhost:3000/product/admin/category-table")
+        setOpenUpdate(true);
       })
       .catch((err) => console.log(err));
     setState({ name: "", description: "" });
@@ -69,6 +87,19 @@ function CategoryUpdate() {
           className={styles.submitCategoryForm}
         />
       </form>
+      <Snackbar
+        open={openUpdate}
+        autoHideDuration={7000}
+        onClose={handleCloseUpdate}
+      >
+        <Alert
+          onClose={handleCloseUpdate}
+          severity="success"
+          style={{ backgroundColor: "#ffff5a", color: "black" }}
+        >
+          La categoria fue actualizada con éxito.
+        </Alert>
+      </Snackbar>
     </div>
   );
 }

@@ -20,27 +20,47 @@ const axios = require("axios");
 function OrdersTable() {
   const { userList } = useSelector((state) => state.userList);
   const dispatch = useDispatch();
-  const [open, setOpen] = useState(false);
-  const [idUser, setUser] = useState(undefined);
-  const [openSnack, setSnack] = useState(false);
 
-  const handleClickOpen = (id) => {
-    setOpen(true);
+  const [idUser, setUser] = useState(undefined);
+
+   //Estados para control de alertas Borrar
+  const [openDelete, setOpenDelete] = useState(false);
+  const [openSnackDelete, setSnackDelete] = useState(false);
+
+   //Estados para control de alertas Promover
+  const [openPromote, setOpenPromote] = useState(false);
+  const [openSnackPromote, setSnackPromote] = useState(false);
+
+  //Funciones control de alertas Borrar
+  const handleClickOpenDelete = (id) => {
+    setOpenDelete(true);
     setUser(id);
   };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
   const handleCloseDelete = () => {
-    setOpen(false);
+    setOpenDelete(false);
     handleDelete(idUser);
   };
 
-  const handleSnack = () => {
-    setSnack(false);
+  const handleSnackDelete = () => {
+    setSnackDelete(false);
   };
 
+   //Funciones control de alertas Promover
+  const handleClickOpenPromote = (id) => {
+    setOpenPromote(true);
+    setUser(id);
+  };
+
+  const handleClosePromote = () => {
+    setOpenPromote(false);
+    handlePromote(idUser);
+  };
+
+  const handleSnackPromote = () => {
+    setSnackPromote(false);
+  }; 
+  
   useEffect(() => {
     dispatch(listUser());
   }, []);
@@ -55,7 +75,7 @@ function OrdersTable() {
     })
       .then((data) => {
         dispatch(listUser());
-        setSnack(true);
+        setSnackDelete(true);
       })
       .catch((err) => console.log(err));
   };
@@ -69,7 +89,7 @@ function OrdersTable() {
     })
       .then((data) => {
         dispatch(listUser());
-        setSnack(true);
+        setSnackPromote(true);
       })
       .catch((err) => console.log(err));
   };
@@ -104,14 +124,14 @@ function OrdersTable() {
                     <Button
                       variant="contained"
                       className={styles.buttonDelete}
-                      onClick={() => handleClickOpen(user.id)}
+                      onClick={() => handleClickOpenDelete(user.id)}
                     >
                       BORRAR
                     </Button>
                     <Button
                       variant="contained"
                       className={styles.buttonDelete}
-                      onClick={() => handlePromote(user.id)}
+                      onClick={() => handleClickOpenPromote(user.id)}
                     >
                       PROMOVER
                     </Button>
@@ -123,8 +143,8 @@ function OrdersTable() {
         </div>
       </div>
       <Dialog
-        open={open}
-        onClose={handleClose}
+        open={openDelete}
+        onClose={handleCloseDelete}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
@@ -141,7 +161,7 @@ function OrdersTable() {
         </DialogContent>
         <DialogActions>
           <Button
-            onClick={handleClose}
+            onClick={handleCloseDelete}
             color="primary"
             style={{
               maxWidth: "25%",
@@ -165,10 +185,59 @@ function OrdersTable() {
           </Button>
         </DialogActions>
       </Dialog>
-      <Snackbar open={openSnack} autoHideDuration={6000} onClose={handleSnack}>
-        <Alert onClose={handleSnack} severity="success" style={{backgroundColor: '#ffff5a', color: 'black'}}>
+      <Snackbar open={openSnackDelete} autoHideDuration={6000} onClose={handleSnackDelete}>
+        <Alert onClose={handleSnackDelete} severity="success" style={{backgroundColor: '#ffff5a', color: 'black'}}>
           El usuario fue borrado con exito
-        </Alert>
+        </Alert> 
+      </Snackbar>
+      
+      <Dialog
+        open={openPromote}
+        onClose={handleClosePromote}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"¿Estás seguro que quieres promover el usuario?"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText
+            id="alert-dialog-description"
+            style={{ textAlign: "center", paddingBottom: "5px" }}
+          >
+            Podrá acceder al Admin Panel junto con todas las funciones de un administrador.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={handleClosePromote}
+            color="primary"
+            style={{
+              maxWidth: "25%",
+              color: "white",
+              backgroundColor: "black",
+            }}
+          >
+            Cancelar
+          </Button>
+          <Button
+            onClick={handleClosePromote}
+            color="primary"
+            autoFocus
+            style={{
+              maxWidth: "25%",
+              color: "black",
+              backgroundColor: "#ffff01",
+            }}
+          >
+            Continuar
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Snackbar open={openSnackPromote} autoHideDuration={6000} onClose={handleSnackPromote}>
+        <Alert onClose={handleSnackPromote} severity="success" style={{backgroundColor: '#ffff5a', color: 'black'}}>
+          El usuario fue promovido con exito
+        </Alert> 
       </Snackbar>
     </Fragment>
   );
