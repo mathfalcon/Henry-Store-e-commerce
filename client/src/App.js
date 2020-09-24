@@ -22,6 +22,7 @@ import ProductList from "./Components/ProductList/productList";
 import CategoryList from "./Components/CategoryList/categoryList";
 import GuestCart from "./Components/Cart/guestcart";
 import Checkout from "./Components/Checkout/Checkout";
+import userPanel from "./Components/UserPanel/userPanel"
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -63,6 +64,8 @@ function App() {
       <Route exact path="/sign-up" render={() => <SignUp />} />
       <Route exact path="/guest/cart" render={() => <GuestCart />} />
       <Route exact path="/checkout" render={() => <Checkout />} />
+      <Route exact path="/user"><userPanel/></Route> // cambiar nombre
+
       {/* RUTAS PRIVADAS */}
       <PrivateRoute
         exact
