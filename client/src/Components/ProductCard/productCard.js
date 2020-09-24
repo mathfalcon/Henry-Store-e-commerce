@@ -42,27 +42,30 @@ const ProductCard = () => {
       .catch((err) => console.log(err));
   };
 
-  console.log(userLogged)
 
   const handleAddToCart = () => {
     if (userLogged.loggedIn) {
       axios({
         method: "post",
-        url: `http://localhost:3100/users/${userLogged.id}/cart`, //cuando se cree el sistema de autentificacion el "1" deberia ser reemplazado por el id del usuario
+        url: `http://localhost:3100/users/${userLogged.userLogged.id}/cart`, //cuando se cree el sistema de autentificacion el "1" deberia ser reemplazado por el id del usuario
         data: {
           idProducto: product.id,
           amount: 1,
         },
       });
     } else {
-      console.log('holaa')
       var storage = JSON.parse(localStorage.getItem("guestCart"));
       if (storage == null) {
         storage = [];
       }
 
-      var data = { productId: product.id, amount: 1 };
-      storage.push(data);
+      var doesExist = storage.findIndex((e) => e.productId === product.id);
+      if ( doesExist === -1) {
+        var data = { productId: product.id, amount: 1 };
+        storage.push(data);
+      } else {
+        storage[doesExist].amount += 1;
+      }
 
       localStorage.setItem("guestCart", JSON.stringify(storage));
     }
@@ -94,9 +97,9 @@ const ProductCard = () => {
             </div>
             <Button
               variant="contained"
-              style={{ width: "80%", marginTop: "10px" }}
+              style={{ width: "90%", marginTop: "10px" }}
               onClick={handleAddToCart}
-              // href="http://localhost:3000/user/cart/"
+              href="http://localhost:3000/user/cart/"
               className={classes.button}
               startIcon={<AddShoppingCartIcon />}
             >
