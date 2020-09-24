@@ -15,7 +15,6 @@ function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-const axios = require("axios");
 
 function OrdersTable() {
   const { userList } = useSelector((state) => state.userList);

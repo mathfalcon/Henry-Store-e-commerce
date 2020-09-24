@@ -20,6 +20,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ProductCard = () => {
+  console.log(useParams())
   let { id } = useParams();
   const [product, setProduct] = useState({});
 
