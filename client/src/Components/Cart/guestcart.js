@@ -15,7 +15,6 @@ function GuestCart() {
   let [responseData, setResponseData] = useState([]);
 
   const handleAddQty = useCallback((productId) => {
-    var storage = JSON.parse(localStorage.getItem("guestCart"));
     var indexOfProductId = storage.findIndex((e) => e.productId === productId);
     storage[indexOfProductId].amount += 1;
     localStorage.setItem("guestCart", JSON.stringify(storage));
@@ -28,9 +27,9 @@ function GuestCart() {
     //   return array;
     // });
   }, []);
+  var storage = JSON.parse(localStorage.getItem("guestCart"));
 
   const handleRemoveQty = useCallback((productId) => {
-    var storage = JSON.parse(localStorage.getItem("guestCart"));
     var indexOfProductId = storage.findIndex((e) => e.productId === productId);
     storage[indexOfProductId].amount -= 1;
     localStorage.setItem("guestCart", JSON.stringify(storage));
@@ -45,7 +44,7 @@ function GuestCart() {
   }, []);
 
   const fetchData = useCallback(() => {
-    JSON.parse(localStorage.getItem("guestCart")).forEach((e) => {
+    storage.forEach((e) => {
       axios
         .get(`http://localhost:3100/products/${e.productId}`)
         .then((data) => {
@@ -65,7 +64,7 @@ function GuestCart() {
   }, []);
 
   useEffect(() => {
-    if (JSON.parse(localStorage.getItem("guestCart"))) fetchData();
+    if (storage) fetchData();
   }, []);
 
   const handleRemoveAllCart = () => {
@@ -73,9 +72,24 @@ function GuestCart() {
     window.location.reload();
   };
 
+
+  const handleRemoveCart = useCallback((productId) => {
+    let storageToEdit = JSON.parse(localStorage.getItem("guestCart"));
+    var indexOfProductId = storageToEdit.findIndex((e) => e.productId === productId);
+    storageToEdit.splice(indexOfProductId, 1);
+    localStorage.setItem("guestCart", JSON.stringify(storageToEdit));
+    window.location.reload();
+
+    // Por X razon no actualiza el componente tras setear el nuevo estado
+    // setResponseData((previousState) => {
+    //   var array = previousState;
+    //   array[array.findIndex((e) => e.id === productId)].amount += 1;
+    //   return array;
+    // });
+  }, []);
+
   return (
     <div className={styles.title}>
-      {console.log(totalPrice)}
       {userLogged.loggedIn && <Redirect to="/user/cart" />}
       <h1>Carrito de invitado </h1>
       <div className={styles.sectionTable}>
@@ -116,7 +130,7 @@ function GuestCart() {
                       style={{ color: "white", marginTop: "12px" }}
                       className={styles.buttonsRemove}
                       key={index}
-                      //   onClick={() => handleRemoveCart(order.id)}
+                      onClick={() => handleRemoveCart(order.id)}
                     />
                   </a>
                 </tr>
