@@ -121,6 +121,7 @@
 }
 .contentBx a:hover {
     background: #FFFF01;
+    transition: 0.5s;
 }
 .card:hover .contentBx a {
     opacity: 1;

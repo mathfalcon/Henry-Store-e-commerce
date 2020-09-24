@@ -10,7 +10,12 @@ import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
-import { red } from "@material-ui/core/colors";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -50,14 +55,17 @@ function getStyles(name, personName, theme) {
 }
 
 function ProductForm() {
-  /* Categorias de ejemplo */
-  const data = [
-    { Category: "Category1", id: 1 },
-    { Category: "Category2", id: 2 },
-    { Category: "Category3", id: 3 },
-    { Category: "Category4", id: 4 },
-  ];
-  const [options] = useState(data);
+
+  //Estado para Alerta crear categoria
+  const [openCreate, setOpenCreate] = useState(false);
+
+  //Funciones para control de Alerta crear categoria
+
+  const handleCloseCreate = () => {
+    setOpenCreate(false);
+    window.location.href = "http://localhost:3000/product/admin/product-table";
+  };
+
   const classes = useStyles();
   /* Estados */
   const [state, setState] = useState({});
@@ -107,8 +115,7 @@ function ProductForm() {
         }
       })
       .then(() => {
-        alert("El producto se ha creado con éxito");
-        window.location.href = "http://localhost:3000/product/admin";
+        setOpenCreate(true);
       })
       .catch((err) => console.log(err));
     setState({ ...state, name: "", description: "", price: "", stock: "" });
@@ -205,6 +212,19 @@ function ProductForm() {
           <img className={styles.imgLogo} src={logoText} alt="logoHenry" />
         </div>
       </form>
+      <Snackbar
+        open={openCreate}
+        autoHideDuration={7000}
+        onClose={handleCloseCreate}
+      >
+        <Alert
+          onClose={handleCloseCreate}
+          severity="success"
+          style={{ backgroundColor: "#ffff5a", color: "black" }}
+        >
+          El producto fue creado con éxito.
+        </Alert>
+      </Snackbar>
     </div>
   );
 }

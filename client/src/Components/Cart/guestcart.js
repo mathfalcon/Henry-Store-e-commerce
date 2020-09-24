@@ -11,40 +11,90 @@ import { Redirect } from "react-router-dom";
 
 function GuestCart() {
   const [totalPrice, setTotal] = useState(0);
-
   const userLogged = useSelector((state) => state.authUser);
-  const [productsInfo, setProducts] = useState([]);
   let [responseData, setResponseData] = useState([]);
 
+  const handleAddQty = useCallback((productId) => {
+    var indexOfProductId = storage.findIndex((e) => e.productId === productId);
+    storage[indexOfProductId].amount += 1;
+    localStorage.setItem("guestCart", JSON.stringify(storage));
+    window.location.reload();
+
+    // Por X razon no actualiza el componente tras setear el nuevo estado
+    // setResponseData((previousState) => {
+    //   var array = previousState;
+    //   array[array.findIndex((e) => e.id === productId)].amount += 1;
+    //   return array;
+    // });
+  }, []);
+  var storage = JSON.parse(localStorage.getItem("guestCart"));
+
+  const handleRemoveQty = useCallback((productId) => {
+    var indexOfProductId = storage.findIndex((e) => e.productId === productId);
+    storage[indexOfProductId].amount -= 1;
+    localStorage.setItem("guestCart", JSON.stringify(storage));
+    window.location.reload();
+
+    // Por X razon no actualiza el componente tras setear el nuevo estado
+    // setResponseData((previousState) => {
+    //   var array = previousState;
+    //   array[array.findIndex((e) => e.id === productId)].amount += 1;
+    //   return array;
+    // });
+  }, []);
+
   const fetchData = useCallback(() => {
-    var array = [];
-    JSON.parse(localStorage.getItem("guestCart")).forEach((e) => {
+    storage.forEach((e) => {
       axios
         .get(`http://localhost:3100/products/${e.productId}`)
-        .then((data) =>
-          setResponseData((previousState) => previousState.concat({...data.data, amount: e.amount}))
-        )
+        .then((data) => {
+          setResponseData((previousState) =>
+            previousState.concat({ ...data.data, amount: e.amount })
+          );
+        })
         .catch((error) => {
           console.log(error);
         });
     });
+    // let total = 0;
+    // responseData.forEach(e => {
+    //   total = e.price * e.amount;
+    // })
+    // setTotal(total)
   }, []);
 
   useEffect(() => {
-    if(JSON.parse(localStorage.getItem("guestCart"))) fetchData();
+    if (storage) fetchData();
   }, []);
 
   const handleRemoveAllCart = () => {
-    localStorage.removeItem('guestCart')
-  }
+    localStorage.removeItem("guestCart");
+    window.location.reload();
+  };
+
+
+  const handleRemoveCart = useCallback((productId) => {
+    let storageToEdit = JSON.parse(localStorage.getItem("guestCart"));
+    var indexOfProductId = storageToEdit.findIndex((e) => e.productId === productId);
+    storageToEdit.splice(indexOfProductId, 1);
+    localStorage.setItem("guestCart", JSON.stringify(storageToEdit));
+    window.location.reload();
+
+    // Por X razon no actualiza el componente tras setear el nuevo estado
+    // setResponseData((previousState) => {
+    //   var array = previousState;
+    //   array[array.findIndex((e) => e.id === productId)].amount += 1;
+    //   return array;
+    // });
+  }, []);
+
   return (
     <div className={styles.title}>
-      {console.log(responseData)}
       {userLogged.loggedIn && <Redirect to="/user/cart" />}
-      <h1>Carrito de invitado {productsInfo}</h1>
+      <h1>Carrito de invitado </h1>
       <div className={styles.sectionTable}>
         <table className={styles.cartTable}>
-          {responseData &&
+          {responseData[0] ? (
             responseData.map((order, index) => (
               <tbody key={index}>
                 <tr>
@@ -58,7 +108,7 @@ function GuestCart() {
                     {order.amount > -1 && (
                       <IconButton
                         className={styles.buttonsAddRemove}
-                        // onClick={(e) => handleAddQty(order.id)}
+                        onClick={(e) => handleAddQty(order.id)}
                         aria-label="add"
                       >
                         <AddIcon className={styles.iconAddRemove} />
@@ -67,7 +117,7 @@ function GuestCart() {
                     {order.amount > 1 && (
                       <IconButton
                         className={styles.buttonsAddRemove}
-                        // onClick={(e) => handleRemoveQty(order.id)}
+                        onClick={(e) => handleRemoveQty(order.id)}
                         aria-label="add"
                       >
                         <RemoveIcon className={styles.iconAddRemove} />
@@ -80,27 +130,50 @@ function GuestCart() {
                       style={{ color: "white", marginTop: "12px" }}
                       className={styles.buttonsRemove}
                       key={index}
-                    //   onClick={() => handleRemoveCart(order.id)}
+                      onClick={() => handleRemoveCart(order.id)}
                     />
                   </a>
                 </tr>
               </tbody>
-            ))}
+            ))
+          ) : (
+            <div>
+              <h1 style={{ color: "white" }}>
+                No tienes ningun producto en el carrito
+              </h1>
+              <Button
+                variant="contained"
+                style={{
+                  backgroundColor: "white",
+                  color: "black",
+                  maxWidth: "200px",
+                  marginTop: "15px",
+                  marginBottom: "15px",
+                }}
+                href="http://localhost:3000/#section-two"
+              >
+                Ir al catalogo
+              </Button>
+            </div>
+          )}
         </table>
-        <Button
-          variant="contained"
-          style={{
-            backgroundColor: "black",
-            color: "white",
-            maxWidth: "200px",
-            marginTop: "15px",
-          }}
+        {responseData[0] && (
+          <Button
+            variant="contained"
+            style={{
+              backgroundColor: "black",
+              color: "white",
+              maxWidth: "200px",
+              marginTop: "15px",
+            }}
             onClick={handleRemoveAllCart}
-        >
-          VACIAR CARRITO
-        </Button>
+          >
+            VACIAR CARRITO
+          </Button>
+        )}
       </div>
-      <h2>Total: ${totalPrice}</h2>
+      <h2></h2>
+      {/* No lo pude hacer funcionar <h2>Total: ${totalPrice}</h2> */}
     </div>
   );
 }
