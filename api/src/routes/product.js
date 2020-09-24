@@ -1,5 +1,5 @@
 const server = require("express").Router();
-const { Product, Categories } = require("../db.js");
+const { Product, Categories, Image } = require("../db.js");
 const { Op } = require("sequelize");
 
 // Busca todos los productos y los devuelve en un array
@@ -31,19 +31,29 @@ server.get("/:idProducto", (req, res, next) => {
 
 // Ruta para crear un producto
 server.post("/create-product", (req, res, next) => {
+  const images = req.body.img_names;  
   Product.findOrCreate({
     where: {
       name: req.body.name,
       description: req.body.description,
       price: req.body.price,
-      stock: req.body.stock,
+      stock: req.body.stock,      
     },
   })
     .then((product) => {
-      //Sucess handler
-      res
-        .status(200)
-        .send(product[0]);
+      if (images){
+        images.map( img => {                
+          console.log('product.id',product[0].id);
+          console.log('img',img);
+          Image.create({
+            source: img,
+            productId: product[0].id,
+        })
+          .then( img => res.status(200).send(img[0]))
+          .catch( err => res.status(400).send(`No se pudo cargar la imagen${img}`))
+        })
+      }   
+      res.status(200).send(product[0]);
     })
     .catch((err) => {
       //Error Handler
@@ -55,7 +65,7 @@ server.post("/create-product", (req, res, next) => {
 
 // Actualiza un producto
 server.put("/:idProducto/update", (req, res, next) => {
-  const { name, description, price, stock } = req.body;
+  const { name, description, price, stock } = req.body;  
 
   Product.findByPk(req.params.idProducto)
     .then((data) => {

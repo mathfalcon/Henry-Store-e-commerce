@@ -41,12 +41,13 @@
   text-align: center;
 }
 .imgBx {
-  margin: auto;
+  /* margin: auto; */
 }
 .imgBx img {
-  width: auto;
-  min-height: 150px;
-  max-height: 300px;
+  
+  width: 320px;
+  min-height: 400px;
+  max-height: 1000px;
 }
 .divButtons {
   display: flex;

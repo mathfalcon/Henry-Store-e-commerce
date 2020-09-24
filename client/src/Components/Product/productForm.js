@@ -73,6 +73,7 @@ function ProductForm() {
   const [categories, setCategories] = useState([]);
   const theme = useTheme();
   const [personName, setPersonName] = useState([]);
+  const imageInput = React.createRef();
   const handleChanges = (event) => {
     setPersonName(event.target.value);
   };
@@ -93,19 +94,27 @@ function ProductForm() {
   };
 
   const handleSubmit = (event) => {
-    event.preventDefault();
+    event.preventDefault();    
+    const images = imageInput.current.files;    
+    const img_object = Object.values(images);
+    var img_names = [];
+    for (let i = 0; i < img_object.length; i++) {       
+      // img_names.push(`../../content/${img_object[i].name}`);
+      img_names.push(img_object[i].name);
+    }    
 
-    axios({
+    axios({      
       method: "post",
       url: "http://localhost:3100/products/create-product",
       data: {
-        name: state.name,
+        name: state.name,       
         description: state.description,
         price: state.price,
         stock: state.stock,
+        img_names
       },
     })
-      .then((data) => {
+      .then((data) => {        
         if (personName.length > 0) {
           personName.forEach((e) => {
             axios({
@@ -166,7 +175,13 @@ function ProductForm() {
           </div>
           <div>
             <label>Subir Imágenes</label>
-            <input type="file" name="dropimage" accept="image/*" />
+            <input
+              type="file"
+              ref={imageInput}
+              multiple="multiple"
+              name="dropimage"
+              accept="image/*"              
+              />
           </div>
           <div>
             <Button

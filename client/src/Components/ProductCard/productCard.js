@@ -5,11 +5,12 @@ import Button from "@material-ui/core/Button";
 import Chip from "@material-ui/core/Chip";
 import { makeStyles } from "@material-ui/core/styles";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
-import henryShirt from "../../content/henryShirt.png";
 import axios from "axios";
 import Review from "../Review/Review";
 import { useSelector, useDispatch } from "react-redux";
+import { getImg } from "../../Redux/actions/imgActions";
 import { isLoggedIn } from "../../Redux/actions/authActions";
+// import henryShirt from "../../content/henryShirt.png";
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -29,10 +30,12 @@ const ProductCard = () => {
 
   //Se asigna el valor de userLogged por destructuring
   const userLogged = useSelector((state) => state.authUser);
+  const { images } = useSelector((state) => state.imgReducer);
 
   useEffect(() => {
     dispatch(isLoggedIn());
     getProduct();
+    dispatch(getImg(id));
   }, []);
 
   const getProduct = () => {
@@ -40,9 +43,7 @@ const ProductCard = () => {
       .then((data) => data.json())
       .then((product) => setProduct(product))
       .catch((err) => console.log(err));
-  };
-
-  console.log(userLogged)
+  };  
 
   const handleAddToCart = () => {
     if (userLogged.loggedIn) {
@@ -54,8 +55,7 @@ const ProductCard = () => {
           amount: 1,
         },
       });
-    } else {
-      console.log('holaa')
+    } else {      
       var storage = JSON.parse(localStorage.getItem("guestCart"));
       if (storage == null) {
         storage = [];
@@ -68,13 +68,17 @@ const ProductCard = () => {
     }
   };
 
+  const imageBackground = (i) => ({ backgroundImage: `url(./products/${i.source})` });
+  
   return (
     <div className={styles.container}>
+
       <div className={styles.divCard}>
         <div className={styles.mainInfo}>
-          <div className={styles.imgBx}>
-            <img src={henryShirt} alt="Henry Shirt" />
-          </div>
+        <div className={styles.imgBx}>        
+         {images.map((i) => <img style={imageBackground(i)} />)}
+
+        </div>          
           <div className={styles.divButtons}>
             <span>
               <p>{product.name}</p>
