@@ -42,7 +42,7 @@ server.get("/info", (req, res, next) => {
     res.send({
       success: false,
       user: {
-        role: 'guest'
+        role: "guest",
       },
       message: "No estas logueado",
     });
@@ -52,8 +52,8 @@ server.get("/info", (req, res, next) => {
 // Hacer un get a esta ruta, desloguea al usuario
 server.get("/logout", (req, res, next) => {
   console.log(req.session.destroy());
-  req.logOut()
-  
+  req.logOut();
+
   // .then((deleted) => {
   //   req.logOut();
   //   res.status(200).send({
@@ -63,5 +63,21 @@ server.get("/logout", (req, res, next) => {
   // })
   // .catch(err => res.status(422).send(err))
 });
+
+server.get(
+  "/google",
+  passport.authenticate("google", { scope: ["profile", "email"] })
+);
+
+server.get(
+  "/google/callback",
+  passport.authenticate("google", {
+    failureRedirect: "http://localhost:3000/login",
+  }), //cambiar luego
+  function (req, res) {
+    // Successful authentication, redirect home.
+    res.redirect("http://localhost:3000/");
+  }
+);
 
 module.exports = server;

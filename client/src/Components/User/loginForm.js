@@ -3,6 +3,8 @@ import styles from "../../Styles/loginForm.module.css";
 import logoHenry from "../../Styles/Assets/logo henry black.png";
 import axios from "axios";
 import Button from "@material-ui/core/Button";
+import { Icon } from "@material-ui/core";
+import googleLogo from '../../content/googlelogo.png'
 
 function LoginForm() {
   const [state, setState] = useState({});
@@ -42,8 +44,15 @@ function LoginForm() {
           </label>
         </div>
         <p id='error-message' style={{fontSize: '1.2em'}}>
-          con tu usuario o contraseña.
+          con tu usuario y contraseña.
         </p>
+        <Button
+        variant="contained"
+        href='http://localhost:3100/auth/google'
+        style={{backgroundColor: 'white', marginBottom: '1em', maxWidth:'50%', alignSelf:'center'}}
+        endIcon={<img src={googleLogo} style={{height: 'auto', maxWidth: '45px'}}
+        />}
+      >...o con Google</Button>
         <img src={logoHenry} alt="logoHenry" className={styles.imgLogo} />
       </div>
       <div className={styles.form}>
