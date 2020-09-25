@@ -13,6 +13,7 @@ function OrdersTable() {
   
   //["inCart", "created","active", "processing", "canceled", "complete"]
   const options = ["Sin Filtro","active", "inCart", "canceled", "complete"];
+  console.log('orderList',orderList);
 
   const dispatch = useDispatch(); 
   
