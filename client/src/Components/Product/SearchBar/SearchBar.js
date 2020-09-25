@@ -5,6 +5,7 @@ import styles from "../../../Styles/searchBar.module.css";
 import logo from "../../../content/logo.png";
 import { useDispatch, useSelector } from "react-redux";
 import { isLoggedIn, logOutUser } from "../../../Redux/actions/authActions";
+import AccountBoxIcon from '@material-ui/icons/AccountBox';
 
 //Componente de busqueda de productos mediante una keyword
 
@@ -76,9 +77,11 @@ export default function SearchBar(props) {
       <Link to="/user/cart" className="nav-item nav-link">
         Carrito
       </Link>
-      {/* <div className={styles.menuNav}>
-        <NavBar />
-      </div> */}
+      {loggedIn && (
+        <Link to="/user/profile" className="nav-item nav-link" title='Mi perfil'>
+          <AccountBoxIcon style={{verticalAlign: 'middle'}}/>
+        </Link>
+      )}
     </div>
   );
 }

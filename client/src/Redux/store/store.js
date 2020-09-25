@@ -6,12 +6,14 @@ import authReducer from "../reducers/authReducer";
 import thunk from "redux-thunk";
 import { loadState, saveState } from "../../Local-Storage/localStorage";
 import {throttle} from 'lodash';
+import loadingReducer from "../reducers/loadingReducer";
 
 const reducer = combineReducers({
   orderList: orderListReducer,
   totalOrder: totalOrderReducer,
   authUser: authReducer,
   userList: userListReducer,
+  isLoading: loadingReducer,
   imgReducer
 });
 
