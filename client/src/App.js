@@ -24,7 +24,7 @@ import GuestCart from "./Components/Cart/guestcart";
 import UserPanel from "./Components/UserPanel/userPanel"
 import LoadingScreen from "./Components/loadingScreen";
 import { loadingFalse, loadingTrue } from "./Redux/actions/loadingActions";
-
+import Checkout from "./Components/Checkout/Checkout";
 
 
 function App() {
@@ -73,6 +73,8 @@ function App() {
       <Route exact path="/sign-up" render={() => <SignUp />} />
       <Route exact path="/guest/cart" render={() => <GuestCart />} />
       <Route exact path="/user/profile"><UserPanel/></Route>
+      <Route exact path="/checkout" render={() => <Checkout />} />
+        
       {/* RUTAS PRIVADAS */}
       <PrivateRoute
         exact

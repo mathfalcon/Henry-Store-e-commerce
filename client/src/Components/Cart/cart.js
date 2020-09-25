@@ -15,12 +15,16 @@ function Cart() {
 
   //Asignando el hook de dispatch a una constante
   //Se asigna el valor de userLogged por destructuring
-  const {userLogged} = useSelector((state) => state.authUser);
+  const { userLogged } = useSelector((state) => state.authUser);
 
   useEffect(() => {
-    if(userLogged.id) getOrders();
+    if (userLogged.id) getOrders();
   }, [userLogged]);
 
+  const handleConfirm = () =>{
+    window.location.href = `http://localhost:3000/checkout/${orders.id}`
+  }
+  
   const getOrders = () => {
     axios.get(`http://localhost:3100/users/${userLogged.id}/orders`).then((response) => { // Looks for users' orders
       const activeOrder = response.data.find((e) => e.state = 'active');
@@ -51,7 +55,7 @@ function Cart() {
     orders.products.forEach((e) => {
       axios({
         method: "delete",
-        url: `http://localhost:3100/users/${orders.id}`, 
+        url: `http://localhost:3100/users/${orders.id}`,
         data: {
           product: e.id,
         },
@@ -61,8 +65,8 @@ function Cart() {
 
   const handleAddQty = (productId) => {
     axios({
-      method: "put", 
-      url: `http://localhost:3100/users/${userLogged.id}/cart`, 
+      method: "put",
+      url: `http://localhost:3100/users/${userLogged.id}/cart`,
       data: {
         productId: productId,
         orderId: orders.id,
@@ -94,10 +98,12 @@ function Cart() {
               <tbody key={index}>
                 <tr>
                   {/* <td>Imagen</td> */}
-                  <td style={{color: "white"}}>{order.name}</td>
-                  <td style={{color: "white"}}>{order.description}</td>
-                  <td style={{color: "white"}}>Cantidad a comprar: {order.amount.amount}</td>
-                  <td style={{color: "white"}}>
+                  <td style={{ color: "white" }}>{order.name}</td>
+                  <td style={{ color: "white" }}>{order.description}</td>
+                  <td style={{ color: "white" }}>
+                    Cantidad a comprar: {order.amount.amount}
+                  </td>
+                  <td style={{ color: "white" }}>
                     {order.amount.amount > -1 && (
                       <IconButton
                         className={styles.buttonsAddRemove}
@@ -117,7 +123,7 @@ function Cart() {
                       </IconButton>
                     )}
                   </td>
-                  <td style={{color: "white"}}>${order.price}</td>
+                  <td style={{ color: "white" }}>${order.price}</td>
                   <a href="#">
                     <CancelIcon
                       style={{ color: "white", marginTop: "12px" }}
@@ -163,6 +169,20 @@ function Cart() {
           VACIAR CARRITO
         </Button> : <h2></h2>}
       </div>
+      <h2>Total: ${totalPrice}</h2>
+      <Button
+        variant="contained"
+        color="secondary"
+        onClick={() => {console.log(orders); handleConfirm()}}
+        style={{
+          backgroundColor: "#ffff5a",
+          color: "black",
+          margin: "1em",
+          width: "30%",
+        }}
+      >
+        FINALIZAR COMPRA
+      </Button>
       {orders.products && orders.products[0] ? <h2>Total: ${totalPrice}</h2> : <h2></h2>}
     </div>
   );

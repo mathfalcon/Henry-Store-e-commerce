@@ -1,14 +1,31 @@
 import React, { Fragment, useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { getImg } from "../../Redux/actions/imgActions";
 import styles from "../../Styles/landing.module.css";
 import logoText from "../../content/logoComplete.png";
 import Product from "../Product/product.js";
 import ReactSelectMaterialUi from "react-select-material-ui";
-import axios from 'axios';
 
 export default function Landing() {
+  // const [productId, setProductId] = useState('');
+  // const [image, setImage] = useState([]);
   const [allProducts, setProducts] = useState([]);
   const [allCategories, setCategories] = useState([]);
   const [selectedCategory, setCategory] = useState("");
+
+  const { images } = useSelector((state) => state.imgReducer); 
+  const dispatch = useDispatch()
+
+  // const fetchImg = React.memo((id) => {
+  //   fetch (`http://localhost:3100/images/${id}`)
+  //   .then ( response => response.json())
+  //     .then( img => setImage((previousState) => previousState.concat(img)))      
+  //     .catch((err) => console.log(err));
+  // }, []);
+
+   useEffect(() => {     
+      dispatch(getImg(34));
+    }, []);
 
   useEffect(() => {
     setProducts([]);
@@ -72,9 +89,13 @@ export default function Landing() {
             }}
           />
         </div>
-        {allProducts.map((el, index) => (
-          <Product product={el} key={index} />
-        ))}
+        {allProducts.map((el) => {            
+            // setProductId(el.id);
+            // fetchImg(el.id);
+            // console.log('image',image);  
+            return <Product product={el} key={el.id} images={images}/>
+          }
+        )}
       </section>
     </Fragment>
   );
