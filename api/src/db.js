@@ -45,6 +45,7 @@ const { Users } = sequelize.models;
 const { Order } = sequelize.models;
 const { OrderLine } = sequelize.models;
 const { Reviews } = sequelize.models;
+const { Checkout } = sequelize.models;
 
 // Aca vendrian las relaciones
 Product.hasMany(Image);
@@ -69,6 +70,10 @@ Product.belongsToMany(Categories, { through: "categoryTable" });
 Categories.belongsToMany(Product, { through: "categoryTable" });
 Product.belongsToMany(Order, { through: OrderLine });
 Order.belongsToMany(Product, { through: OrderLine });
+
+//Asociaciones de checkout
+Users.hasMany(Checkout);
+Checkout.belongsTo(Users);
 
 Users.prototype.checkPassword = function (password) {
   return (
