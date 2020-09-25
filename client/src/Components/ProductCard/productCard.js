@@ -75,6 +75,7 @@ const ProductCard = () => {
     }
   };
 
+  console.log('images',images);
   const imageBackground = (i) => ({ backgroundImage: `url(./products/${i.source})` });
 
   return (
