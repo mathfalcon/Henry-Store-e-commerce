@@ -5,15 +5,15 @@ import styles from '../../Styles/productCard.module.css'
 
 export default function Product(props) {
     const {id, name, description} = props.product;
-    const images = props.images;
+    const image = props.image;    
 
-    const imageBackground = (img) => ({ backgroundImage: `url(./products/${img.source})`, height: '400px'});
+    const imageBackground = (image) => ({ backgroundImage: `url(./products/${image.source})`});
 
     return (
         <div className={styles.container}>
-            <div className={styles.card}>       
+            <div className={styles.card}>
             
-                {images.map((img) => <div style={imageBackground(img)} className={styles.imgBx}></div>)}
+                {image && <div style={imageBackground(image)} className={styles.imgBx}></div>}
 
                 <div className={styles.contentBx}>
                     <h2>{name}</h2>

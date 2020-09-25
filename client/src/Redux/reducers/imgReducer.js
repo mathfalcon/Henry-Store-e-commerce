@@ -1,5 +1,6 @@
 const initialState = {
-    images:[],   
+    imgLanding:[],
+    images: []
   };
   
   function imgReducer (state = initialState, action){    
@@ -7,7 +8,8 @@ const initialState = {
       case "GET_IMG":      
         return {
           ...state,
-          images: state.images.concat(action.payload[0])
+          imgLanding: state.imgLanding.concat(action.payload[0]),
+          images: action.payload
         };
       default: 
         return state;
