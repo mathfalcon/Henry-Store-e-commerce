@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Review({ product }) {
   const [reviews, setReviews] = useState([]);
   const [value, setValue] = useState(null);
-  const [valueNew, setNewValue] = useState(2);
+  const [valueNew, setNewValue] = useState(0);
   const [hover, setHover] = useState(-1);
   const [open, setOpen] = useState(false);
   const [openSnack, setSnack] = useState(false);
@@ -161,7 +161,7 @@ export default function Review({ product }) {
                 >
                   <Typography component="legend">Valoracion: </Typography>
                   <Rating name="read-only" value={e.value} readOnly />
-                  <p style={{alignSelf:"flex-start"}}>Autor: {e.author.username}</p>
+                  <p style={{alignSelf:"flex-start"}}>Autor: {e.author.name}</p>
                 </Box>
               </div>
               <div className={styles.reviewContent}>

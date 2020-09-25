@@ -72,10 +72,11 @@ function GuestCart() {
     window.location.reload();
   };
 
-
   const handleRemoveCart = useCallback((productId) => {
     let storageToEdit = JSON.parse(localStorage.getItem("guestCart"));
-    var indexOfProductId = storageToEdit.findIndex((e) => e.productId === productId);
+    var indexOfProductId = storageToEdit.findIndex(
+      (e) => e.productId === productId
+    );
     storageToEdit.splice(indexOfProductId, 1);
     localStorage.setItem("guestCart", JSON.stringify(storageToEdit));
     window.location.reload();

@@ -17,29 +17,39 @@ import CategoryUpdate from "./Components/CategoryForm/categoryUpdate";
 import SignUp from "../src/Components/User/signUp";
 import UserList from "../src/Components/User/UserList";
 import { PrivateRoute } from "./Components/PrivateRoute/PrivateRoute";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ProductList from "./Components/ProductList/productList";
 import CategoryList from "./Components/CategoryList/categoryList";
 import GuestCart from "./Components/Cart/guestcart";
-import userPanel from "./Components/UserPanel/userPanel"
+import UserPanel from "./Components/UserPanel/userPanel"
+import LoadingScreen from "./Components/loadingScreen";
+import { loadingFalse, loadingTrue } from "./Redux/actions/loadingActions";
+
+
 
 function App() {
   const [products, setProducts] = useState([]);
+  const dispatch = useDispatch(); 
   const handleSearch = function (value) {
+    dispatch(loadingTrue());
     //esta funcion deberia ser pasada como props, en el componente que genere todos los productos resultantes
     fetch(`http://localhost:3100/products/search/${value}`)
       .then((r) => r.json())
       .then((data) => {
         // data = array que devuelve la db con los productos que hacen match
         setProducts(data);
+        setTimeout(()  => dispatch(loadingFalse()), 300 )
       })
       .catch((err) => console.log(err));
   };
-
+  
   const userLogged = useSelector((state) => state.authUser);
+  const {isLoading} = useSelector((state) => state.isLoading);
+
 
   return (
-    <BrowserRouter>
+    // Loading Screen statement
+    !isLoading ? <BrowserRouter>
       <Route
         path="/"
         render={() => <SearchBar handleSearch={handleSearch} />}
@@ -62,7 +72,7 @@ function App() {
       <Route path="/product/detailed/:id" render={() => <ProductCard />} />
       <Route exact path="/sign-up" render={() => <SignUp />} />
       <Route exact path="/guest/cart" render={() => <GuestCart />} />
-      <Route exact path="/user"><userPanel/></Route>
+      <Route exact path="/user/profile"><UserPanel/></Route>
       {/* RUTAS PRIVADAS */}
       <PrivateRoute
         exact
@@ -118,7 +128,7 @@ function App() {
         userData={userLogged}
         component={CategoryList}
       />
-    </BrowserRouter>
+    </BrowserRouter>: <LoadingScreen/>  
   );
 }
 

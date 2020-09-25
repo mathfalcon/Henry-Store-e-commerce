@@ -7,6 +7,7 @@ import Button from "@material-ui/core/Button";
 import CreateIcon from '@material-ui/icons/Create';
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
+import googleLogo from '../../content/googlelogo.png'
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -89,6 +90,13 @@ function SignUp() {
             que otras personas los compren.
           </p>
         </div>
+        <Button
+        variant="contained"
+        href='http://localhost:3100/auth/google'
+        style={{backgroundColor: 'white', marginBottom: '1em', maxWidth:'50%', alignSelf:'center'}}
+        endIcon={<img src={googleLogo} style={{height: 'auto', maxWidth: '45px'}}
+        />}
+      >Registrarse con Google</Button>
         <img src={logoHenry} alt="logoHenry" className={styles.imgLogo} />
       </div>
       <div className={styles.form}>

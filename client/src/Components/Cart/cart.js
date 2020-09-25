@@ -86,7 +86,7 @@ function Cart() {
   return (
     <div className={styles.title}>
       {!userLogged.id && <Redirect to='/guest/cart'/>}
-      <h1>ID de la orden: {orders.id}</h1>
+      {orders.products ? <h1>ID de la orden: {orders.id}</h1>: <h1></h1>}
       <div className={styles.sectionTable}>
         <table className={styles.cartTable}>
           {orders.products && orders.products[0] ?
@@ -129,7 +129,7 @@ function Cart() {
                 </tr>
               </tbody>
             )) : (
-              <div>
+              <div >
                 <h1 style={{ color: "white" }}>
                   No tienes ningun producto en el carrito
                 </h1>
