@@ -1,57 +1,20 @@
-import React, { Component } from "react";
-import { connect } from 'react-redux'; 
-import ProductCard from "../ProductCard/productCard";
+import React, { Fragment, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { getImg } from "../../../Redux/actions/imgActions";
+import Product from "../../Product/product.js";
 
-class Catalogo extends Component {
 
-    handleFiltro( products, id_categoria ){
+export default function Catalogo({product}) {    
+    const { images } = useSelector((state) => state.imgReducer); 
+    const dispatch = useDispatch()
+    
+  useEffect(() => {     
+      dispatch(getImg(product.id));
+  }, []);  
 
-// un producto puede tener varias categorias -> ver como recorrerlas para filtrar
-// Product.belongsToMany(Categories, { through: 'categoryId'});
-// Categories.belongsToMany(Product, { through: 'productId'});
-
-        if ( id_categoria ){
-            return products.filter( p => ( p.categories.includes(id_categoria) &&  p.stock > 0 ));
-        } else {
-            return products;
-        }
-    }
-
-    render() {
-        const { products, id_categoria } = this.props;
-        const showProducts = this.handleFiltro( products, id_categoria );
-        
-        return (
-            <div>
-                <h1>Productos</h1> 
-                { showProducts.map( product => {
-                    return (
-                        // si no hay stock del producto no mostrar la card
-                        // tambien debo mandar la funcion para agregar al carrito a la productCard
-                        <ProductCard
-                            key={ product.id }
-                            { ...product }
-                        />
-                        )
-                    })               
-                }               
-            </div>
-        );
-    }
+return (
+    <Fragment>
+        <Product product={product} key={product.id} images={images}/>
+    </Fragment>
+  );
 }
-
- const mapStateToProps = state => {
-    return {
-      products: state.products,
-      //id_categoria: state.id_categoria ??
-    }
-  }
-  
-  const mapDispatchToProps = dispatch => {
-    return {
-      
-    }
-  }
-  
-  
-  export default connect(mapStateToProps, mapDispatchToProps)(Catalogo);

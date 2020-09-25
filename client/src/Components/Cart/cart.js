@@ -103,8 +103,8 @@ function Cart() {
                   <td style={{ color: "white" }}>
                     Cantidad a comprar: {order.amount.amount}
                   </td>
-                  <td style={{ color: "white" }}>
-                    {order.amount.amount > -1 && (
+                  <td style={{ color: "white" }}>                  
+                    {order.amount.amount > -1 && ( order.stock > order.amount.amount ) && (
                       <IconButton
                         className={styles.buttonsAddRemove}
                         onClick={(e) => handleAddQty(order.id)}
@@ -132,6 +132,10 @@ function Cart() {
                       onClick={() => handleRemoveCart(order.id)}
                     />
                   </a>
+                  {
+                   !(order.stock > order.amount.amount) &&
+                   <td style={{ color: "red" }}><span>Limite de Stock</span></td>
+                  }
                 </tr>
               </tbody>
             )) : (

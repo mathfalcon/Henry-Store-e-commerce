@@ -72,6 +72,7 @@ function ProductForm() {
   const [categories, setCategories] = useState([]);
   const theme = useTheme();
   const [personName, setPersonName] = useState([]);
+  const imageInput = React.createRef();
   const handleChanges = (event) => {
     setPersonName(event.target.value);
   };

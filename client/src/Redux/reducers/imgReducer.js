@@ -7,7 +7,7 @@ const initialState = {
       case "GET_IMG":      
         return {
           ...state,
-          images: action.payload
+          images: state.images.concat(action.payload[0])
         };
       default: 
         return state;
