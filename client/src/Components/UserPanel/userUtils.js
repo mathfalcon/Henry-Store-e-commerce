@@ -1,5 +1,5 @@
-import React from "react";
-import { makeStyles, Theme } from "@material-ui/core/styles";
+import React, { Fragment, useEffect, useState } from "react";
+import { makeStyles, Theme, withStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
@@ -8,6 +8,19 @@ import LockIcon from "@material-ui/icons/Lock";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
+import FormControl from "@material-ui/core/FormControl";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import Input from "@material-ui/core/Input";
+import InputLabel from "@material-ui/core/InputLabel";
+import { Button, Snackbar } from "@material-ui/core";
+import axios from "axios";
+import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
+
+
+function Alert(props: AlertProps) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -47,21 +60,84 @@ const useStyles = makeStyles((theme: Theme) => ({
     flexGrow: 1,
     width: "100%",
     backgroundColor: theme.palette.background.paper,
-    border: '2px solid black'
+    border: "2px solid black",
   },
   classes: {
     backgroundColor: "black",
     color: "white",
   },
+  form: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    maxWidth: "50%",
+    margin: "auto",
+  },
+  helperText: {
+    paddingBottom: "15px",
+  },
+  button: {
+    backgroundColor: "yellow",
+  },
 }));
 
-export default function UserUtils() {
+export default function UserUtils(props) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
+  const [name, setName] = useState("");
+  const { user } = props;
+  const [state, setState] = useState({
+    name: user.name,
+    username: user.username,
+    email: user.email,
+    currentPassword: "",
+    newPassword: "",
+    confirmNewPassword: "",
+  });
+  const [passwordError, setPwError] = useState(false);
+  const [profileError, setProfileError] = useState({
+    success: true,
+    message: "",
+  });
+
+  const [alertPw, setPwAlert] = useState(false);
+
+  useEffect(() => {
+    passwordValidator();
+  }, [state]);
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
   };
+
+  const handleInputChange = ({ target }) => {
+    const { name, value } = target;
+    setState({ ...state, [name]: value });
+  };
+
+  const passwordValidator = () => {
+    state.newPassword !== state.confirmNewPassword
+      ? setPwError(true)
+      : setPwError(false);
+  };
+
+  const submitProfileEdit = () => {
+    axios
+      .put(`http://localhost:3100/users/update/${user.id}`, {
+        name: state.name,
+        username: state.username,
+        email: state.email,
+      })
+      .then((response) => {
+        setProfileError(response.data);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  //ALERT HANDLE
+  const setAlertPw = () => {
+    setPwAlert(!alertPw)
+  }
 
   return (
     <div className={classes.root}>
@@ -85,14 +161,151 @@ export default function UserUtils() {
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
-        Item One
+        <form className={classes.form} noValidate autoComplete="off">
+          <FormControl>
+            <InputLabel>Nombre</InputLabel>
+            <Input
+              value={state.name}
+              name="name"
+              onChange={handleInputChange}
+            />
+            <FormHelperText className={classes.helperText}>
+              Edita tu nombre, este es mostrado públicamente
+            </FormHelperText>
+          </FormControl>
+          <FormControl
+            disabled={user.username === "Google User" ? true : false}
+          >
+            <InputLabel>Email</InputLabel>
+            <Input
+              value={state.email}
+              name="email"
+              onChange={handleInputChange}
+            />
+            {user.username === "Google User" ? (
+              <FormHelperText className={classes.helperText}>
+                Los usuarios de Google no pueden modificar su email
+              </FormHelperText>
+            ) : (
+              <FormHelperText className={classes.helperText}>
+                Edita tu email, este es usado para ingresar a la pagina
+              </FormHelperText>
+            )}
+          </FormControl>
+          <FormControl
+            disabled={user.username === "Google User" ? true : false}
+          >
+            <InputLabel>Nombre de usuario</InputLabel>
+            <Input
+              value={state.username}
+              name="username"
+              onChange={handleInputChange}
+            />
+            {user.username === "Google User" ? (
+              <FormHelperText className={classes.helperText}>
+                Los usuarios de Google no pueden modificar su usuario
+              </FormHelperText>
+            ) : (
+              <FormHelperText className={classes.helperText}>
+                Edita tu nombre de usuario
+              </FormHelperText>
+            )}
+            {!profileError.success ? (
+              <FormHelperText error className={classes.helperText}>
+                {profileError.message}
+              </FormHelperText>
+            ) : (
+              <FormHelperText
+                style={{ color: "green" }}
+                className={classes.helperText}
+              >
+                {profileError.message}
+              </FormHelperText>
+            )}
+          </FormControl>
+          <Button
+            style={{ backgroundColor: "#ffff57", color: "black" }}
+            variant="contained"
+            color="primary"
+            onClick={submitProfileEdit}
+          >
+            MODIFICAR PERFIL
+          </Button>
+        </form>
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Item Two
+        <form className={classes.form} noValidate autoComplete="off">
+          <FormControl
+            disabled={user.username === "Google User" ? true : false}
+            style={{ marginBottom: "15px" }}
+          >
+            <InputLabel>Contraseña actual</InputLabel>
+            <Input
+              value={state.currentPassword}
+              name="currentPassword"
+              onChange={handleInputChange}
+              type='password'
+            />
+          </FormControl>
+          <FormControl
+            disabled={user.username === "Google User" ? true : false}
+            style={{ marginBottom: "15px" }}
+          >
+            <InputLabel>Nueva contraseña</InputLabel>
+            <Input
+              value={state.newPassword}
+              name="newPassword"
+              onChange={handleInputChange}
+              type='password'
+            />
+          </FormControl>
+          <FormControl
+            disabled={user.username === "Google User" ? true : false}
+            error={passwordError}
+            style={{ marginBottom: "15px" }}
+          >
+            <InputLabel>Confirma la nueva contraseña</InputLabel>
+            <Input
+              value={state.confirmNewPassword}
+              name="confirmNewPassword"
+              onChange={handleInputChange}
+              type='password'
+            />
+            {passwordError ? (
+              <FormHelperText className={classes.helperText}>
+                Las contraseñas deben coincidir
+              </FormHelperText>
+            ) : (
+              <Fragment />
+            )}
+            {user.username === "Google User" ? (
+              <FormHelperText error>
+                Los usuarios de Google no tienen contraseña
+              </FormHelperText>
+            ) : (
+              <Fragment />
+            )}
+          </FormControl>
+          <Button
+            style={{ backgroundColor: "#ffff57", color: "black" }}
+            variant="contained"
+            color="primary"
+            disabled={state.newPassword.length < 1 || passwordError}
+            onClick={setPwAlert}
+          >
+            MODIFICAR CONTRASEÑA
+          </Button>
+        </form>
       </TabPanel>
       <TabPanel value={value} index={2}>
         Item Three
       </TabPanel>
+      {/* ALERTAS */}
+      <Snackbar anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} open={alertPw} autoHideDuration={6000} onClose={setAlertPw}>
+        <Alert onClose={setAlertPw} severity="success">
+          Tu contraseña se actualizó con éxito
+        </Alert>
+      </Snackbar>
     </div>
   );
 }
