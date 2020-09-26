@@ -58,7 +58,7 @@ function UserPanel() {
             </Paper>
           </Grid>
           <Grid item xs={12}>
-            <UtilsTab />
+            <UtilsTab user={userLogged}/>
           </Grid>
         </Grid>
       </div>

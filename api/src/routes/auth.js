@@ -1,5 +1,6 @@
 const server = require("express").Router();
 const passport = require("passport");
+const { Users } = require("../db.js");
 
 server.post("/login", (req, res, next) => {
   console.log(req.body);
@@ -79,5 +80,26 @@ server.get(
     res.redirect("http://localhost:3000/");
   }
 );
+
+// Ruta para cambiar contraseña
+server.put("/change-password", (req, res, next) => {
+  const { userId, currentPw, newPw } = req.body;
+
+  Users.findByPk(userId).then((user) => {
+    if (!user.checkPassword(currentPw)) {
+      res.send({
+        success: false,
+        message: "La contraseña actual provista es incorrecta",
+      });
+    } else if (user.checkPassword(currentPw)) {
+      user.password = newPw;
+      user.save();
+      res.status(200).send({
+        success: true,
+        message: "La contraseña ha sido actualizada con éxito",
+      });
+    }
+  });
+});
 
 module.exports = server;
