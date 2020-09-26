@@ -10,22 +10,31 @@ server.get("/", (req, res, next) => {
     .catch(next);
 });
 
-//Modifica un usuario pasado por id (query)
+//Modifica un usuario pasado por id (params)
 server.put("/update/:id", (req, res, next) => {
   const { name, username, email, role } = req.body;
 
+  if (name.length < 1 || username.length < 1 || email.length < 1){
+    return res.send({
+      success: false,
+      message: 'Los campos a editar no pueden estar vacios.'
+    })
+  }
+
   Users.findByPk(req.params.id)
     .then((data) => {
-      if (name) data.name = name;
-      if (username) data.username = username;
-      if (email) data.email = email;
-      if (role) data.role = role;
+      if (name && name.length > 1) data.name = name;
+      if (username && username.length > 1) data.username = username;
+      if (email && email.length>  1) data.email = email;
+      if (role && role.length>  1) data.role = role;
       data.save();
       res
         .status(200)
-        .send(
-          `El usuario ${data.dataValues.name} con id ${data.dataValues.id} se actualizó con éxito`
-        );
+        .send({
+         success: true,
+         message: 'Actualizaste tu perfil con éxito',
+         messageAdmin: `El usuario ${data.dataValues.name} con id ${data.dataValues.id} se actualizó con éxito`
+        });
     })
     .catch((err) => {
       res.status(400).send(err);

@@ -1,9 +1,10 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import { Provider } from 'react-redux';
-import store from './Redux/store/store'
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import App from "./App";
+import { Provider } from "react-redux";
+import store from "./Redux/store/store";
+import LoadingScreen from "./Components/loadingScreen";
 //Cuando se implemente redux hay que agregar reemplazar esto por esto
 // ReactDOM.render(
 //   <Provider>
@@ -17,8 +18,8 @@ import store from './Redux/store/store'
 // );
 
 ReactDOM.render(
-  <Provider store={store}>    
-      <App />    
+  <Provider store={store}>
+    <App />
   </Provider>,
-  document.getElementById('root')
+  document.getElementById("root")
 );

@@ -95,8 +95,8 @@ function Cart() {
 
   return (
     <div className={styles.title}>
-      {!userLogged.id && <Redirect to="/guest/cart" />}
-      <h1>ID de la orden: {orders.id}</h1>
+      {!userLogged.id && <Redirect to='/guest/cart'/>}
+      {orders.products ? <h1>ID de la orden: {orders.id}</h1>: <h1></h1>}
       <div className={styles.sectionTable}>
         <table className={styles.cartTable}>
           {orders.products && orders.products[0] ?
@@ -109,8 +109,8 @@ function Cart() {
                   <td style={{ color: "white" }}>
                     Cantidad a comprar: {order.amount.amount}
                   </td>
-                  <td style={{ color: "white" }}>
-                    {order.amount.amount > -1 && (
+                  <td style={{ color: "white" }}>                  
+                    {order.amount.amount > -1 && ( order.stock > order.amount.amount ) && (
                       <IconButton
                         className={styles.buttonsAddRemove}
                         onClick={(e) => handleAddQty(order.id)}
@@ -138,10 +138,14 @@ function Cart() {
                       onClick={() => handleRemoveCart(order.id)}
                     />
                   </a>
+                  {
+                   !(order.stock > order.amount.amount) &&
+                   <td style={{ color: "red" }}><span>Limite de Stock</span></td>
+                  }
                 </tr>
               </tbody>
             )) : (
-              <div>
+              <div >
                 <h1 style={{ color: "white" }}>
                   No tienes ningun producto en el carrito
                 </h1>

@@ -5,7 +5,7 @@ import styles from "../../Styles/ordersTable.module.css";
 
 function OrderRow({order: {id, createdAt, user, state}}) {
   
-  const { totalOrder } = useSelector((state) => state.totalOrder);  
+  const { totalOrder } = useSelector((state) => state.totalOrder);
 
   const dispatch = useDispatch()
 

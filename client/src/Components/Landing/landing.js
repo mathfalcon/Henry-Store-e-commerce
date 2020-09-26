@@ -1,14 +1,19 @@
 import React, { Fragment, useState, useEffect } from "react";
 import styles from "../../Styles/landing.module.css";
 import logoText from "../../content/logoComplete.png";
-import Product from "../Product/product.js";
+// import Catalogo from "../Product/Catalogo/catalogo.js";
 import ReactSelectMaterialUi from "react-select-material-ui";
-import axios from 'axios';
+import { useSelector, useDispatch } from "react-redux";
+import { getImg } from "../../Redux/actions/imgActions";
+import Product from "../../Components/Product/product"
 
-export default function Landing() {
+export default function Landing() {  
   const [allProducts, setProducts] = useState([]);
   const [allCategories, setCategories] = useState([]);
   const [selectedCategory, setCategory] = useState("");
+
+  const { imgLanding } = useSelector((state) => state.imgReducer); 
+  const dispatch = useDispatch()
 
   useEffect(() => {
     setProducts([]);
@@ -18,6 +23,7 @@ export default function Landing() {
         .then((data) => { 
           data.products.forEach((e) => {            
             if (e.stock > 0){              
+              dispatch(getImg(e.id));        
               setProducts((previousState) => previousState.concat(e));
             }
           });          
@@ -29,6 +35,7 @@ export default function Landing() {
         .then((data) => {          
           data.forEach((e) => {            
             if (e.stock > 0){              
+              dispatch(getImg(e.id));      
               setProducts((previousState) => previousState.concat(e));
             }
           });          
@@ -72,9 +79,7 @@ export default function Landing() {
             }}
           />
         </div>
-        {allProducts.map((el, index) => (
-          <Product product={el} key={index} />
-        ))}
+        {allProducts.map((product, index) => <Product product={product} key={product.id} image={imgLanding[index]}/>)}        
       </section>
     </Fragment>
   );
