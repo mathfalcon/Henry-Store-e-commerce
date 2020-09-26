@@ -21,8 +21,14 @@ function Cart() {
     if (userLogged.id) getOrders();
   }, [userLogged]);
 
-  const handleConfirm = () =>{
-    window.location.href = `http://localhost:3000/checkout/${orders.id}`
+  const handleConfirm = (order) =>{
+    axios({
+      method: "put",
+      url: `http://localhost:3100/orders/${order.id}?state=processing`,
+    }).then((data) => {
+      console.log(data.data);
+      window.location.href = `http://localhost:3000/checkout/${data.data.userId}/${data.data.id}`;
+    }); 
   }
   
   const getOrders = () => {
@@ -173,21 +179,25 @@ function Cart() {
           VACIAR CARRITO
         </Button> : <h2></h2>}
       </div>
-      <h2>Total: ${totalPrice}</h2>
-      <Button
-        variant="contained"
-        color="secondary"
-        onClick={() => {console.log(orders); handleConfirm()}}
-        style={{
-          backgroundColor: "#ffff5a",
-          color: "black",
-          margin: "1em",
-          width: "30%",
-        }}
-      >
-        FINALIZAR COMPRA
-      </Button>
-      {orders.products && orders.products[0] ? <h2>Total: ${totalPrice}</h2> : <h2></h2>}
+      {orders.products && orders.products[0] ? 
+        <div>
+          <h2>Total: ${totalPrice}</h2>
+          <Button
+          variant="contained"
+          color="secondary"
+          onClick={() => {console.log(orders); handleConfirm(orders)}}
+          style={{
+            backgroundColor: "#ffff5a",
+            color: "black",
+            margin: "1em",
+            width: "35%",
+            flexGrow: "1"
+          }}
+        >
+          FINALIZAR COMPRA
+        </Button>
+        </div> 
+      : false}
     </div>
   );
 }

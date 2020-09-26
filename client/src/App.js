@@ -72,6 +72,7 @@ function App() {
       <Route path="/product/detailed/:id" render={() => <ProductCard />} />
       <Route exact path="/sign-up" render={() => <SignUp />} />
       <Route exact path="/guest/cart" render={() => <GuestCart />} />
+      <Route exact path="/checkout/:idUser/:idOrder" render={() => <Checkout />} />
       <Route exact path="/user/profile"><UserPanel/></Route>
       <Route exact path="/checkout" render={() => <Checkout />} />
         
