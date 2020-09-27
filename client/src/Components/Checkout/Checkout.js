@@ -35,6 +35,8 @@ export default function Checkout() {
           .put(`http://localhost:3100/orders/${idOrder}?state=complete`)
           .then(() => {
             setOpenCreate(true)
+            axios.post(`http://localhost:3100/orders/checkout`,{orderId: idOrder})
+            .then(data => console.log(data))
           });
       })
       .catch((err) => console.log(err));
@@ -103,7 +105,7 @@ export default function Checkout() {
           severity="success"
           style={{ backgroundColor: "#ffff5a", color: "black" }}
         >
-          La compra se ha confirmado con éxito.
+          La compra se ha confirmado con éxito, en breves recibirás un mail con los detalles.
         </Alert>
       </Snackbar>
     </div>

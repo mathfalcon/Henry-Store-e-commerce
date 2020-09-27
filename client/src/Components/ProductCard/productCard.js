@@ -77,7 +77,7 @@ const ProductCard = () => {
       <div className={styles.divCard}>
         <div className={styles.mainInfo}>
           <div className={styles.imgBx}>
-            <img src={product.img} alt="Henry Shirt" />
+            <img src={product.img} alt="Henry Product" />
           </div>
           <div className={styles.divButtons}>
             <span>
