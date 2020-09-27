@@ -1,5 +1,6 @@
 const server = require("express").Router();
 const { Users, OrderLine, Order, Product } = require("../db.js");
+const { Op } = require("sequelize");
 
 // Busca todos los usuarios y los devuelve en un array
 server.get("/", (req, res, next) => {
@@ -69,8 +70,6 @@ server.post("/:idUser/cart", (req, res, next) => {
   //suponiendo que en req.body viene el id del producto como 'idProducto'
   // la cantidad de items como 'amount' y el precio como 'price'
 
-  //hay que editarla, deberia crear una orden con status created, la order line deberia filtrar las ordenes de un usuario y si encuentra una que este
-  // 'activa' deberia agregar orderline a esa orden, en este caso la ordenline se crea al crear la orden, no cumple el proposito de una orden muchas orderlines.
   
   const { idUser } = req.params;
   const { idProducto, amount } = req.body;
@@ -194,7 +193,21 @@ server.get("/:userId/orders", (req, res, next) => {
     where: {
       userId: id,
     },
-    include: Users,
+    include: [
+      {
+        model: Product,
+        as: "products",
+        required: false,
+        // Pass in the Product attributes that you want to retrieve
+        attributes: ["id", "name", "description", "stock", "price"],
+        through: {
+          // This block of code allows you to retrieve the properties of the join table
+          model: OrderLine,
+          as: "amount",
+          attributes: ["amount"],
+        },
+      }
+    ],
   })
     .then((rows) => res.status(200).json(rows))
     .catch(next);

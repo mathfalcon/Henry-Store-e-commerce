@@ -3,7 +3,7 @@ import styles from "../../Styles/productForm.module.css";
 import logoText from "../../Styles/Assets/logo henry black.png";
 import axios from "axios";
 import Button from "@material-ui/core/Button";
-import PublishIcon from '@material-ui/icons/Publish';
+import PublishIcon from "@material-ui/icons/Publish";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -55,7 +55,6 @@ function getStyles(name, personName, theme) {
 }
 
 function ProductForm() {
-
   //Estado para Alerta crear categoria
   const [openCreate, setOpenCreate] = useState(false);
 
@@ -72,7 +71,7 @@ function ProductForm() {
   const [categories, setCategories] = useState([]);
   const theme = useTheme();
   const [personName, setPersonName] = useState([]);
-  const imageInput = React.createRef();
+
   const handleChanges = (event) => {
     setPersonName(event.target.value);
   };
@@ -92,28 +91,32 @@ function ProductForm() {
     setState({ ...state, [name]: value });
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();    
-    const images = imageInput.current.files;    
-    const img_object = Object.values(images);
-    var img_names = [];
-    for (let i = 0; i < img_object.length; i++) {       
-      // img_names.push(`../../content/${img_object[i].name}`);
-      img_names.push(img_object[i].name);
-    }    
+  const handleOnChangeImg = (e) => {
+    var file = e.target.files[0];
+    var reader = new FileReader();
+    reader.onloadend = function () {
+      setState({
+        ...state,
+        img: reader.result,
+      });
+    };
+    reader.readAsDataURL(file);
+  };
 
-    axios({      
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    axios({
       method: "post",
       url: "http://localhost:3100/products/create-product",
       data: {
-        name: state.name,       
+        name: state.name,
         description: state.description,
         price: state.price,
         stock: state.stock,
-        img_names
+        img: state.img,
       },
     })
-      .then((data) => {        
+      .then((data) => {
         if (personName.length > 0) {
           personName.forEach((e) => {
             axios({
@@ -132,7 +135,7 @@ function ProductForm() {
 
   return (
     <div>
-      <form className={styles.form} >
+      <form className={styles.form}>
         <div className={styles.inputs}>
           <div className={styles.name}>
             <label>Nombre</label>
@@ -173,14 +176,14 @@ function ProductForm() {
             />
           </div>
           <div>
-          <label>Subir Imágenes</label>
+            <label>Subir Imágenes </label>
             <input
               type="file"
-              ref={imageInput}
-              multiple="multiple"
-              name="dropimage"
-              accept="image/*"              
-              />
+              id="file"
+              accept=".png"
+              name="img"
+              onChange={handleOnChangeImg}
+            />
           </div>
           <div>
             <Button
@@ -188,15 +191,18 @@ function ProductForm() {
               color="secondary"
               className={classes.button}
               onClick={handleSubmit}
-              style={{backgroundColor: '#ffff5a', color: 'black'}}
+              style={{ backgroundColor: "#ffff5a", color: "black" }}
               endIcon={<PublishIcon />}
-            >CREAR</Button>
+            >
+              CREAR
+            </Button>
           </div>
         </div>
 
         <div className={styles.buttons}>
           <h3 className={styles.h3Title}>Crear Producto</h3>
           {/* Selector multiple de categorias */}
+          {state.img && <img style={{height: 'auto', width:'45%', margin: '0 auto'}} src={state.img.toString('utf8')}></img>}
           <div className={styles.Multiselect}>
             <h2>Seleccionar Categorias: </h2>
             {categories.length > 0 && (

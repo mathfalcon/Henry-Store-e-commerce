@@ -12,42 +12,49 @@ import { Redirect } from "react-router-dom";
 function Cart() {
   const [orders, setOrders] = useState([]);
   const [totalPrice, setTotal] = useState(0);
-
   //Asignando el hook de dispatch a una constante
   //Se asigna el valor de userLogged por destructuring
   const { userLogged } = useSelector((state) => state.authUser);
 
   useEffect(() => {
-    if (userLogged.id) getOrders();
+    getOrders();
   }, [userLogged]);
 
-  const handleConfirm = (order) =>{
+  const handleConfirm = (order) => {
     axios({
       method: "put",
       url: `http://localhost:3100/orders/${order.id}?state=processing`,
     }).then((data) => {
       console.log(data.data);
       window.location.href = `http://localhost:3000/checkout/${data.data.userId}/${data.data.id}`;
-    }); 
-  }
-  
-  const getOrders = () => {
-    axios.get(`http://localhost:3100/users/${userLogged.id}/orders`).then((response) => { // Looks for users' orders
-      const activeOrder = response.data.find((e) => e.state = 'active');
-      if(activeOrder){
-      axios.get(`http://localhost:3100/orders/products/${activeOrder.id}`)  //Looks for the information of the active order
-        .then((data) => {
-          setOrders(data.data[0]);
-          let total = 0;
-          data.data[0].products.forEach((e) => (total += e.price * e.amount.amount));
-          setTotal(total);
-        })
-        .catch((err) => console.log(err));
-      }
     });
   };
+
+  const getOrders = () => {
+    if (userLogged.id) {
+      axios
+        .get(`http://localhost:3100/users/${userLogged.id}/orders`)
+        .then((response) => {
+          // Looks for users' orders
+          let activeOrder = response.data.find((e) => (e.state === "active"));
+          console.log(activeOrder)
+          if (activeOrder.id) {
+            axios
+              .get(`http://localhost:3100/orders/products/${activeOrder.id}`) //Looks for the information of the active order
+              .then((data) => {
+                setOrders(data.data[0]);
+                let total = 0;
+                data.data[0].products.forEach(
+                  (e) => (total += e.price * e.amount.amount)
+                );
+                setTotal(total);
+              })
+              .catch((err) => console.log(err));
+          }
+        });
+    }
+  };
   const handleRemoveCart = (id) => {
-    console.log(orders);
     axios({
       method: "delete",
       url: `http://localhost:3100/users/${orders.id}`,
@@ -80,7 +87,7 @@ function Cart() {
       },
     }).then((data) => getOrders());
   };
-  
+
   const handleRemoveQty = (productId) => {
     axios({
       method: "put",
@@ -92,14 +99,14 @@ function Cart() {
       },
     }).then((data) => getOrders());
   };
-
+  console.log(orders)
   return (
     <div className={styles.title}>
-      {!userLogged.id && <Redirect to='/guest/cart'/>}
-      {orders.products ? <h1>ID de la orden: {orders.id}</h1>: <h1></h1>}
+      {!userLogged.id && <Redirect to="/guest/cart" />}
+      {orders.products ? <h1>ID de la orden: {orders.id}</h1> : <h1></h1>}
       <div className={styles.sectionTable}>
         <table className={styles.cartTable}>
-          {orders.products && orders.products[0] ?
+          {orders.products ? (
             orders.products.map((order, index) => (
               <tbody key={index}>
                 <tr>
@@ -109,16 +116,17 @@ function Cart() {
                   <td style={{ color: "white" }}>
                     Cantidad a comprar: {order.amount.amount}
                   </td>
-                  <td style={{ color: "white" }}>                  
-                    {order.amount.amount > -1 && ( order.stock > order.amount.amount ) && (
-                      <IconButton
-                        className={styles.buttonsAddRemove}
-                        onClick={(e) => handleAddQty(order.id)}
-                        aria-label="add"
-                      >
-                        <AddIcon className={styles.iconAddRemove} />
-                      </IconButton>
-                    )}
+                  <td style={{ color: "white" }}>
+                    {order.amount.amount > -1 &&
+                      order.stock > order.amount.amount && (
+                        <IconButton
+                          className={styles.buttonsAddRemove}
+                          onClick={(e) => handleAddQty(order.id)}
+                          aria-label="add"
+                        >
+                          <AddIcon className={styles.iconAddRemove} />
+                        </IconButton>
+                      )}
                     {order.amount.amount > 1 && (
                       <IconButton
                         className={styles.buttonsAddRemove}
@@ -138,66 +146,76 @@ function Cart() {
                       onClick={() => handleRemoveCart(order.id)}
                     />
                   </a>
-                  {
-                   !(order.stock > order.amount.amount) &&
-                   <td style={{ color: "red" }}><span>Limite de Stock</span></td>
-                  }
+                  {!(order.stock > order.amount.amount) && (
+                    <td style={{ color: "red" }}>
+                      <span>Limite de Stock</span>
+                    </td>
+                  )}
                 </tr>
               </tbody>
-            )) : (
-              <div >
-                <h1 style={{ color: "white" }}>
-                  No tienes ningun producto en el carrito
-                </h1>
-                <Button
-                  variant="contained"
-                  style={{
-                    backgroundColor: "white",
-                    color: "black",
-                    maxWidth: "200px",
-                    marginTop: "15px",
-                    marginBottom: "15px",
-                  }}
-                  href="http://localhost:3000/#section-two"
-                >
-                  Ir al catalogo
-                </Button>
-              </div>
-            )}
+            ))
+          ) : (
+            <div>
+              <h1 style={{ color: "white" }}>
+                No tienes ningun producto en el carrito
+              </h1>
+              <Button
+                variant="contained"
+                style={{
+                  backgroundColor: "white",
+                  color: "black",
+                  maxWidth: "200px",
+                  marginTop: "15px",
+                  marginBottom: "15px",
+                }}
+                href="http://localhost:3000/#section-two"
+              >
+                Ir al catalogo
+              </Button>
+            </div>
+          )}
         </table>
-        {orders.products && orders.products[0] ?
-        <Button
-          variant="contained"
-          style={{
-            backgroundColor: "black",
-            color: "white",
-            maxWidth: "200px",
-            marginTop: "15px",
-          }}
-          onClick={handleRemoveAllCart}
-        >
-          VACIAR CARRITO
-        </Button> : <h2></h2>}
+        {orders.products && orders.products[0] ? (
+          <Button
+            variant="contained"
+            style={{
+              backgroundColor: "black",
+              color: "white",
+              maxWidth: "200px",
+              marginTop: "15px",
+            }}
+            onClick={handleRemoveAllCart}
+          >
+            VACIAR CARRITO
+          </Button>
+        ) : (
+          <h2></h2>
+        )}
       </div>
-      {orders.products && orders.products[0] ? 
+      {orders.products && orders.products[0] ? (
         <div>
           <h2>Total: ${totalPrice}</h2>
           <Button
-          variant="contained"
-          color="secondary"
-          onClick={() => {console.log(orders); handleConfirm(orders)}}
-          style={{
-            backgroundColor: "#ffff5a",
-            color: "black",
-            margin: "1em",
-            width: "35%",
-            flexGrow: "1"
-          }}
-        >
-          FINALIZAR COMPRA
-        </Button>
-        </div> 
-      : false}
+            variant="contained"
+            color="secondary"
+            onClick={() => {
+              console.log(orders);
+              handleConfirm(orders);
+            }}
+            style={{
+              backgroundColor: "#ffff5a",
+              color: "black",
+              margin: "1em",
+              width: "35%",
+              flexGrow: "1",
+            }}
+          >
+            FINALIZAR COMPRA
+          </Button>
+        </div>
+      ) : (
+        false
+      )}
     </div>
   );
 }

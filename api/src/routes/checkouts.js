@@ -11,12 +11,13 @@ server.get("/", (req, res, next) => {
 //Ruta para agregar una direccion y un medio de pago a un usuario
 server.post("/:idUser/add/", (req, res, next) => {
     const { idUser } = req.params;
-    const { address, payment } = req.body;
+    const { address, payment, orderId } = req.body;
     
     Checkout.create({
         address: address,
         payment: payment,
-        userId: idUser
+        userId: idUser,
+        orderId: orderId
     }).then(data => res.status(200).json(data))
     .catch(next)
   });

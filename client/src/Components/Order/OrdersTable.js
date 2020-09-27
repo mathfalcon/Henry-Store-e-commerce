@@ -12,7 +12,7 @@ function OrdersTable() {
   const [filter, setFilter] = useState(false);
   
   //["inCart", "created","active", "processing", "canceled", "complete"]
-  const options = ["Sin Filtro","active", "inCart", "canceled", "complete"];
+  const options = ["Sin Filtro", "inCart", "created","active", "processing", "canceled", "complete"]
   console.log('orderList',orderList);
 
   const dispatch = useDispatch(); 
@@ -56,7 +56,7 @@ function OrdersTable() {
                 <th>TOTAL</th>
                 <th>USUARIO</th>
                 <th>ESTADO</th>
-                <th>PRODUCTOS</th>
+                <th>CAMBIAR ESTADO</th>
               </tr>
             </thead>
             <tbody>

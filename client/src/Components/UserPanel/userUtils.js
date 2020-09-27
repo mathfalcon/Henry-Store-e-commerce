@@ -12,15 +12,14 @@ import FormControl from "@material-ui/core/FormControl";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
-import { Button, Snackbar } from "@material-ui/core";
+import { Button, Paper, Snackbar } from "@material-ui/core";
 import axios from "axios";
-import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
-
+import MuiAlert, { AlertProps } from "@material-ui/lab/Alert";
+import UserOrders from "./userOrders";
 
 function Alert(props: AlertProps) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
-
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -83,7 +82,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export default function UserUtils(props) {
   const classes = useStyles();
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
   const [name, setName] = useState("");
   const { user } = props;
   const [state, setState] = useState({
@@ -99,11 +98,16 @@ export default function UserUtils(props) {
     success: true,
     message: "",
   });
-
+  const [pwError, setPasswordError] = useState({
+    success: true,
+    message: "",
+  });
   const [alertPw, setPwAlert] = useState(false);
+  const [orders, setOrders] = useState([]);
 
   useEffect(() => {
     passwordValidator();
+    getUserOrders();
   }, [state]);
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
@@ -134,10 +138,44 @@ export default function UserUtils(props) {
       .catch((err) => console.log(err));
   };
 
+  const handlePwChange = () => {
+    axios
+      .put(`http://localhost:3100/auth/change-password`, {
+        userId: user.id,
+        currentPw: state.currentPassword,
+        newPw: state.newPassword,
+      })
+      .then((response) => {
+        if (!response.data.success) {
+          return setPasswordError(response.data);
+        }
+        setAlertPw();
+        setPasswordError(response.data);
+      });
+  };
+
+  const getUserOrders = () => {
+    console.log(user);
+    axios
+      .get(`http://localhost:3100/users/${user.id}/orders`)
+      .then((response) => setOrders(response.data))
+      .catch((err) => console.log(err));
+  };
+
   //ALERT HANDLE
   const setAlertPw = () => {
-    setPwAlert(!alertPw)
-  }
+    setPwAlert(!alertPw);
+  };
+  const pwAlertClose = () => {
+    setState({
+      name: user.name,
+      username: user.username,
+      email: user.email,
+      currentPassword: "",
+      newPassword: "",
+      confirmNewPassword: "",
+    });
+  };
 
   return (
     <div className={classes.root}>
@@ -244,7 +282,7 @@ export default function UserUtils(props) {
               value={state.currentPassword}
               name="currentPassword"
               onChange={handleInputChange}
-              type='password'
+              type="password"
             />
           </FormControl>
           <FormControl
@@ -256,7 +294,7 @@ export default function UserUtils(props) {
               value={state.newPassword}
               name="newPassword"
               onChange={handleInputChange}
-              type='password'
+              type="password"
             />
           </FormControl>
           <FormControl
@@ -269,11 +307,18 @@ export default function UserUtils(props) {
               value={state.confirmNewPassword}
               name="confirmNewPassword"
               onChange={handleInputChange}
-              type='password'
+              type="password"
             />
             {passwordError ? (
               <FormHelperText className={classes.helperText}>
                 Las contraseñas deben coincidir
+              </FormHelperText>
+            ) : (
+              <Fragment />
+            )}
+            {!pwError.success ? (
+              <FormHelperText error className={classes.helperText}>
+                {pwError.message}
               </FormHelperText>
             ) : (
               <Fragment />
@@ -291,18 +336,27 @@ export default function UserUtils(props) {
             variant="contained"
             color="primary"
             disabled={state.newPassword.length < 1 || passwordError}
-            onClick={setPwAlert}
+            onClick={handlePwChange}
           >
             MODIFICAR CONTRASEÑA
           </Button>
         </form>
       </TabPanel>
       <TabPanel value={value} index={2}>
-        Item Three
+        {true ? (
+          <UserOrders orders={orders} />
+        ) : (
+          <Paper>No tienes ninguna orden activa</Paper>
+        )}
       </TabPanel>
       {/* ALERTAS */}
-      <Snackbar anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} open={alertPw} autoHideDuration={6000} onClose={setAlertPw}>
-        <Alert onClose={setAlertPw} severity="success">
+      <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        open={alertPw}
+        autoHideDuration={6000}
+        onClose={setAlertPw}
+      >
+        <Alert onClose={pwAlertClose} severity="success">
           Tu contraseña se actualizó con éxito
         </Alert>
       </Snackbar>

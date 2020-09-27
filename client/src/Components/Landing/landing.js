@@ -4,7 +4,6 @@ import logoText from "../../content/logoComplete.png";
 // import Catalogo from "../Product/Catalogo/catalogo.js";
 import ReactSelectMaterialUi from "react-select-material-ui";
 import { useSelector, useDispatch } from "react-redux";
-import { getImg } from "../../Redux/actions/imgActions";
 import Product from "../../Components/Product/product"
 
 export default function Landing() {  
@@ -12,7 +11,6 @@ export default function Landing() {
   const [allCategories, setCategories] = useState([]);
   const [selectedCategory, setCategory] = useState("");
 
-  const { imgLanding } = useSelector((state) => state.imgReducer); 
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -23,7 +21,6 @@ export default function Landing() {
         .then((data) => { 
           data.products.forEach((e) => {            
             if (e.stock > 0){              
-              dispatch(getImg(e.id));        
               setProducts((previousState) => previousState.concat(e));
             }
           });          
@@ -35,7 +32,6 @@ export default function Landing() {
         .then((data) => {          
           data.forEach((e) => {            
             if (e.stock > 0){              
-              dispatch(getImg(e.id));      
               setProducts((previousState) => previousState.concat(e));
             }
           });          
@@ -79,7 +75,7 @@ export default function Landing() {
             }}
           />
         </div>
-        {allProducts.map((product, index) => <Product product={product} key={product.id} image={imgLanding[index]}/>)}        
+        {allProducts.map((product, index) => <Product product={product} key={product.id} />)}        
       </section>
     </Fragment>
   );

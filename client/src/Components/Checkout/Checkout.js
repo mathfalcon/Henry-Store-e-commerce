@@ -11,51 +11,42 @@ function Alert(props) {
 }
 
 export default function Checkout() {
-
   const [address, setAddress] = useState("");
   const [payment, setPayment] = useState("cash");
+  const [openCreate, setOpenCreate] = useState(false);
 
   let { idUser } = useParams();
   let { idOrder } = useParams();
 
-  /* //Estado para Alerta checkout completado
-  const [openCreate, setOpenCreate] = useState(false);
-
-  //Funciones para control de Alerta checkout completado
-  
   const handleCloseCreate = () => {
-    setOpenCreate(false);
-    window.location.href = "http://localhost:3000/catalogo";
-  }; */
-  
+    setOpenCreate(!openCreate);
+    window.location.href = "http://localhost:3000/";
+  }; 
+
   const handleSubmit = () => {
-    axios({
-      method: "POST",
-      url: `http://localhost:3100/checkouts/${idUser}/add`,
-      data: {
+    axios
+      .post(`http://localhost:3100/checkouts/${idUser}/add`, {
         address: address,
         payment: payment,
-      },
-    })
+        orderId: idOrder,
+      })
       .then(() => {
-        axios({
-          method: "put",
-          url: `http://localhost:3100/orders/${idOrder}?state=complete`,
-        }).then(() => {
-          alert("La compra se ha confirmado con éxito.")
-          window.location.href = "http://localhost:3000/"
-        });
+        axios
+          .put(`http://localhost:3100/orders/${idOrder}?state=complete`)
+          .then(() => {
+            setOpenCreate(true)
+          });
       })
       .catch((err) => console.log(err));
     setAddress("");
     setPayment("cash");
   };
+
   const handleChange = (e) => {
     setAddress(e.target.value);
   };
-  const handleSelected = () => {
-    var selected = document.getElementById("select").value;
-    setPayment(selected);
+  const handleSelected = (e) => {
+    setPayment(e.target.value);
   };
 
   return (
@@ -90,10 +81,9 @@ export default function Checkout() {
           className={styles.checkoutInput}
         />
         <Button
-          type="submit"
           variant="contained"
           color="secondary"
-          //onClick={() => handleSend()}
+          onClick={handleSubmit}
           style={{
             backgroundColor: "#ffff5a",
             color: "black",
@@ -103,11 +93,11 @@ export default function Checkout() {
           CONFIRMAR COMPRA
         </Button>
       </form>
-     {/*  <Snackbar
+      <Snackbar
         open={openCreate}
-        autoHideDuration={7000}
+        autoHideDuration={3500}
         onClose={handleCloseCreate}
-        >
+      >
         <Alert
           onClose={handleCloseCreate}
           severity="success"
@@ -115,7 +105,7 @@ export default function Checkout() {
         >
           La compra se ha confirmado con éxito.
         </Alert>
-      </Snackbar> */}
+      </Snackbar>
     </div>
   );
 }

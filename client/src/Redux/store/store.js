@@ -1,7 +1,6 @@
 import { createStore, applyMiddleware, combineReducers, compose } from "redux";
 import { orderListReducer, totalOrderReducer } from "../reducers/orderReducer";
 import userListReducer from "../reducers/userReducer";
-import imgReducer from "../reducers/imgReducer";
 import authReducer from "../reducers/authReducer";
 import thunk from "redux-thunk";
 import { loadState, saveState } from "../../Local-Storage/localStorage";
@@ -14,7 +13,6 @@ const reducer = combineReducers({
   authUser: authReducer,
   userList: userListReducer,
   isLoading: loadingReducer,
-  imgReducer
 });
 
 // const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__() || compose;
