@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getTotal } from "../../Redux/actions/orderActions";
 import styles from "../../Styles/ordersTable.module.css";
+import OrderState from './OrderState'
 
 function OrderRow({order: {id, createdAt, user, state}}) {
   
@@ -20,7 +21,7 @@ function OrderRow({order: {id, createdAt, user, state}}) {
         <td>$ {totalOrder[(id - 1)]}</td>
         <td>{user.email}</td>
         <td>{state}</td>
-        <td>VER PRODUCTOS</td>
+        <td><OrderState orderId={id}/></td>
         </tr>        
     );            
   }

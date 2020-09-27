@@ -18,5 +18,11 @@ module.exports = (sequelize) => {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
+    img: {
+      type: DataTypes.BLOB,
+      get() {
+        return this.getDataValue('img').toString('utf8');
+      }
+    }
   });
 };

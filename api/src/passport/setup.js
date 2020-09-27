@@ -57,6 +57,7 @@ passport.use(
       callbackURL: "http://localhost:3100/auth/google/callback",
     },
     function (accessToken, refreshToken, profile, done) {
+      console.log(profile._json.email)
       Users.findOrCreate({ 
         where: {email: profile._json.email},
         defaults: {
