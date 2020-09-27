@@ -65,7 +65,6 @@ export default function UserOrders(props) {
             </AccordionSummary>
             <AccordionDetails id={e.id}>
               <Typography style={{width: '100%'}} id={e.id}>
-                {e.products.map((e) => (
                   <table className={s.userTable}>
                     <thead>
                       <tr>
@@ -76,15 +75,15 @@ export default function UserOrders(props) {
                       </tr>
                     </thead>
                     <tbody>
+                    {e.products.map((e) => (
                       <tr>
                         <td>{e.name}</td>
                         <td>{e.description}</td>
                         <td>${e.price}</td>
                         <td>{e.amount.amount}</td>
-                      </tr>
+                      </tr>))}
                     </tbody>
                   </table>
-                ))}
               </Typography>
             </AccordionDetails>
           </Accordion>
