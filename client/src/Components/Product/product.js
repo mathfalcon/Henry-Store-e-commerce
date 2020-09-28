@@ -4,12 +4,13 @@ import henryShirt from "../../content/henryShirt.png";
 
 
 export default function Product(props) {
-    const {id, name, description, img} = props.product
+    const {id, name, description, images} = props.product
+    console.log(images[0])
     return (
         <div className={styles.container}>
             <div className={styles.card}>
                 <div className={styles.imgBx}>
-                    <img src={img} alt="Henry Shirt"/>
+                    <img src={images[0].img} alt="Henry Shirt"/>
                 </div>
                 <div className={styles.contentBx}>
                     <h2>{name}</h2>

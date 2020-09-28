@@ -66,18 +66,41 @@
   text-align: center;
   padding-bottom: 10px;
 }
-.inputDiv{
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    width: 100%;
-    align-items: center;
-    padding: 15px 0 15px 0;
+.inputDiv {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  width: 100%;
+  align-items: center;
+  padding: 15px 0 15px 0;
+}
+.imageShowDiv {
+  background-color: #ffffff;
+  padding: 2em 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+.imageShowDiv img {
+  max-height: auto;
+  width: 250px;
+}
+.buttonBase {
+  width: 250px;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+.imageCard{
+  display: flex;
+  flex-direction: column-reverse;
 }
 
 @media screen and (max-width: 768px) {
-    .container{
-        width: 100%;
-        margin-top: 0;
-    }
+  .container {
+    width: 100%;
+    margin-top: 0;
+  }
 }

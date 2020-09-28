@@ -11,9 +11,12 @@ import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
-import { red } from "@material-ui/core/colors";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
+import { ButtonBase } from "@material-ui/core";
+import DeleteIcon from "@material-ui/icons/Delete";
+import { useDispatch } from "react-redux";
+import {loadingTrue, loadingFalse} from '../../Redux/actions/loadingActions'
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -74,7 +77,8 @@ function ProductUpdate(props) {
   const theme = useTheme();
   const [actualCat, setActualCat] = useState([]);
   const [updateCat, setUpdateCat] = useState([]);
-
+  const [imageUpload, setImages] = useState([]);
+  const [done, setDone] = useState(false);
   const handleSelect = (event) => {
     setUpdateCat(event.target.value);
   };
@@ -114,7 +118,6 @@ function ProductUpdate(props) {
     if (!state.description) body.description = toUpdate.description;
     if (!state.price) body.price = toUpdate.price;
     if (!state.stock) body.stock = toUpdate.stock;
-    if (!state.img) body.img = toUpdate.img;
 
     let borrar = actualCat.filter((cat) => !updateCat.includes(cat));
     let actualizar = updateCat.filter((cat) => !actualCat.includes(cat));
@@ -148,17 +151,32 @@ function ProductUpdate(props) {
       .catch((err) => console.log(err));
     setState({ ...state, name: "", description: "", price: "", stock: "" });
   };
+
   const handleOnChangeImg = (e) => {
-    var file = e.target.files[0];
-    var reader = new FileReader();
-    reader.onloadend = function () {
-      setState({
-        ...state,
-        img: reader.result,
-      });
-    };
-    reader.readAsDataURL(file);
+    var imageArray = [];
+
+    for (const file of e.target.files) {
+      var reader = new FileReader();
+      (function (file) {
+        var reader = new FileReader();
+        reader.onload = function (image) {
+          setImages((e) => e.concat(image.target.result));
+        };
+        reader.readAsDataURL(file);
+      })(file);
+    }
   };
+
+  const dispatch = useDispatch();
+  const handleImageRemove = (id) => {
+    dispatch(loadingTrue())
+    console.log(id)
+    axios.delete(`http://localhost:3100/images/${id}`)
+    .then(data => {
+      setTimeout(() => dispatch(loadingFalse()),500)
+      window.location.reload()
+    })
+  }
 
   return (
     <div>
@@ -231,7 +249,7 @@ function ProductUpdate(props) {
               <img
                 style={{ height: "auto", width: "20%", margin: "0 auto" }}
                 src={state.img.toString("utf8")}
-            ></img>
+              ></img>
             )}
             {toUpdate.img && (
               <img
@@ -269,6 +287,30 @@ function ProductUpdate(props) {
               )}
             </div>
             <img className={styles.imgLogo} src={logoText} alt="logoHenry" />
+          </div>
+          <div className={styles.imageShowDiv}>
+            {toUpdate.images &&
+              toUpdate.images.map((e) => (
+                <div className={styles.imageCard}>
+                  <ButtonBase className={styles.buttonBase}>
+                    <img src={e.img}></img>
+                  </ButtonBase>
+                  <Button
+                    id={e.id}
+                    name={e.id}
+                    value={e.id}
+                    style={{
+                      backgroundColor: "#f44336",
+                      color: "white",
+                      maxWidth: "50px",
+                      float: "left",
+                    }}
+                    onClick={() => handleImageRemove(e.id)}
+                  >
+                    <DeleteIcon />
+                  </Button>
+                </div>
+              ))}
           </div>
         </div>
       </form>

@@ -75,6 +75,7 @@ function ProductForm() {
   const [categories, setCategories] = useState([]);
   const theme = useTheme();
   const [personName, setPersonName] = useState([]);
+  const [imageUpload, setImages] = useState([]);
 
   const handleChanges = (event) => {
     setPersonName(event.target.value);
@@ -96,15 +97,19 @@ function ProductForm() {
   };
 
   const handleOnChangeImg = (e) => {
-    var file = e.target.files[0];
-    var reader = new FileReader();
-    reader.onloadend = function () {
-      setState({
-        ...state,
-        img: reader.result,
-      });
-    };
-    reader.readAsDataURL(file);
+    
+    var imageArray = [];
+
+    for(const file of e.target.files){
+      var reader = new FileReader();
+      (function(file) {
+        var reader = new FileReader();
+        reader.onload = function(image) {
+          setImages((e) => e.concat(image.target.result))
+        };
+        reader.readAsDataURL(file);
+      })(file);
+    }
   };
 
   const handleSubmit = (event) => {
@@ -117,10 +122,11 @@ function ProductForm() {
         description: state.description,
         price: state.price,
         stock: state.stock,
-        img: state.img,
+        images: imageUpload
       },
     })
       .then((data) => {
+        console.log(data)
         if (personName.length > 0) {
           personName.forEach((e) => {
             axios({
@@ -175,6 +181,7 @@ function ProductForm() {
                 id="file"
                 accept=".png"
                 name="img"
+                multiple
                 onChange={handleOnChangeImg}
               />
             </div>
