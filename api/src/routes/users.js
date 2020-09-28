@@ -11,6 +11,16 @@ server.get("/", (req, res, next) => {
     .catch(next);
 });
 
+// Busca un usuario en particular
+server.get("/:idUser", (req, res, next) => {
+  const { idUser } = req.params;
+  Users.findByPk(idUser)
+    .then((user) => {
+      res.status(200).send(user);
+    })
+    .catch(next);
+});
+
 //Modifica un usuario pasado por id (params)
 server.put("/update/:id", (req, res, next) => {
   const { name, username, email, role } = req.body;
