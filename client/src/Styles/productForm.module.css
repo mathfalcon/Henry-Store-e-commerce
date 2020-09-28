@@ -7,17 +7,19 @@ body {
 }
 
 .form{
-    display: flex;
+    display: flex;    
     flex-direction: column;    
     margin: 0 auto;
-    width: 1000px;
+    /* width: 100%; */
     height: 600px;    
 }
 
 @media screen and (min-width:768px) { 
     .form {
         flex-direction: row;
+        justify-content: center;
         padding: 5rem;
+        width: 100%;
     }
 }
 
@@ -27,11 +29,12 @@ body {
     background-color:#ffffff;
     color: #949494;
     padding: 4em;
+    padding-top: 1em;
     font-family: Roboto;
     font-style: normal;
     font-weight: 300;
     font-size: 20px;
-    justify-content: space-evenly;
+    /* justify-content: space-evenly; */
 }
 
 
@@ -52,10 +55,11 @@ textarea{
 .buttons{
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    /* justify-content: space-between; */
     background-color:#ffff01;
     padding: 1rem; 
     text-align: center;
+    order:-1;
 }
 
 button{
@@ -63,7 +67,7 @@ button{
     font-style: normal;
     font-weight: 300;
     font-size: 22px;
-    line-height: 50px;
+    /* line-height: 50px; */
     align-self: center;
     width:60%;   
     text-decoration: none;  
@@ -83,13 +87,15 @@ button{
     font-family: Roboto;
     font-style: normal;
     font-size: 32px;
-    text-align: center; 
+    text-align: center;
+    margin:0;
 }
 .Multiselect{
     font-family: Roboto;
     font-style: normal;
     font-size: 11px;
-    text-align: center; 
+    text-align: center;
+    padding-bottom: 10px;
 }
 
 .Multiselect input {
@@ -100,14 +106,16 @@ button{
 @media screen and (min-width:768px) { 
     .buttons{        
         flex: 0 2 35%;
-        order:-1;        
+        max-width: 300px;
+        justify-content: space-evenly;            
     }
     .priceStock{
-        display: flex;
-                     
+        display: flex;                     
     }
     .priceStock input{        
-        margin-top: 1.5rem;
-                
-    }    
+        margin-top: 1.5rem;                
+    }
+    .inputs{        
+        padding: 4em;
+    }
 }
