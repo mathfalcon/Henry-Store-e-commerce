@@ -153,8 +153,6 @@ function ProductUpdate(props) {
   };
 
   const handleOnChangeImg = (e) => {
-    var imageArray = [];
-
     for (const file of e.target.files) {
       var reader = new FileReader();
       (function (file) {

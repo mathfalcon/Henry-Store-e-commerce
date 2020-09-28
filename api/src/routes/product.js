@@ -1,11 +1,11 @@
 const server = require("express").Router();
-const { Product, Categories} = require("../db.js");
+const { Product, Categories, Images } = require("../db.js");
 const { Op } = require("sequelize");
 
 // Busca todos los productos y los devuelve en un array
 server.get("/", (req, res, next) => {
   Product.findAll({
-    include: Categories,
+    include: [{model: Categories, as: 'categories'}, {model: Images, as: 'images'}]
   })
     .then((products) => {
       res.status(200).send(products);
@@ -19,7 +19,7 @@ server.get("/:idProducto", (req, res, next) => {
     where: {
       id: req.params.idProducto,
     },
-    include: Categories,
+    include: [{model: Categories, as: 'categories'}, {model: Images, as: 'images'}]
   })
     .then((producto) => {
       res.send(producto);
@@ -29,17 +29,25 @@ server.get("/:idProducto", (req, res, next) => {
 
 // Ruta para crear un producto
 server.post("/create-product", (req, res, next) => {
-  const { name, description, price, stock, img } = req.body;
+  const { name, description, price, stock, images } = req.body;
   Product.findOrCreate({
     where: {
       name: name,
       description: description,
       price: price,
       stock: stock,
-      img: img,
     },
   })
     .then((product) => {
+      if (images[0]) {
+        images.forEach((e) => {
+          Images.create({
+            img: e,
+            productId: product[0].id,
+          });
+        });
+      }
+
       res.status(200).send(product[0]);
     })
     .catch((err) => {

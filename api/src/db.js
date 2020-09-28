@@ -45,7 +45,11 @@ const { Order } = sequelize.models;
 const { OrderLine } = sequelize.models;
 const { Reviews } = sequelize.models;
 const { Checkout } = sequelize.models;
+const { Images } = sequelize.models;
 
+//Asociaciones de Imagenes
+Product.hasMany(Images);
+Images.belongsTo(Product);
 
 //Asociaciones de Order
 Users.hasMany(Order);
