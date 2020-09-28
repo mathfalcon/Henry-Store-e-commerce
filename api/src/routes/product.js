@@ -159,6 +159,7 @@ server.get("/search/:search", (req, res, next) => {
         },
       },
     },
+    include: Images
   })
     .then((products) => {
       res.status(200).json(products);
