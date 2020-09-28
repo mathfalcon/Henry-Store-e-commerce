@@ -30,7 +30,10 @@ function AdminPanel() {
           CREAR UNA NUEVA CATEGORIA
         </Link>
         <br></br>
-        <Link to="/product/admin/category-table" className={styles.CreateButton}>
+        <Link
+          to="/product/admin/category-table"
+          className={styles.CreateButton}
+        >
           VER LISTADO DE CATEGORIAS
         </Link>
       </div>
@@ -48,6 +51,16 @@ function AdminPanel() {
         <h3>GESTOR DE USUARIOS</h3>
         <Link to="/product/admin/list-users" className={styles.CreateButton}>
           VER LISTADO DE USUARIOS
+        </Link>
+      </div>
+      {/* Sección Checkouts */}
+      <div className={styles.GestorCard}>
+        <h3>GESTOR DE CHECKOUTS</h3>
+        <Link
+          to="/product/admin/checkouts-table"
+          className={styles.CreateButton}
+        >
+          VER LISTADO DE CHECKOUTS
         </Link>
       </div>
     </div>

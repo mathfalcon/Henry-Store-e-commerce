@@ -25,7 +25,7 @@ import UserPanel from "./Components/UserPanel/userPanel"
 import LoadingScreen from "./Components/loadingScreen";
 import { loadingFalse, loadingTrue } from "./Redux/actions/loadingActions";
 import Checkout from "./Components/Checkout/Checkout";
-
+import ListCheckouts from "./Components/Checkout/ListCheckouts";
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -130,6 +130,12 @@ function App() {
         path="/product/admin/category-table"
         userData={userLogged}
         component={CategoryList}
+      />
+            <PrivateRoute
+        exact
+        path="/product/admin/checkouts-table"
+        userData={userLogged}
+        component={ListCheckouts}
       />
     </BrowserRouter>: <LoadingScreen/>  
   );
