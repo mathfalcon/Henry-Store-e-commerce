@@ -26,6 +26,7 @@ import LoadingScreen from "./Components/loadingScreen";
 import { loadingFalse, loadingTrue } from "./Redux/actions/loadingActions";
 import Checkout from "./Components/Checkout/Checkout";
 import FooterComp from "./Components/Footer/footer";
+import ListCheckouts from "./Components/Checkout/ListCheckouts";s
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -81,67 +82,70 @@ function App() {
           <UserPanel />
         </Route>
         <Route exact path="/checkout" render={() => <Checkout />} />
-
-        {/* RUTAS PRIVADAS */}
-        <PrivateRoute
-          exact
-          path="/product/admin/crud"
-          userData={userLogged}
-          component={ProductForm}
-        />
-        <PrivateRoute
-          exact
-          path="/product/admin"
-          userData={userLogged}
-          component={AdminPanel}
-        />
-        <PrivateRoute
-          exact
-          path="/product/admin/create-category"
-          userData={userLogged}
-          component={CategoryForm}
-        />
-        <PrivateRoute
-          exact
-          path="/product/admin/show-table"
-          userData={userLogged}
-          component={OrdersTable}
-        />
-        <PrivateRoute
-          exact
-          path="/product/admin/update"
-          userData={userLogged}
-          component={ProductUpdate}
-        />
-        <PrivateRoute
-          exact
-          path="/product/admin/list-users"
-          userData={userLogged}
-          component={UserList}
-        />
-        <PrivateRoute
-          exact
-          path="/product/admin/categories/update"
-          userData={userLogged}
-          component={CategoryUpdate}
-        />
-        <PrivateRoute
-          exact
-          path="/product/admin/product-table"
-          userData={userLogged}
-          component={ProductList}
-        />
-        <PrivateRoute
-          exact
-          path="/product/admin/category-table"
-          userData={userLogged}
-          component={CategoryList}
-        />
-        <Route exact path="/" render={() => <FooterComp />} />
-      </BrowserRouter>
-    ) : (
-      <LoadingScreen />
-    )
+          
+      {/* RUTAS PRIVADAS */}
+      <PrivateRoute
+        exact
+        path="/product/admin/crud"
+        userData={userLogged}
+        component={ProductForm}
+      />
+      <PrivateRoute
+        exact
+        path="/product/admin"
+        userData={userLogged}
+        component={AdminPanel}
+      />
+      <PrivateRoute
+        exact
+        path="/product/admin/create-category"
+        userData={userLogged}
+        component={CategoryForm}
+      />
+      <PrivateRoute
+        exact
+        path="/product/admin/show-table"
+        userData={userLogged}
+        component={OrdersTable}
+      />
+      <PrivateRoute
+        exact
+        path="/product/admin/update"
+        userData={userLogged}
+        component={ProductUpdate}
+      />
+      <PrivateRoute
+        exact
+        path="/product/admin/list-users"
+        userData={userLogged}
+        component={UserList}
+      />
+      <PrivateRoute
+        exact
+        path="/product/admin/categories/update"
+        userData={userLogged}
+        component={CategoryUpdate}
+      />
+      <PrivateRoute
+        exact
+        path="/product/admin/product-table"
+        userData={userLogged}
+        component={ProductList}
+      />
+      <PrivateRoute
+        exact
+        path="/product/admin/category-table"
+        userData={userLogged}
+        component={CategoryList}
+      />
+            <PrivateRoute
+        exact
+        path="/product/admin/checkouts-table"
+        userData={userLogged}
+        component={ListCheckouts}
+      />
+      <Route exact path="/" render={() => <FooterComp />} />
+    </BrowserRouter>: <LoadingScreen/>  
   );
 }
 

@@ -59,25 +59,30 @@ server.post("/create-product", (req, res, next) => {
 
 // Actualiza un producto
 server.put("/:idProducto/update", (req, res, next) => {
-  const { name, description, price, stock, img } = req.body;
+  const { name, description, price, stock, images } = req.body;
 
   Product.findByPk(req.params.idProducto)
-    .then((data) => {
-      console.log(data);
+    .then((data) => {      
       if (name) data.name = name;
       if (description) data.description = description;
       if (price) data.price = price;
-      if (stock) data.stock = stock;
-      if (img) data.img = img;
-      data.save();
-      res
-        .status(200)
-        .send(
-          `El producto ${data.dataValues.name} con id ${data.dataValues.id} se actualizó con éxito`
-        );
-    })
+      if (stock) data.stock = stock;      
+      data.save()
+      res.status(200).send(`El producto ${data.dataValues.name} con id ${data.dataValues.id} se actualizó con éxito`)})
+      .then(() => {        
+        if (images[0]) {
+          images.forEach((e) => {
+            Images.create({
+              img: e,
+              productId: req.params.idProducto,
+            });
+          });
+        }
+      })
     .catch((err) => {
-      res.status(400).send(err);
+      //Error Handler
+      console.log(err);
+      res.status(400).send("Error al actualizar el producto");
     });
 });
 

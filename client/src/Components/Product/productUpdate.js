@@ -125,7 +125,13 @@ function ProductUpdate(props) {
     axios({
       method: "put",
       url: `http://localhost:3100/products/${toUpdate.id}/update`,
-      data: body,
+      data: {
+        name: state.name,
+        description: state.description,
+        price: state.price,
+        stock: state.stock,
+        images: imageUpload
+      },
     })
       .then((data) => {
         if (actualizar.length > 0) {
@@ -153,6 +159,7 @@ function ProductUpdate(props) {
   };
 
   const handleOnChangeImg = (e) => {
+    var imageArray = [];
     for (const file of e.target.files) {
       var reader = new FileReader();
       (function (file) {
@@ -226,7 +233,8 @@ function ProductUpdate(props) {
                 id="file"
                 accept=".png"
                 name="img"
-                onChange={handleOnChangeImg}
+                onChange={handleOnChangeImg}                
+                multiple                
               />
             </div>
             <Button
