@@ -10,10 +10,9 @@ function OrdersTable() {
   const { orderList } = useSelector((state) => state.orderList); 
   const [filterList, setFilterList] = useState();
   const [filter, setFilter] = useState(false);
-  
-  //["inCart", "created","active", "processing", "canceled", "complete"]
-  const options = ["Sin Filtro", "inCart", "created","active", "processing", "canceled", "complete"]
-  console.log('orderList',orderList);
+    
+  // const options = ["Sin Filtro", "inCart", "created","active", "processing", "canceled", "complete"]
+  const options = ["Sin Filtro","Creada", "Activa", "En Carrito", "Cancelada", "En Proceso", "Completa"];
 
   const dispatch = useDispatch(); 
   
@@ -21,15 +20,59 @@ function OrdersTable() {
     dispatch(listOrders());         
   }, []);
   
-  const handleState = (selectedState) => {    
-     if ( selectedState === "Sin Filtro" ){
-       setFilter(false);       
-     } else {
-      setFilter(true);
-      let filterList = orderList.filter( order => order.state === selectedState);      
-      return setFilterList(filterList);
-     }     
-  };
+  // const handleState = (selectedState) => {    
+  //    if ( selectedState === "Sin Filtro" ){
+  //      setFilter(false);       
+  //    } else {
+  //     setFilter(true);
+  //     let filterList = orderList.filter( order => order.state === selectedState);      
+  //     return setFilterList(filterList);
+  //    }        
+  // };
+
+  
+  const handleState = (selectedState) => {
+    console.log('selectedState',selectedState);    
+    switch (selectedState) {
+      case "Sin Filtro": {
+        return setFilter(false);
+        };
+        case "Creada":{
+          setFilter(true);
+          let filterList = orderList.filter( order => order.state === "created");
+          return setFilterList(filterList);
+          };
+      case "Activa":{
+        setFilter(true);
+        let filterList = orderList.filter( order => order.state === "active");
+        return setFilterList(filterList);
+        };
+        case "En Carrito":{
+          setFilter(true);
+          let filterList = orderList.filter( order => order.state === "inCart");
+          return setFilterList(filterList);
+        };
+        case "Cancelada":{
+          setFilter(true);
+          let filterList = orderList.filter( order => order.state === "canceled");
+          return setFilterList(filterList);
+        };
+        case "En Proceso":{
+          setFilter(true);
+          let filterList = orderList.filter( order => order.state === "Processing");
+        return setFilterList(filterList);
+      }; 
+        case "Completa":{
+          setFilter(true);
+          let filterList = orderList.filter( order => order.state === "complete");
+          return setFilterList(filterList);
+        };
+    }
+ }
+
+ console.log('orderList',orderList);   
+ console.log('filterList',filterList);   
+ console.log('filter',filter);
   
   return (    
       <div className={styles.content}>
