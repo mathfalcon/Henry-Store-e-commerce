@@ -6,6 +6,7 @@ import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import { useSelector } from "react-redux";
 import UtilsTab from "./userUtils";
 import UserInfo from "./userInfo";
+import { Redirect } from "react-router-dom";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -45,6 +46,7 @@ function UserPanel() {
 
   return (
     <div className={s.mainDiv}>
+      {!userLogged.id && <Redirect to="/login" />}
       <div className={s.box}>
         <Grid container spacing={2}>
           <Grid item xs={12}>

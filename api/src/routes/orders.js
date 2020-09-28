@@ -31,7 +31,6 @@ server.put("/:id", (req, res, next) => {
   // este estado deberia solo puede tener los values: ['inCart', 'created', 'processing','canceled','complete']
   // dichas limitaciones deben controlarse desde el frontend, y mandar el estado a editar como query ej: http://localhost:3100/orders/1?state=completed
   if (state === "complete") {
-    console.log("hola");
     Order.findAll({
       where: {
         id: id,

@@ -20,8 +20,8 @@ function OrderRow({order: {id, createdAt, user, state}}) {
         <td>{createdAt.split("T")[0]}</td>                                       
         <td>$ {totalOrder[(id - 1)]}</td>
         <td>{user.email}</td>
-        <td>{state}</td>
-        <td><OrderState orderId={id}/></td>
+        <td style={{textTransform: 'capitalize'}}>{state}</td>
+        <td style={{display: 'flex'}}><OrderState orderId={id}/></td>
         </tr>        
     );            
   }

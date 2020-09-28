@@ -51,7 +51,7 @@ server.post("/create-product", (req, res, next) => {
 
 // Actualiza un producto
 server.put("/:idProducto/update", (req, res, next) => {
-  const { name, description, price, stock } = req.body;
+  const { name, description, price, stock, img } = req.body;
 
   Product.findByPk(req.params.idProducto)
     .then((data) => {
@@ -60,6 +60,7 @@ server.put("/:idProducto/update", (req, res, next) => {
       if (description) data.description = description;
       if (price) data.price = price;
       if (stock) data.stock = stock;
+      if (img) data.img = img;
       data.save();
       res
         .status(200)

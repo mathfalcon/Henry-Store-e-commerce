@@ -54,6 +54,7 @@ export default function OrderState(props) {
   const [fullWidth, setFullWidth] = useState(true);
   const [selectValue, setSelectValue] = useState("");
   const [alertSuccess, setAlert] = useState(false);
+  const [alertCheckout, setAlertCheckout] = useState(false);
   const dispatch = useDispatch();
 
   const handleClickOpen = () => {
@@ -90,6 +91,18 @@ export default function OrderState(props) {
   const toggleAlert = () => {
     setAlert(!alertSuccess);
   };
+  const toggleAlertCheckout = () => {
+    setAlertCheckout(!alertCheckout);
+  };
+
+  const handleCheckoutOrder = () => {
+    axios
+      .put(`http://localhost:3100/checkouts/${props.orderId}/completed`)
+      .then((response) => {
+        toggleAlertCheckout();
+        dispatch(listOrders());
+      });
+  };
 
   return (
     <React.Fragment>
@@ -97,8 +110,16 @@ export default function OrderState(props) {
         variant="outlined"
         style={{ borderColor: "black" }}
         onClick={handleClickOpen}
+        style={{ marginRight: "15px" }}
       >
         <UpdateIcon style={{ color: "black" }} />
+      </Button>
+      <Button
+        variant="outlined"
+        style={{ borderColor: "black" }}
+        onClick={handleCheckoutOrder}
+      >
+        Despachar
       </Button>
       <Dialog
         fullWidth={true}
@@ -149,6 +170,16 @@ export default function OrderState(props) {
       >
         <Alert onClose={toggleAlert} severity="success">
           El estado de la orden se actualizó con éxito
+        </Alert>
+      </Snackbar>
+      <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        open={alertCheckout}
+        autoHideDuration={6000}
+        onClose={toggleAlertCheckout}
+      >
+        <Alert onClose={toggleAlertCheckout} severity="success">
+          La orden fue despachada con éxito.
         </Alert>
       </Snackbar>
     </React.Fragment>

@@ -73,7 +73,6 @@ server.post("/:idUser/cart", (req, res, next) => {
   
   const { idUser } = req.params;
   const { idProducto, amount } = req.body;
-  console.log(idProducto)
   
   Order.findAll({
     where: {
@@ -97,7 +96,6 @@ server.post("/:idUser/cart", (req, res, next) => {
     ],
   }).then((order) => {
     var product = Product.findByPk(idProducto);
-    console.log(product)
     if (order[0]) {
       product.then((data) => {
         var existingProduct = order[0].products.findIndex(

@@ -343,10 +343,10 @@ export default function UserUtils(props) {
         </form>
       </TabPanel>
       <TabPanel value={value} index={2}>
-        {true ? (
+        {orders[0] ? (
           <UserOrders orders={orders} />
         ) : (
-          <Paper>No tienes ninguna orden activa</Paper>
+          <Paper style={{backgroundColor: '#f44336', width:'40%', color: 'white', padding: '1em', margin: 'auto', textAlign: 'center'}}>No tienes ninguna orden en el historial ni activa</Paper>
         )}
       </TabPanel>
       {/* ALERTAS */}

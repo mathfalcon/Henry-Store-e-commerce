@@ -59,7 +59,7 @@ function OrdersTable() {
         };
         case "En Proceso":{
           setFilter(true);
-          let filterList = orderList.filter( order => order.state === "Processing");
+          let filterList = orderList.filter( order => order.state === "processing");
         return setFilterList(filterList);
       }; 
         case "Completa":{

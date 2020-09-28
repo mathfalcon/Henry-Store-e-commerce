@@ -4,7 +4,7 @@ import styles from "../../Styles/productForm.module.css";
 import logoText from "../../Styles/Assets/logo henry black.png";
 import axios from "axios";
 import Button from "@material-ui/core/Button";
-import ReplayIcon from '@material-ui/icons/Replay';
+import ReplayIcon from "@material-ui/icons/Replay";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -50,14 +50,13 @@ function getStyles(name, updateCat, theme) {
   return {
     backgroundColor: updateCat.indexOf(name) === -1 ? "white" : "#dddd37",
     fontWeight:
-    updateCat.indexOf(name) === -1
+      updateCat.indexOf(name) === -1
         ? theme.typography.fontWeightRegular
         : theme.typography.fontWeightMedium,
   };
 }
 
 function ProductUpdate(props) {
-
   //Estado para Alerta actualizar categoria
   const [openUpdate, setOpenUpdate] = useState(false);
 
@@ -96,17 +95,17 @@ function ProductUpdate(props) {
   }, []);
 
   useEffect(() => {
-    if ( toUpdate.categories !== undefined ) {
-      var ids = toUpdate.categories.map( cat => cat.id );      
+    if (toUpdate.categories !== undefined) {
+      var ids = toUpdate.categories.map((cat) => cat.id);
       setActualCat(ids);
-      setUpdateCat(ids);  
+      setUpdateCat(ids);
     }
-  },[toUpdate]);
+  }, [toUpdate]);
 
   const handleChange = ({ target }) => {
     const { name, value } = target;
     setState({ ...state, [name]: value });
-  };          
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -115,16 +114,17 @@ function ProductUpdate(props) {
     if (!state.description) body.description = toUpdate.description;
     if (!state.price) body.price = toUpdate.price;
     if (!state.stock) body.stock = toUpdate.stock;
+    if (!state.img) body.img = toUpdate.img;
 
-    let borrar = actualCat.filter( cat => !(updateCat.includes(cat)));
-    let actualizar = updateCat.filter( cat => !(actualCat.includes(cat)));    
+    let borrar = actualCat.filter((cat) => !updateCat.includes(cat));
+    let actualizar = updateCat.filter((cat) => !actualCat.includes(cat));
 
     axios({
       method: "put",
       url: `http://localhost:3100/products/${toUpdate.id}/update`,
       data: body,
     })
-      .then((data) => {        
+      .then((data) => {
         if (actualizar.length > 0) {
           actualizar.forEach((e) => {
             axios({
@@ -148,66 +148,71 @@ function ProductUpdate(props) {
       .catch((err) => console.log(err));
     setState({ ...state, name: "", description: "", price: "", stock: "" });
   };
+  const handleOnChangeImg = (e) => {
+    var file = e.target.files[0];
+    var reader = new FileReader();
+    reader.onloadend = function () {
+      setState({
+        ...state,
+        img: reader.result,
+      });
+    };
+    reader.readAsDataURL(file);
+  };
 
   return (
     <div>
       <form className={styles.form}>
-        <div className={styles.inputs}>
-          <div className={styles.name}>
-            <label>Nombre</label>
-            <br />
-            <input
-              name="name"
-              onChange={handleChange}
-              value={state.name}
-              defaultValue={toUpdate.name}
-              placeholder={toUpdate.name}
-            />
-            <br />
-          </div>
-          <div className={styles.description}>
-            <label>Descripción</label>
-            <br />
-            <textarea
-              name="description"
-              onChange={handleChange}
-              value={state.description}
-              defaultValue={toUpdate.description}
-              placeholder={toUpdate.description}
-            />
-            <br />
-          </div>
-          <div className={styles.priceStock}>
-            <label>Precio</label>
-            <br />
-            <input
-              type="number"
-              name="price"
-              min="0.00"
-              step="0.01"
-              onChange={handleChange}
-              defaultValue={toUpdate.price}
-              value={state.price}
-              placeholder={toUpdate.price}
-            />
-            <label>Stock</label>
-            <br />
-            <input
-              type="number"
-              name="stock"
-              min="0"
-              step="1"
-              onChange={handleChange}
-              value={state.stock}
-              defaultValue={toUpdate.stock}
-              placeholder={toUpdate.stock}
-            />
-          </div>
-          <div>
-            <label>Subir Imágenes</label>
-            <input type="file" name="dropimage" accept="image/*" />
-          </div>
-          <div>
+        <div className={styles.container}>
+          <div className={styles.inputs}>
+            <div className={styles.inputDiv}>
+              <label>Nombre</label>
+              <input
+                name="name"
+                onChange={handleChange}
+                value={state.name}
+                defaultValue={toUpdate.name}
+                placeholder={toUpdate.name}
+              />
+              <label>Descripción</label>
+              <input
+                name="description"
+                onChange={handleChange}
+                value={state.description}
+                defaultValue={toUpdate.description}
+                placeholder={toUpdate.description}
+              />
+              <label>Precio</label>
+              <input
+                type="number"
+                name="price"
+                min="0.00"
+                step="0.01"
+                onChange={handleChange}
+                defaultValue={toUpdate.price}
+                value={state.price}
+                placeholder={toUpdate.price}
+              />
+              <label>Stock</label>
+              <input
+                type="number"
+                name="stock"
+                min="0"
+                step="1"
+                onChange={handleChange}
+                value={state.stock}
+                defaultValue={toUpdate.stock}
+                placeholder={toUpdate.stock}
+              />
+              <label>Subir Imágenes </label>
+              <input
+                type="file"
+                id="file"
+                accept=".png"
+                name="img"
+                onChange={handleOnChangeImg}
+              />
+            </div>
             <Button
               variant="contained"
               color="secondary"
@@ -218,39 +223,53 @@ function ProductUpdate(props) {
               ACTUALIZAR
             </Button>
           </div>
-        </div>
 
-        <div className={styles.buttons}>
-          <h3>Crear Producto</h3>
-          {/* Selector multiple de categorias */}
-          <div className={styles.Multiselect}>
-            <h2>Seleccionar Categorias: </h2>
-            {categories.length > 0 && (
-              <FormControl style={{ width: "80%" }}>
-                <InputLabel id="demo-mutiple-name-label">Categorías</InputLabel>
-                <Select
-                  labelId="demo-mutiple-name-label"
-                  id="demo-mutiple-name"
-                  multiple
-                  value={updateCat}
-                  onChange={handleSelect}
-                  input={<Input />}
-                  MenuProps={MenuProps}
-                >
-                  {categories.map((name, index) => (
-                    <MenuItem
-                      key={index}
-                      value={name.id}
-                      style={getStyles(name.id, updateCat, theme)}
-                    >
-                      {name.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
+          <div className={styles.buttons}>
+            <h3 className={styles.h3Title}>Crear Producto</h3>
+            {/* Selector multiple de categorias */}
+            {state.img && (
+              <img
+                style={{ height: "auto", width: "20%", margin: "0 auto" }}
+                src={state.img.toString("utf8")}
+            ></img>
             )}
+            {toUpdate.img && (
+              <img
+                style={{ height: "auto", width: "20%", margin: "0 auto" }}
+                src={toUpdate.img.toString("utf8")}
+              ></img>
+            )}
+            <div className={styles.Multiselect}>
+              <h2>Seleccionar Categorias: </h2>
+              {categories.length > 0 && (
+                <FormControl style={{ width: "80%" }}>
+                  <InputLabel id="demo-mutiple-name-label">
+                    Categorías
+                  </InputLabel>
+                  <Select
+                    labelId="demo-mutiple-name-label"
+                    id="demo-mutiple-name"
+                    multiple
+                    value={updateCat}
+                    onChange={handleSelect}
+                    input={<Input />}
+                    MenuProps={MenuProps}
+                  >
+                    {categories.map((name, index) => (
+                      <MenuItem
+                        key={index}
+                        value={name.id}
+                        style={getStyles(name.id, updateCat, theme)}
+                      >
+                        {name.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              )}
+            </div>
+            <img className={styles.imgLogo} src={logoText} alt="logoHenry" />
           </div>
-          <img className={styles.imgLogo} src={logoText} alt="logoHenry" />
         </div>
       </form>
       <Snackbar

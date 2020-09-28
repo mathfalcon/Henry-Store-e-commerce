@@ -95,9 +95,17 @@ const ProductCard = () => {
                     title={e.description}
                   />
                 ))}
+                {product.stock === 0 && <Chip
+                    variant="outlined"
+                    color="secondary"
+                    label='Sin Stock'
+                    className={styles.chip}
+                    title='Actualmente no tenemos stock de este producto'
+                  />}
             </div>
             <Button
               variant="contained"
+              disabled={product.stock === 0}
               style={{ width: "90%", marginTop: "10px" }}
               onClick={handleAddToCart}
               href="http://localhost:3000/user/cart/"

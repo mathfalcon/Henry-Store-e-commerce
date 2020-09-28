@@ -70,6 +70,7 @@ export default function Landing() {
             options={options}            
             onChange={handleCategoryChange}
             placeholder="Seleccione una Categoria"
+            style={{zIndex: '100'}}
             SelectProps={{              
               msgNoOptionsAvailable: "No hay Categorias cargadas"              
             }}

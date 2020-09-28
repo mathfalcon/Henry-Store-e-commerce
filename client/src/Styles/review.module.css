@@ -39,3 +39,6 @@
   flex-direction: row;
   justify-content: flex-end;
 }
+.chip{
+  margin: 0.5em;
+}
