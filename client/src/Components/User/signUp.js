@@ -67,10 +67,10 @@ function SignUp() {
       });    
   };
 
-  const handleSelected = () => {    
-    var selected = document.getElementById("select").value;
-    state.role = selected;
-  };
+  // const handleSelected = () => {    
+  //   var selected = document.getElementById("select").value;
+  //   state.role = selected;
+  // };
 
   return (
     <div>

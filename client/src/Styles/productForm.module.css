@@ -102,18 +102,18 @@ button{
     background-color: red;
 }
 
+.priceStock{
+    display: flex;                
+}
+.priceStock input{        
+    margin-top: 1.5rem;                
+}
 
 @media screen and (min-width:768px) { 
     .buttons{        
         flex: 0 2 35%;
         max-width: 300px;
         justify-content: space-evenly;            
-    }
-    .priceStock{
-        display: flex;                     
-    }
-    .priceStock input{        
-        margin-top: 1.5rem;                
     }
     .inputs{        
         padding: 4em;

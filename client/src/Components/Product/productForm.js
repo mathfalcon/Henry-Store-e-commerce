@@ -71,6 +71,8 @@ function ProductForm() {
   const [categories, setCategories] = useState([]);
   const theme = useTheme();
   const [personName, setPersonName] = useState([]);
+  const [error, setError] = useState(false);
+  const [msjError, setMsjError] = useState('');
 
   const handleChanges = (event) => {
     setPersonName(event.target.value);
@@ -105,32 +107,49 @@ function ProductForm() {
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    axios({
-      method: "post",
-      url: "http://localhost:3100/products/create-product",
-      data: {
-        name: state.name,
-        description: state.description,
-        price: state.price,
-        stock: state.stock,
-        img: state.img,
-      },
-    })
-      .then((data) => {
-        if (personName.length > 0) {
-          personName.forEach((e) => {
-            axios({
-              method: "post",
-              url: `http://localhost:3100/products/${data.data.id}/addCategory/${e}`,
+
+    if ( 
+       personName.length === 0 ||
+       state.name === '' || state.name === undefined ||
+       state.description === '' || state.description === undefined ||
+       state.price === '' || state.price === undefined ||
+       state.stock === '' || state.stock === undefined
+       ){
+        setMsjError('Campos obligatorios');
+        setError(true);
+        return
+       }
+       setMsjError('');
+       setError(false);
+       
+    if( !error ){      
+      axios({
+        method: "post",
+        url: "http://localhost:3100/products/create-product",
+        data: {
+          name: state.name,
+          description: state.description,
+          price: state.price,
+          stock: state.stock,
+          img: state.img,
+        },
+      })
+        .then((data) => {
+          if (personName.length > 0) {
+            personName.forEach((e) => {
+              axios({
+                method: "post",
+                url: `http://localhost:3100/products/${data.data.id}/addCategory/${e}`,
+              });
             });
-          });
-        }
-      })
-      .then(() => {
-        setOpenCreate(true);
-      })
-      .catch((err) => console.log(err));
-    setState({ ...state, name: "", description: "", price: "", stock: "" });
+          }
+        })
+        .then(() => {
+          setOpenCreate(true);
+        })
+        .catch((err) => console.log(err));
+      setState({ ...state, name: "", description: "", price: "", stock: "" });
+    }
   };
 
   return (
@@ -140,7 +159,12 @@ function ProductForm() {
           <div className={styles.name}>
             <label>Nombre</label>
             <br />
-            <input name="name" onChange={handleChange} value={state.name} />
+            <input
+              name="name"
+              onChange={handleChange}
+              value={state.name}
+              placeholder={msjError}
+              />
             <br />
           </div>
           <div className={styles.description}>
@@ -150,6 +174,7 @@ function ProductForm() {
               name="description"
               onChange={handleChange}
               value={state.description}
+              placeholder={msjError}
             />
             <br />
           </div>
@@ -160,10 +185,12 @@ function ProductForm() {
               type="number"
               name="price"
               min="0.00"
-              step="0.01"
+              step="0.01"              
               onChange={handleChange}
               value={state.price}
+              placeholder={msjError}
             />
+            {(error && state.price === undefined) && <p style={{ display:'flex',alignItems:'center', fontSize:'.75rem', color: 'red' }}>Campo Obligatorio</p>}
             <label>Stock</label>
             <br />
             <input
@@ -173,7 +200,9 @@ function ProductForm() {
               step="1"
               onChange={handleChange}
               value={state.stock}
+              placeholder={msjError}
             />
+            {(error && state.stock === undefined) && <span style={{ display:'flex',alignItems:'center', fontSize:'.75rem', color: 'red' }}>Campo Obligatorio</span>}
           </div>
           <div>
             <label>Subir Imágenes </label>
@@ -201,10 +230,13 @@ function ProductForm() {
 
         <div className={styles.buttons}>
           <h3 className={styles.h3Title}>Crear Producto</h3>
+
           {/* Selector multiple de categorias */}
           {state.img && <img style={{height: 'auto', width:'45%', margin: '0 auto'}} src={state.img.toString('utf8')}></img>}
-          <div className={styles.Multiselect}>
+          <div className={styles.Multiselect}>            
             <h2>Seleccionar Categorias: </h2>
+            {(personName.length === 0 && error) &&  <span style={{fontSize:'.75rem', color: 'red' }}>Debe seleccionar al menos una categoria</span>}  
+
             {categories.length > 0 && (
               <FormControl style={{ width: "80%" }}>
                 <InputLabel id="demo-mutiple-name-label">Categorías</InputLabel>
