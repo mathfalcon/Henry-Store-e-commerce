@@ -27,7 +27,7 @@
   font-size: 150%;
 }
 .divContent:after {
-  content: "DESCRIPCION";
+  content: "DESCRIPCIÓN";
   position: absolute;
   font-size: 800%;
   font-weight: 800;
@@ -47,6 +47,7 @@
   width: auto;
   min-height: 150px;
   max-height: 300px;
+  
 }
 .divButtons {
   display: flex;
@@ -72,7 +73,7 @@
   text-transform: uppercase;
 }
 .mainInfo {
-  background-color: #ffffff;
+  background-image: url('../content/background.jpg');
   width: 100%;
   height: 400px;
   position: relative;
@@ -94,6 +95,7 @@
 .chip{
   margin: 0.5em;
 }
+
 
 @media screen and (max-width: 768px) {
   .divCard{

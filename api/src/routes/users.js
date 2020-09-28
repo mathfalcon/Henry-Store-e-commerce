@@ -1,5 +1,6 @@
 const server = require("express").Router();
 const { Users, OrderLine, Order, Product } = require("../db.js");
+const { Op } = require("sequelize");
 
 // Busca todos los usuarios y los devuelve en un array
 server.get("/", (req, res, next) => {
@@ -10,22 +11,41 @@ server.get("/", (req, res, next) => {
     .catch(next);
 });
 
-//Modifica un usuario pasado por id (query)
+// Busca un usuario en particular
+server.get("/:idUser", (req, res, next) => {
+  const { idUser } = req.params;
+  Users.findByPk(idUser)
+    .then((user) => {
+      res.status(200).send(user);
+    })
+    .catch(next);
+});
+
+//Modifica un usuario pasado por id (params)
 server.put("/update/:id", (req, res, next) => {
   const { name, username, email, role } = req.body;
 
+  if (name.length < 1 || username.length < 1 || email.length < 1){
+    return res.send({
+      success: false,
+      message: 'Los campos a editar no pueden estar vacios.'
+    })
+  }
+
   Users.findByPk(req.params.id)
     .then((data) => {
-      if (name) data.name = name;
-      if (username) data.username = username;
-      if (email) data.email = email;
-      if (role) data.role = role;
+      if (name && name.length > 1) data.name = name;
+      if (username && username.length > 1) data.username = username;
+      if (email && email.length>  1) data.email = email;
+      if (role && role.length>  1) data.role = role;
       data.save();
       res
         .status(200)
-        .send(
-          `El usuario ${data.dataValues.name} con id ${data.dataValues.id} se actualizó con éxito`
-        );
+        .send({
+         success: true,
+         message: 'Actualizaste tu perfil con éxito',
+         messageAdmin: `El usuario ${data.dataValues.name} con id ${data.dataValues.id} se actualizó con éxito`
+        });
     })
     .catch((err) => {
       res.status(400).send(err);
@@ -46,7 +66,7 @@ server.post("/create", (req, res, next) => {
   })
     .then((user) => {
       //Sucess handler
-      res.status(200).send(user[0]);
+      res.status(200).send({success: true, message: 'El usuario fue creado con éxito', user: user[0]});
     })
     .catch((err) => {
       //Error Handler
@@ -60,8 +80,6 @@ server.post("/:idUser/cart", (req, res, next) => {
   //suponiendo que en req.body viene el id del producto como 'idProducto'
   // la cantidad de items como 'amount' y el precio como 'price'
 
-  //hay que editarla, deberia crear una orden con status created, la order line deberia filtrar las ordenes de un usuario y si encuentra una que este
-  // 'activa' deberia agregar orderline a esa orden, en este caso la ordenline se crea al crear la orden, no cumple el proposito de una orden muchas orderlines.
   
   const { idUser } = req.params;
   const { idProducto, amount } = req.body;
@@ -185,7 +203,21 @@ server.get("/:userId/orders", (req, res, next) => {
     where: {
       userId: id,
     },
-    include: Users,
+    include: [
+      {
+        model: Product,
+        as: "products",
+        required: false,
+        // Pass in the Product attributes that you want to retrieve
+        attributes: ["id", "name", "description", "stock", "price"],
+        through: {
+          // This block of code allows you to retrieve the properties of the join table
+          model: OrderLine,
+          as: "amount",
+          attributes: ["amount"],
+        },
+      }
+    ],
   })
     .then((rows) => res.status(200).json(rows))
     .catch(next);

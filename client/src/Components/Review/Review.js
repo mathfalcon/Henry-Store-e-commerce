@@ -15,6 +15,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import Axios from "axios";
+import { Chip } from "@material-ui/core";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -40,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Review({ product }) {
   const [reviews, setReviews] = useState([]);
   const [value, setValue] = useState(null);
-  const [valueNew, setNewValue] = useState(2);
+  const [valueNew, setNewValue] = useState(0);
   const [hover, setHover] = useState(-1);
   const [open, setOpen] = useState(false);
   const [openSnack, setSnack] = useState(false);
@@ -156,12 +157,18 @@ export default function Review({ product }) {
               <div className={styles.reviewRating}>
                 <Box
                   component="fieldset"
-                  mb={1}
+                  mb={1} 
                   borderColor="transparent"
                 >
                   <Typography component="legend">Valoracion: </Typography>
                   <Rating name="read-only" value={e.value} readOnly />
-                  <p style={{alignSelf:"flex-start"}}>Autor: {e.author.username}</p>
+                  <p style={{alignSelf:"flex-start"}}> <Chip
+                    variant="outlined"
+                    color="primary"
+                    label={`Autor: ${e.author.name} (Usuario ID: #${e.author.id}) `}
+                    className={styles.chip}
+                    title={e.description}
+                  /> </p>
                 </Box>
               </div>
               <div className={styles.reviewContent}>

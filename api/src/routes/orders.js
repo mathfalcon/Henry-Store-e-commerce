@@ -30,14 +30,44 @@ server.put("/:id", (req, res, next) => {
   //Lo unico que podemos buscar editar es el estado de una orden
   // este estado deberia solo puede tener los values: ['inCart', 'created', 'processing','canceled','complete']
   // dichas limitaciones deben controlarse desde el frontend, y mandar el estado a editar como query ej: http://localhost:3100/orders/1?state=completed
-
-  Order.findByPk(id)
-    .then((order) => {
-      if (state) order.state = state;
-      order.save().catch(next);
-      res.status(200).send(order);
-    })
-    .catch(next);
+  if (state === "complete") {
+    Order.findAll({
+      where: {
+        id: id,
+      },
+      include: [
+        {
+          model: Product,
+          as: "products",
+          required: false,
+          // Pass in the Product attributes that you want to retrieve
+          attributes: ["id", "name", "description", "stock", "price"],
+          through: {
+            // This block of code allows you to retrieve the properties of the join table
+            model: OrderLine,
+            as: "amount",
+            attributes: ["amount"],
+          },
+        },
+      ],
+    }).then((order) => {
+      order[0].products.forEach((e) => {
+        Product.findByPk(e.id).then((product) => {
+          product.stock -= e.amount.amount;
+          product.save();
+        });
+      });
+      return res.send(order);
+    });
+  } else {
+    Order.findByPk(id)
+      .then((order) => {
+        if (state) order.state = state;
+        order.save().catch(next);
+        res.status(200).send(order);
+      })
+      .catch(next);
+  }
 });
 
 //Trae todos los productos de una orden
@@ -72,7 +102,7 @@ server.get("/products/:orderId", (req, res, next) => {
 
 //CHECKOUT
 server.post("/checkout", (req, res, next) => {
-  const { orderId } = req.body;
+  const { orderId, buyerEmail } = req.body;
   Order.findAll({
     where: {
       id: orderId,
@@ -108,7 +138,7 @@ server.post("/checkout", (req, res, next) => {
           {
             to: [
               {
-                email: "mathfalcondj@gmail.com",
+                email: buyerEmail,
               },
             ],
             dynamic_template_data: {
@@ -120,8 +150,7 @@ server.post("/checkout", (req, res, next) => {
       };
       sgMail
         .send(msg)
-        .then(() => {
-          // Celebrate
+        .then((email) => {
         })
         .catch((error) => {
           // Log friendly error
@@ -137,7 +166,7 @@ server.post("/checkout", (req, res, next) => {
             console.error(body);
           }
         });
-      res.status(200).send(order[0])
+      res.status(200).send(order[0]);
     })
     .catch(next);
 });

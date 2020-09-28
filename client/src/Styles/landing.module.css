@@ -9,11 +9,11 @@ html a:link {
     text-decoration: none;
     transition: 0.3s;
     opacity: 100%;
-    color: black;
+    color: inherit;
 }
 html a:visited {
     text-decoration: none;
-    color: black;
+    color: inherit;
 }
 
 html a:hover {
@@ -129,6 +129,7 @@ section:nth-of-type(2) {
     display: flex;
     flex-direction: column;
 }
+
 
 @media screen and (max-width:600px) {
     section{

@@ -3,7 +3,7 @@ import styles from "../../Styles/productForm.module.css";
 import logoText from "../../Styles/Assets/logo henry black.png";
 import axios from "axios";
 import Button from "@material-ui/core/Button";
-import PublishIcon from '@material-ui/icons/Publish';
+import PublishIcon from "@material-ui/icons/Publish";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -31,6 +31,10 @@ const useStyles = makeStyles((theme) => ({
   noLabel: {
     marginTop: theme.spacing(3),
   },
+  button: {
+    marginBottom: '15px',
+    maxWidth: '150px'
+  }
 }));
 
 const ITEM_HEIGHT = 48;
@@ -55,7 +59,6 @@ function getStyles(name, personName, theme) {
 }
 
 function ProductForm() {
-
   //Estado para Alerta crear categoria
   const [openCreate, setOpenCreate] = useState(false);
 
@@ -72,6 +75,8 @@ function ProductForm() {
   const [categories, setCategories] = useState([]);
   const theme = useTheme();
   const [personName, setPersonName] = useState([]);
+  const [imageUpload, setImages] = useState([]);
+
   const handleChanges = (event) => {
     setPersonName(event.target.value);
   };
@@ -91,9 +96,24 @@ function ProductForm() {
     setState({ ...state, [name]: value });
   };
 
+  const handleOnChangeImg = (e) => {
+    
+    var imageArray = [];
+
+    for(const file of e.target.files){
+      var reader = new FileReader();
+      (function(file) {
+        var reader = new FileReader();
+        reader.onload = function(image) {
+          setImages((e) => e.concat(image.target.result))
+        };
+        reader.readAsDataURL(file);
+      })(file);
+    }
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
-
     axios({
       method: "post",
       url: "http://localhost:3100/products/create-product",
@@ -102,9 +122,11 @@ function ProductForm() {
         description: state.description,
         price: state.price,
         stock: state.stock,
+        images: imageUpload
       },
     })
       .then((data) => {
+        console.log(data)
         if (personName.length > 0) {
           personName.forEach((e) => {
             axios({
@@ -123,93 +145,98 @@ function ProductForm() {
 
   return (
     <div>
-      <form className={styles.form} >
-        <div className={styles.inputs}>
-          <div className={styles.name}>
-            <label>Nombre</label>
-            <br />
-            <input name="name" onChange={handleChange} value={state.name} />
-            <br />
+      <form className={styles.form}>
+        <div className={styles.container}>
+          <div className={styles.inputs}>
+            <div className={styles.inputDiv}>
+              <label>Nombre</label>
+              <input name="name" onChange={handleChange} value={state.name} />
+              <label>Descripción</label>
+              <input
+                name="description"
+                onChange={handleChange}
+                value={state.description}
+              />
+              <label>Precio</label>
+              <input
+                type="number"
+                name="price"
+                min="0.00"
+                step="0.01"
+                onChange={handleChange}
+                value={state.price}
+              />
+              <label>Stock</label>
+              <input
+                type="number"
+                name="stock"
+                min="0"
+                step="1"
+                onChange={handleChange}
+                value={state.stock}
+              />
+              <label>Subir Imágenes </label>
+              <input
+                type="file"
+                id="file"
+                accept=".png"
+                name="img"
+                multiple
+                onChange={handleOnChangeImg}
+              />
+            </div>
+              <Button
+                variant="contained"
+                color="secondary"
+                className={classes.button}
+                onClick={handleSubmit}
+                style={{ backgroundColor: "#ffff5a", color: "black" }}
+                endIcon={<PublishIcon />}
+              >
+                CREAR
+              </Button>
           </div>
-          <div className={styles.description}>
-            <label>Descripción</label>
-            <br />
-            <textarea
-              name="description"
-              onChange={handleChange}
-              value={state.description}
-            />
-            <br />
-          </div>
-          <div className={styles.priceStock}>
-            <label>Precio</label>
-            <br />
-            <input
-              type="number"
-              name="price"
-              min="0.00"
-              step="0.01"
-              onChange={handleChange}
-              value={state.price}
-            />
-            <label>Stock</label>
-            <br />
-            <input
-              type="number"
-              name="stock"
-              min="0"
-              step="1"
-              onChange={handleChange}
-              value={state.stock}
-            />
-          </div>
-          <div>
-            <label>Subir Imágenes</label>
-            <input type="file" name="dropimage" accept="image/*" />
-          </div>
-          <div>
-            <Button
-              variant="contained"
-              color="secondary"
-              className={classes.button}
-              onClick={handleSubmit}
-              style={{backgroundColor: '#ffff5a', color: 'black'}}
-              endIcon={<PublishIcon />}
-            >CREAR</Button>
-          </div>
-        </div>
 
-        <div className={styles.buttons}>
-          <h3 className={styles.h3Title}>Crear Producto</h3>
-          {/* Selector multiple de categorias */}
-          <div className={styles.Multiselect}>
-            <h2>Seleccionar Categorias: </h2>
-            {categories.length > 0 && (
-              <FormControl style={{ width: "80%" }}>
-                <InputLabel id="demo-mutiple-name-label">Categorías</InputLabel>
-                <Select
-                  labelId="demo-mutiple-name-label"
-                  id="demo-mutiple-name"
-                  multiple
-                  value={personName}
-                  onChange={handleChanges}
-                  input={<Input />}
-                  MenuProps={MenuProps}
-                >
-                  {categories.map((name, index) => (
-                    <MenuItem
-                      key={index}
-                      value={name.id}
-                      style={getStyles(name.id, personName, theme)}
-                    >
-                      {name.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
+          <div className={styles.buttons}>
+            <h3 className={styles.h3Title}>Crear Producto</h3>
+            {/* Selector multiple de categorias */}
+            {state.img && (
+              <img
+                style={{ height: "auto", width: "20%", margin: "0 auto" }}
+                src={state.img.toString("utf8")}
+              ></img>
             )}
+            <div className={styles.Multiselect}>
+              <h2>Seleccionar Categorias: </h2>
+              {categories.length > 0 && (
+                <FormControl style={{ width: "80%" }}>
+                  <InputLabel id="demo-mutiple-name-label">
+                    Categorías
+                  </InputLabel>
+                  <Select
+                    labelId="demo-mutiple-name-label"
+                    id="demo-mutiple-name"
+                    multiple
+                    value={personName}
+                    onChange={handleChanges}
+                    input={<Input />}
+                    MenuProps={MenuProps}
+                  >
+                    {categories.map((name, index) => (
+                      <MenuItem
+                        key={index}
+                        value={name.id}
+                        style={getStyles(name.id, personName, theme)}
+                      >
+                        {name.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              )}
+            </div>
+            <img className={styles.imgLogo} src={logoText} alt="logoHenry" />
           </div>
-          <img className={styles.imgLogo} src={logoText} alt="logoHenry" />
         </div>
       </form>
       <Snackbar

@@ -7,6 +7,7 @@ import Button from "@material-ui/core/Button";
 import CreateIcon from '@material-ui/icons/Create';
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
+import googleLogo from '../../content/googlelogo.png'
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -72,28 +73,22 @@ function SignUp() {
   };
 
   return (
-    <div className={styles.container}>
-      <div className={styles.body}>
-        <div>
-          <label>
-            <b>Regístrate</b>
-          </label>
-          <h2>Selecciona tu Rol</h2>
-          <select id="select" onChange={handleSelected}>
-            <option value="client">Cliente</option>
-            <option value="admin">Administrador</option>
-          </select>
-          <p>
-            Como <b>Cliente</b> podrás comprar productos, y como{" "}
-            <b>Administrador</b> tendrás la posibilidad de vender productos para
-            que otras personas los compren.
-          </p>
-        </div>
+    <div>
+    <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+    <div className={styles.buttons}>      
+          <h3 className={styles.h3Title}>Regístrate</h3>
+
+        <Button
+        variant="contained"
+        href='http://localhost:3100/auth/google'
+        style={{backgroundColor: 'white', marginBottom: '1em', maxWidth:'50%', alignSelf:'center'}}
+        endIcon={<img src={googleLogo} style={{height: 'auto', maxWidth: '45px'}}
+        />}
+      >Registrarse con Google</Button>
         <img src={logoHenry} alt="logoHenry" className={styles.imgLogo} />
       </div>
-      <div className={styles.form}>
 
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <div className={styles.inputs}>
           <label>Nombre</label>
           <input
             name="name"
@@ -181,8 +176,11 @@ function SignUp() {
             <label style={{marginLeft: '15px'}}>
               o <a href="http://localhost:3000/login">Inicia sesión</a>
             </label>
+            
+          </div>
           </div>
         </form>
+
         <Snackbar
         open={openCreate}
         autoHideDuration={7000}
@@ -195,8 +193,7 @@ function SignUp() {
         >
           El usuario se ha creado con éxito.
         </Alert>
-      </Snackbar>
-      </div>
+      </Snackbar>       
     </div>
   );
 }

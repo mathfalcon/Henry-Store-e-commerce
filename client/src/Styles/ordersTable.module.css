@@ -15,14 +15,14 @@
 }
 
 .selectState {
-  width: 50%;  
+  width: 50%;
 }
 
 .table {
   margin: 0.5rem;
   background-color: whitesmoke;
   text-align: center;
-  border-collapse: collapse;
+  border-collapse: collapse;  
 }
 .table thead {
   background-color: #ffff5a;

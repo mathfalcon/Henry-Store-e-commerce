@@ -11,6 +11,9 @@ import Review from "../Review/Review";
 import { useSelector, useDispatch } from "react-redux";
 import { isLoggedIn } from "../../Redux/actions/authActions";
 
+import Carousel from "react-material-ui-carousel";
+import { Paper } from "@material-ui/core";
+
 const useStyles = makeStyles((theme) => ({
   button: {
     backgroundColor: "#ffff5a",
@@ -20,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ProductCard = () => {
-  console.log(useParams())
+  console.log(useParams());
   let { id } = useParams();
   const [product, setProduct] = useState({});
 
@@ -43,7 +46,6 @@ const ProductCard = () => {
       .catch((err) => console.log(err));
   };
 
-
   const handleAddToCart = () => {
     if (userLogged.loggedIn) {
       axios({
@@ -61,7 +63,7 @@ const ProductCard = () => {
       }
 
       var doesExist = storage.findIndex((e) => e.productId === product.id);
-      if ( doesExist === -1) {
+      if (doesExist === -1) {
         var data = { productId: product.id, amount: 1 };
         storage.push(data);
       } else {
@@ -72,12 +74,17 @@ const ProductCard = () => {
     }
   };
 
+  
   return (
     <div className={styles.container}>
       <div className={styles.divCard}>
         <div className={styles.mainInfo}>
           <div className={styles.imgBx}>
-            <img src={henryShirt} alt="Henry Shirt" />
+            <Carousel>
+              {product.images && product.images.map((item, i) => (
+                <Item key={i} item={item} />
+              ))}
+            </Carousel>
           </div>
           <div className={styles.divButtons}>
             <span>
@@ -95,9 +102,19 @@ const ProductCard = () => {
                     title={e.description}
                   />
                 ))}
+              {product.stock === 0 && (
+                <Chip
+                  variant="outlined"
+                  color="secondary"
+                  label="Sin Stock"
+                  className={styles.chip}
+                  title="Actualmente no tenemos stock de este producto"
+                />
+              )}
             </div>
             <Button
               variant="contained"
+              disabled={product.stock === 0}
               style={{ width: "90%", marginTop: "10px" }}
               onClick={handleAddToCart}
               href="http://localhost:3000/user/cart/"
@@ -120,5 +137,11 @@ const ProductCard = () => {
     </div>
   );
 };
+
+function Item(props) {
+  return (
+      <img src={props.item.img} style={{padding:'0 50px'}}></img>
+  );
+}
 
 export default ProductCard;

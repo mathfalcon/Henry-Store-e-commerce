@@ -39,17 +39,17 @@ sequelize.models = Object.fromEntries(capsEntries);
 // En sequelize.models están todos los modelos importados como propiedades
 // Para relacionarlos hacemos un destructuring
 const { Product } = sequelize.models;
-const { Image } = sequelize.models;
 const { Categories } = sequelize.models;
 const { Users } = sequelize.models;
 const { Order } = sequelize.models;
 const { OrderLine } = sequelize.models;
 const { Reviews } = sequelize.models;
 const { Checkout } = sequelize.models;
+const { Images } = sequelize.models;
 
-// Aca vendrian las relaciones
-Product.hasMany(Image);
-Image.belongsTo(Product);
+//Asociaciones de Imagenes
+Product.hasMany(Images);
+Images.belongsTo(Product);
 
 //Asociaciones de Order
 Users.hasMany(Order);
@@ -74,6 +74,7 @@ Order.belongsToMany(Product, { through: OrderLine });
 //Asociaciones de checkout
 Users.hasMany(Checkout);
 Checkout.belongsTo(Users);
+Checkout.belongsTo(Order);
 
 Users.prototype.checkPassword = function (password) {
   return (
