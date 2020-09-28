@@ -103,7 +103,7 @@ server.get("/products/:orderId", (req, res, next) => {
 
 //CHECKOUT
 server.post("/checkout", (req, res, next) => {
-  const { orderId } = req.body;
+  const { orderId, buyerEmail } = req.body;
   Order.findAll({
     where: {
       id: orderId,
@@ -139,7 +139,7 @@ server.post("/checkout", (req, res, next) => {
           {
             to: [
               {
-                email: "mathfalcondj@gmail.com",
+                email: buyerEmail,
               },
             ],
             dynamic_template_data: {

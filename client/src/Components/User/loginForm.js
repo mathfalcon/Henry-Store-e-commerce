@@ -52,7 +52,7 @@ function LoginForm() {
         style={{backgroundColor: 'white', marginBottom: '1em', maxWidth:'50%', alignSelf:'center'}}
         endIcon={<img src={googleLogo} style={{height: 'auto', maxWidth: '45px'}}
         />}
-      >...o con Google</Button>
+      >o con Google</Button>
         <img src={logoHenry} alt="logoHenry" className={styles.imgLogo} />
       </div>
       <div className={styles.form}>
