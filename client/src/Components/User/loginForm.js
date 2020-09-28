@@ -44,7 +44,6 @@ function LoginForm() {
             <p id='error-message' style={{fontSize: '1.2em'}}>
               con tu usuario y contraseña.
             </p>
-
             <Button
             variant="contained"
             href='http://localhost:3100/auth/google'

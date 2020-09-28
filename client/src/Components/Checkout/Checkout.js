@@ -5,6 +5,7 @@ import Button from "@material-ui/core/Button";
 import { useParams } from "react-router-dom";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
+import { useSelector } from "react-redux";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -14,14 +15,14 @@ export default function Checkout() {
   const [address, setAddress] = useState("");
   const [payment, setPayment] = useState("cash");
   const [openCreate, setOpenCreate] = useState(false);
-
+  const { userLogged } = useSelector((state) => state.authUser);
   let { idUser } = useParams();
   let { idOrder } = useParams();
 
   const handleCloseCreate = () => {
     setOpenCreate(!openCreate);
     window.location.href = "http://localhost:3000/";
-  }; 
+  };
 
   const handleSubmit = () => {
     axios
@@ -34,9 +35,13 @@ export default function Checkout() {
         axios
           .put(`http://localhost:3100/orders/${idOrder}?state=complete`)
           .then(() => {
-            setOpenCreate(true)
-            axios.post(`http://localhost:3100/orders/checkout`,{orderId: idOrder})
-            .then(data => console.log(data))
+            setOpenCreate(true);
+            axios
+              .post(`http://localhost:3100/orders/checkout`, {
+                orderId: idOrder,
+                buyerEmail: userLogged.email,
+              })
+              .then((data) => console.log(data));
           });
       })
       .catch((err) => console.log(err));
@@ -105,7 +110,8 @@ export default function Checkout() {
           severity="success"
           style={{ backgroundColor: "#ffff5a", color: "black" }}
         >
-          La compra se ha confirmado con éxito, en breves recibirás un mail con los detalles.
+          La compra se ha confirmado con éxito, en breves recibirás un mail con
+          los detalles.
         </Alert>
       </Snackbar>
     </div>
