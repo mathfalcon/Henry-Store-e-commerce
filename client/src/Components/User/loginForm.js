@@ -36,46 +36,48 @@ function LoginForm() {
   };
 
   return (
-    <div className={styles.container}>
-      <div className={styles.body}>
-        <div>
-          <label>
-            <b>INICIA SESIÓN</b>
-          </label>
-        </div>
-        <p id='error-message' style={{fontSize: '1.2em'}}>
-          con tu usuario y contraseña.
-        </p>
-        <Button
-        variant="contained"
-        href='http://localhost:3100/auth/google'
-        style={{backgroundColor: 'white', marginBottom: '1em', maxWidth:'50%', alignSelf:'center'}}
-        endIcon={<img src={googleLogo} style={{height: 'auto', maxWidth: '45px'}}
-        />}
-      >...o con Google</Button>
-        <img src={logoHenry} alt="logoHenry" className={styles.imgLogo} />
-      </div>
-      <div className={styles.form}>
-        <form>
-          <label>Email</label>
-          <input name="username" onChange={handleChange} />
-          <label>Contraseña</label>
-          <input name="password" type="password" onChange={handleChange} />
-          <div className={styles.button}>
+    <div>
+      <form className={styles.form}>
+        <div className={styles.buttons}>
+          <h3 className={styles.h3Title}>INICIA SESION</h3>
+
+            <p id='error-message' style={{fontSize: '1.2em'}}>
+              con tu usuario y contraseña.
+            </p>
+
             <Button
-              variant="contained"
-              color="secondary"
-              style={{ backgroundColor: "#ffff5a", color: "black" }}
-              onClick={handleSubmit}
-            >
-              INICIAR SESION
-            </Button>
-            <label style={{ marginLeft: "15px" }}>
-              o <a href="http://localhost:3000/sign-up">Regístrate</a>
-            </label>
+            variant="contained"
+            href='http://localhost:3100/auth/google'
+            style={{backgroundColor: 'white', marginBottom: '1em', maxWidth:'50%', alignSelf:'center'}}
+            endIcon={<img src={googleLogo} style={{height: 'auto', maxWidth: '45px'}}
+            />}
+          >...o con Google</Button>
+            <img src={logoHenry} alt="logoHenry" className={styles.imgLogo} />
+        </div>
+
+        <div className={styles.inputs}>        
+            <label>Email</label>
+            <input name="username" onChange={handleChange} />
+            <label>Contraseña</label>
+            <input name="password" type="password" onChange={handleChange} />
+
+            <div className={styles.button}>
+              <Button
+                variant="contained"
+                color="secondary"
+                style={{ backgroundColor: "#ffff5a", color: "black" }}
+                onClick={handleSubmit}
+              >
+                INICIAR SESION
+              </Button>
+
+              <label style={{ marginLeft: "15px" }}>
+                o <a href="http://localhost:3000/sign-up">Regístrate</a>
+              </label>
+
+            </div>        
           </div>
-        </form>
-      </div>
+      </form>
     </div>
   );
 }
