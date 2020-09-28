@@ -16,6 +16,8 @@ import { Button, Paper, Snackbar } from "@material-ui/core";
 import axios from "axios";
 import MuiAlert, { AlertProps } from "@material-ui/lab/Alert";
 import UserOrders from "./userOrders";
+import RateReviewIcon from '@material-ui/icons/RateReview';
+import UserReviews from "./userReviews";
 
 function Alert(props: AlertProps) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -47,7 +49,7 @@ function TabPanel(props: TabPanelProps) {
   );
 }
 
-function a11yProps(index: any) {
+function a11yProps(index) {
   return {
     id: `scrollable-force-tab-${index}`,
     "aria-controls": `scrollable-force-tabpanel-${index}`,
@@ -104,10 +106,12 @@ export default function UserUtils(props) {
   });
   const [alertPw, setPwAlert] = useState(false);
   const [orders, setOrders] = useState([]);
+  const [reviews, setReviews] = useState([])
 
   useEffect(() => {
     passwordValidator();
     getUserOrders();
+    getUserReviews();
   }, [state]);
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
@@ -155,10 +159,16 @@ export default function UserUtils(props) {
   };
 
   const getUserOrders = () => {
-    console.log(user);
     axios
       .get(`http://localhost:3100/users/${user.id}/orders`)
       .then((response) => setOrders(response.data))
+      .catch((err) => console.log(err));
+  };
+
+  const getUserReviews = () => {
+    axios
+      .get(`http://localhost:3100/reviews/byUser/${user.id}`)
+      .then((response) => setReviews(response.data))
       .catch((err) => console.log(err));
   };
 
@@ -195,6 +205,11 @@ export default function UserUtils(props) {
             label="VER ORDENES"
             icon={<ShoppingCartIcon />}
             {...a11yProps(2)}
+          />
+          <Tab
+            label="MIS RESEÑAS"
+            icon={<RateReviewIcon />}
+            {...a11yProps(3)}
           />
         </Tabs>
       </AppBar>
@@ -348,6 +363,9 @@ export default function UserUtils(props) {
         ) : (
           <Paper style={{backgroundColor: '#f44336', width:'40%', color: 'white', padding: '1em', margin: 'auto', textAlign: 'center'}}>No tienes ninguna orden en el historial ni activa</Paper>
         )}
+      </TabPanel>
+      <TabPanel value={value} index={3}>
+        <UserReviews reviews={reviews}/>
       </TabPanel>
       {/* ALERTAS */}
       <Snackbar

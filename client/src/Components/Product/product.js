@@ -1,16 +1,14 @@
 import React from 'react';
 import styles from '../../Styles/productCard.module.css'
-import henryShirt from "../../content/henryShirt.png";
-
 
 export default function Product(props) {
     const {id, name, description, images} = props.product
-    console.log(images[0])
+    console.log(images)
     return (
         <div className={styles.container}>
             <div className={styles.card}>
                 <div className={styles.imgBx}>
-                    <img src={images[0].img} alt="Henry Shirt"/>
+                    {images.length > -1 && <img src={images[0].img} alt="Henry Shirt"/>}
                 </div>
                 <div className={styles.contentBx}>
                     <h2>{name}</h2>
