@@ -16,7 +16,12 @@ import MuiAlert from "@material-ui/lab/Alert";
 import { ButtonBase } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { useDispatch } from "react-redux";
-import {loadingTrue, loadingFalse} from '../../Redux/actions/loadingActions'
+import { loadingTrue, loadingFalse } from "../../Redux/actions/loadingActions";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -82,6 +87,8 @@ function ProductUpdate(props) {
   const handleSelect = (event) => {
     setUpdateCat(event.target.value);
   };
+  const [openDelete, setOpenDelete] = useState(false);
+  const [idImage, setIdImage] = useState();
 
   const id = window.location.search.split("=").pop();
   /* Peticion GET a categories */
@@ -111,6 +118,16 @@ function ProductUpdate(props) {
     setState({ ...state, [name]: value });
   };
 
+  const handleClickOpenDelete = (id) => {
+    setOpenDelete(true);
+    setIdImage(id);
+  };
+
+  const handleCloseDelete = (id) => {
+    setOpenDelete(false);
+    handleImageRemove(idImage);
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const body = state;
@@ -130,7 +147,7 @@ function ProductUpdate(props) {
         description: state.description,
         price: state.price,
         stock: state.stock,
-        images: imageUpload
+        images: imageUpload,
       },
     })
       .then((data) => {
@@ -174,14 +191,13 @@ function ProductUpdate(props) {
 
   const dispatch = useDispatch();
   const handleImageRemove = (id) => {
-    dispatch(loadingTrue())
-    console.log(id)
-    axios.delete(`http://localhost:3100/images/${id}`)
-    .then(data => {
-      setTimeout(() => dispatch(loadingFalse()),500)
-      window.location.reload()
-    })
-  }
+    dispatch(loadingTrue());
+    console.log(id);
+    axios.delete(`http://localhost:3100/images/${id}`).then((data) => {
+      setTimeout(() => dispatch(loadingFalse()), 500);
+      window.location.reload();
+    });
+  };
 
   return (
     <div>
@@ -233,8 +249,8 @@ function ProductUpdate(props) {
                 id="file"
                 accept=".png"
                 name="img"
-                onChange={handleOnChangeImg}                
-                multiple                
+                onChange={handleOnChangeImg}
+                multiple
               />
             </div>
             <Button
@@ -311,7 +327,7 @@ function ProductUpdate(props) {
                       maxWidth: "50px",
                       float: "left",
                     }}
-                    onClick={() => handleImageRemove(e.id)}
+                    onClick={() => handleClickOpenDelete(e.id)}
                   >
                     <DeleteIcon />
                   </Button>
@@ -320,6 +336,49 @@ function ProductUpdate(props) {
           </div>
         </div>
       </form>
+      <Dialog
+        open={openDelete}
+        onClose={handleCloseDelete}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"¿Estás seguro que quieres borrar esta imágen?"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText
+            id="alert-dialog-description"
+            style={{ textAlign: "center", paddingBottom: "5px" }}
+          >
+            Esta acción es irreversible.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={handleCloseDelete}
+            color="primary"
+            style={{
+              maxWidth: "25%",
+              color: "white",
+              backgroundColor: "black",
+            }}
+          >
+            Cancelar
+          </Button>
+          <Button
+            onClick={handleCloseDelete}
+            color="primary"
+            autoFocus
+            style={{
+              maxWidth: "25%",
+              color: "black",
+              backgroundColor: "#ffff01",
+            }}
+          >
+            Continuar
+          </Button>
+        </DialogActions>
+      </Dialog>
       <Snackbar
         open={openUpdate}
         autoHideDuration={7000}
