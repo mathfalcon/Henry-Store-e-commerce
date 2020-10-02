@@ -65,6 +65,10 @@ function getStyles(name, updateCat, theme) {
 }
 
 function ProductUpdate(props) {
+
+  const [openDelete, setOpenDelete] = useState(false);
+  const [idImage, setIdImage] = useState();
+
   //Estado para Alerta actualizar categoria
   const [openUpdate, setOpenUpdate] = useState(false);
 
@@ -73,6 +77,16 @@ function ProductUpdate(props) {
   const handleCloseUpdate = () => {
     setOpenUpdate(false);
     window.location.href = "http://localhost:3000/product/admin/product-table";
+  };
+
+  const handleClickOpenDelete = (id) => {
+    setOpenDelete(true);
+    setIdImage(id);
+  };
+
+  const handleCloseDelete = (id) => {
+    setOpenDelete(false);
+    handleImageRemove(idImage)
   };
 
   /* Estados */
@@ -176,7 +190,6 @@ function ProductUpdate(props) {
   };
 
   const handleOnChangeImg = (e) => {
-    var imageArray = [];
     for (const file of e.target.files) {
       var reader = new FileReader();
       (function (file) {
@@ -198,7 +211,7 @@ function ProductUpdate(props) {
       window.location.reload();
     });
   };
-
+  
   return (
     <div>
       <form className={styles.form}>

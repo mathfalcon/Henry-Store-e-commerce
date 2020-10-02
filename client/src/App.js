@@ -21,7 +21,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ProductList from "./Components/ProductList/productList";
 import CategoryList from "./Components/CategoryList/categoryList";
 import GuestCart from "./Components/Cart/guestcart";
-import UserPanel from "./Components/UserPanel/userPanel";
+import UserPanel from "./Components/UserPanel/userPanel"
 import LoadingScreen from "./Components/loadingScreen";
 import { loadingFalse, loadingTrue } from "./Redux/actions/loadingActions";
 import Checkout from "./Components/Checkout/Checkout";
@@ -34,6 +34,18 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Button from "@material-ui/core/Button";
 
 function App() {
+  const [openDelete, setOpenDelete] = useState(false);
+
+  const handleClickOpenDelete = () => {
+    console.log("handleopen");
+    setOpenDelete(true);
+  };
+
+  const handleCloseDelete = () => {
+    console.log("handleclose");
+    setOpenDelete(false);
+  };
+
   const [products, setProducts] = useState([]);
   const dispatch = useDispatch();
   const [openDelete, setOpenDelete] = useState(false);
@@ -61,41 +73,24 @@ function App() {
       })
       .catch((err) => console.log(err));
   };
-
+  
   const userLogged = useSelector((state) => state.authUser);
-  const { isLoading } = useSelector((state) => state.isLoading);
+  const {isLoading} = useSelector((state) => state.isLoading);
 
   return (
     // Loading Screen statement
-    !isLoading ? (
-      <BrowserRouter>
-        <Route
-          path="/"
-          render={() => <SearchBar handleSearch={handleSearch} />}
-        />
-        {products.length > 0 && (
-          <Redirect
-            to={{
-              pathname: "/product/search/",
-              state: { products: products },
-            }}
-          />
-        )}
-        <Route exact path="/" render={() => <Landing />} />
-        <Route
-          path="/product/search"
-          render={() => <SearchResults products={products} />}
-        />
-        <Route exact path="/user/cart" render={() => <Cart />} />
-        <Route exact path="/login" render={() => <LoginForm />} />
-        <Route path="/product/detailed/:id" render={() => <ProductCard />} />
-        <Route exact path="/sign-up" render={() => <SignUp />} />
-        <Route exact path="/guest/cart" render={() => <GuestCart />} />
-        <Route
-          exact
-          path="/checkout/:idUser/:idOrder"
-          render={() => <Checkout />}
-        />
+    !isLoading ? <BrowserRouter>
+      <Route
+        path="/"
+        render={() => <SearchBar handleSearch={handleSearch} />}
+      />
+      {products.length > 0 && (
+        <Redirect
+          to={{
+            pathname: "/product/search/",
+            state: { products: products },
+          }}
+        />}
         <Route exact path="/user/profile">
           <UserPanel />
         </Route>
