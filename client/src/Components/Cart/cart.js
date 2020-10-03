@@ -38,7 +38,7 @@ function Cart() {
           // Looks for users' orders
           let activeOrder = response.data.find((e) => (e.state === "active"));
           console.log(activeOrder)
-          if (activeOrder.id) {
+          if (activeOrder && activeOrder.id) {
             axios
               .get(`http://localhost:3100/orders/products/${activeOrder.id}`) //Looks for the information of the active order
               .then((data) => {
