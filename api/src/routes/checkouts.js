@@ -1,7 +1,7 @@
 const server = require("express").Router();
 const { Checkout, Order, Users, Product,OrderLine } = require("../db.js");
 const sgMail = require("@sendgrid/mail");
-
+const { SENDGRID_API_KEY, SENDGRID_TEMPLATE_ID, SENDGRID_SENDER_EMAIL, SENDGRID_SENDER_NAME } = process.env;
 //Ruta que trae todos los checkouts
 server.get("/", (req, res, next) => {
   Checkout.findAll()
@@ -78,15 +78,13 @@ server.put("/:idOrder/completed", (req, res, next) => {
     res.send(order)
     order[0].state = "complete";
     order[0].save();
-    const SENDGRID_API_KEY =
-      "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";
-
     sgMail.setApiKey(SENDGRID_API_KEY);
+
     const msg = {
-      template_id: "d-ab973a48bf7d467aac9acaef55b924af",
+      template_id: SENDGRID_TEMPLATE_ID,
       from: {
-        email: "henry.store.ecommerce@gmail.com",
-        name: "Henry Store",
+        email: SENDGRID_SENDER_EMAIL,
+        name: SENDGRID_SENDER_NAME,
       },
       personalizations: [
         {

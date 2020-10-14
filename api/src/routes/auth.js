@@ -2,34 +2,11 @@ const server = require("express").Router();
 const passport = require("passport");
 const { Users } = require("../db.js");
 
-server.post("/login", (req, res, next) => {
-  console.log(req.body);
-  passport.authenticate("local-login", (err, user, info) => {
-    if (err) {
-      return res.status(200).send({
-        success: false,
-        message: err.message,
-        info,
-      });
-    }
-    if (!user) {
-      return res.status(200).send({
-        success: false,
-        info,
-      });
-    }
-    req.login(user, function (err) {
-      if (err) {
-        return res.status(400).send(err);
-      }
-      return res.status(200).send({
-        success: true,
-        message: "Has ingresado satisfactoriamente",
-        info,
-        user,
-      });
-    });
-  })(req, res, next);
+server.post("/api/serach", (req, res, next) => {
+  const {search} = req.body;
+  fetch(`https://api.mercadolibre.com/sites/MLA/search?q=${search}`)
+  .then(data => data.json())
+  .then(data => res.send(data))
 });
 
 server.get("/info", (req, res, next) => {
