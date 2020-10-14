@@ -43,7 +43,7 @@ export default function UserReviews(props) {
 
   return (
     <div className={classes.root}>
-      {props.reviews.map((e) => (
+      {props.reviews[0] ? props.reviews.map((e) => (
         <div id={e.id} onClick={handleChange}>
           <Accordion
             id={e.id}
@@ -103,7 +103,7 @@ export default function UserReviews(props) {
             </AccordionDetails>
           </Accordion>
       </div>
-      ))}
+      )) : <Paper style={{backgroundColor: '#f44336', width:'40%', color: 'white', padding: '1em', margin: 'auto', textAlign: 'center'}}>No tienes ninguna reseña realizada</Paper>}
     </div>
   );
 }

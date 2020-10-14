@@ -16,7 +16,7 @@ import MuiAlert from "@material-ui/lab/Alert";
 import { ButtonBase } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { useDispatch } from "react-redux";
-import {loadingTrue, loadingFalse} from '../../Redux/actions/loadingActions'
+import { loadingTrue, loadingFalse } from "../../Redux/actions/loadingActions";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -65,10 +65,6 @@ function getStyles(name, updateCat, theme) {
 }
 
 function ProductUpdate(props) {
-
-  const [openDelete, setOpenDelete] = useState(false);
-  const [idImage, setIdImage] = useState();
-
   //Estado para Alerta actualizar categoria
   const [openUpdate, setOpenUpdate] = useState(false);
 
@@ -77,16 +73,6 @@ function ProductUpdate(props) {
   const handleCloseUpdate = () => {
     setOpenUpdate(false);
     window.location.href = "http://localhost:3000/product/admin/product-table";
-  };
-
-  const handleClickOpenDelete = (id) => {
-    setOpenDelete(true);
-    setIdImage(id);
-  };
-
-  const handleCloseDelete = (id) => {
-    setOpenDelete(false);
-    handleImageRemove(idImage)
   };
 
   /* Estados */
@@ -101,6 +87,8 @@ function ProductUpdate(props) {
   const handleSelect = (event) => {
     setUpdateCat(event.target.value);
   };
+  const [openDelete, setOpenDelete] = useState(false);
+  const [idImage, setIdImage] = useState();
 
   const id = window.location.search.split("=").pop();
   /* Peticion GET a categories */
@@ -130,6 +118,16 @@ function ProductUpdate(props) {
     setState({ ...state, [name]: value });
   };
 
+  const handleClickOpenDelete = (id) => {
+    setOpenDelete(true);
+    setIdImage(id);
+  };
+
+  const handleCloseDelete = (id) => {
+    setOpenDelete(false);
+    handleImageRemove(idImage);
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const body = state;
@@ -144,7 +142,13 @@ function ProductUpdate(props) {
     axios({
       method: "put",
       url: `http://localhost:3100/products/${toUpdate.id}/update`,
-      data: body,
+      data: {
+        name: state.name,
+        description: state.description,
+        price: state.price,
+        stock: state.stock,
+        images: imageUpload,
+      },
     })
       .then((data) => {
         if (actualizar.length > 0) {
@@ -172,6 +176,7 @@ function ProductUpdate(props) {
   };
 
   const handleOnChangeImg = (e) => {
+    var imageArray = [];
     for (const file of e.target.files) {
       var reader = new FileReader();
       (function (file) {
@@ -186,14 +191,13 @@ function ProductUpdate(props) {
 
   const dispatch = useDispatch();
   const handleImageRemove = (id) => {
-    console.log(id)
-    dispatch(loadingTrue())
-    axios.delete(`http://localhost:3100/images/${id}`)
-    .then(data => {
-      setTimeout(() => dispatch(loadingFalse()),500)
-      window.location.reload()
-    })
-  }
+    dispatch(loadingTrue());
+    console.log(id);
+    axios.delete(`http://localhost:3100/images/${id}`).then((data) => {
+      setTimeout(() => dispatch(loadingFalse()), 500);
+      window.location.reload();
+    });
+  };
 
   return (
     <div>
@@ -246,6 +250,7 @@ function ProductUpdate(props) {
                 accept=".png"
                 name="img"
                 onChange={handleOnChangeImg}
+                multiple
               />
             </div>
             <Button
@@ -331,7 +336,6 @@ function ProductUpdate(props) {
           </div>
         </div>
       </form>
-
       <Dialog
         open={openDelete}
         onClose={handleCloseDelete}
@@ -375,7 +379,6 @@ function ProductUpdate(props) {
           </Button>
         </DialogActions>
       </Dialog>
-
       <Snackbar
         open={openUpdate}
         autoHideDuration={7000}

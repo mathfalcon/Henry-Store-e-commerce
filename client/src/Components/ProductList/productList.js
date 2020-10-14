@@ -101,7 +101,7 @@ function ProductList() {
                       {product.name}
                     </a>
                   </td>
-                  <td>{product.categories.map((e) => e.name)}</td>
+                  <td>{product.categories.map((e) => e.name + '-')}</td>
                   <td>{product.description}</td>
                   <td>${product.price}</td>
                   <td>{product.stock}</td>

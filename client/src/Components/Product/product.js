@@ -8,7 +8,7 @@ export default function Product(props) {
         <div className={styles.container}>
             <div className={styles.card}>
                 <div className={styles.imgBx}>
-                    {images.length > -1 && <img src={images[0].img} alt="Henry Shirt"/>}
+                    {images && <img src={images[0].img} alt="Henry Shirt"/>}
                 </div>
                 <div className={styles.contentBx}>
                     <h2>{name}</h2>

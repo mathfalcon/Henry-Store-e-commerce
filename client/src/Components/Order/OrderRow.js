@@ -1,29 +1,36 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getTotal } from "../../Redux/actions/orderActions";
 import styles from "../../Styles/ordersTable.module.css";
-import OrderState from './OrderState'
+import OrderState from "./OrderState";
 
-function OrderRow({order: {id, createdAt, user, state}}) {
-  
+function OrderRow(props) {
+  const { order } = props;
+  const { user } = order;
+
   const { totalOrder } = useSelector((state) => state.totalOrder);
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  useEffect(() => {        
-    dispatch(getTotal(id))  
+  useEffect(() => {
+    dispatch(getTotal(order.id));
   }, []);
-  
-    return (
-        <tr> 
-        <td>{id}</td>
-        <td>{createdAt.split("T")[0]}</td>                                       
-        <td>$ {totalOrder[(id - 1)]}</td>
+
+  return (
+    user &&
+    <Fragment>
+      <tr>
+        <td>{order.id}</td>
+        <td>{order.createdAt.split("T")[0]}</td>
+        <td>$ {totalOrder[order.id - 1]}</td>
         <td>{user.email}</td>
-        <td style={{textTransform: 'capitalize'}}>{state}</td>
-        <td style={{display: 'flex'}}><OrderState orderId={id}/></td>
-        </tr>        
-    );            
-  }
+        <td style={{ textTransform: "capitalize" }}>{order.state}</td>
+        <td style={{ display: "flex" }}>
+          <OrderState orderId={order.id} />
+        </td>
+      </tr>
+    </Fragment>
+  );
+}
 
 export default OrderRow;
