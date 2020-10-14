@@ -2,7 +2,7 @@ const { Users } = require("../db.js");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
-
+const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_CLIENT_SECRET } = process.env;
 passport.serializeUser((user, done) => {
   done(null, user.id);
 });
@@ -52,9 +52,9 @@ passport.use(
   new GoogleStrategy(
     {
       clientID:
-        "958019176203-negf5quivisfv6npk0almm4hcsunn6fb.apps.googleusercontent.com",
-      clientSecret: "e6qOgfX7fTuXiUyU3wJu53w7",
-      callbackURL: "http://localhost:3100/auth/google/callback",
+        GOOGLE_CLIENT_ID,
+      clientSecret: GOOGLE_CLIENT_SECRET,
+      callbackURL: "http://localhost:3100/google/callback",
     },
     function (accessToken, refreshToken, profile, done) {
       console.log(profile._json.email)
