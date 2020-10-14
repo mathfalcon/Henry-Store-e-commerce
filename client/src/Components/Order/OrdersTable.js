@@ -111,7 +111,8 @@ function OrdersTable() {
                     );
                   })
                 :
-                  orderList.map((order, index) => {                        
+                  orderList.map((order, index) => {   
+                    console.log(order)                     
                     return (
                       <OrderRow order={order} key={index} />
                     );
