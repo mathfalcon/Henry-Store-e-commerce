@@ -9,6 +9,8 @@
 
 This is a project made by a team of 5 people *(check contributors)* as part of our education at [Soy Henry](https://www.soyhenry.com/). The point of this activity consisted on creating an online store of any merchandise we choose.
 
+The project itself it's written in Spanish because not all of us know how to speak English.
+
 ### Tech Stack
 
 - **Front End:**
